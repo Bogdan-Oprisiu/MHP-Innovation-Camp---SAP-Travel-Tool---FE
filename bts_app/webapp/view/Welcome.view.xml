@@ -1,9 +1,37 @@
 <mvc:View controllerName="bts.btsapp.controller.Welcome"
     xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
-    xmlns="sap.m">
+    xmlns="sap.m"
+    xmlns:l="sap.ui.layout"
+	xmlns:f="sap.ui.layout.form"
+	xmlns:core="sap.ui.core">
     <Page id="page" title="{i18n>title}">
         <content>
-            <Text text="Hello World!"/>
+            <mvc:XMLView viewName="bts.btsapp.view.Login" class="sapUiMediumMargin" visible="false"/>
+            <mvc:XMLView viewName="bts.btsapp.view.Signup" class="sapUiMediumMargin" visible="false"/>
+            <FlexBox class="sapUiSmallMargin">
+                <VBox >
+                    <HBox class="sapUiMediumMargin" alignContent="Center" justifyContent="Center">
+                        <Label text="Already have an account?"/>
+                        <Button
+                        text="Log in"
+					    press="onPressLogin"
+                        class="sapUiSmallMargin"
+				        />
+                    </HBox>
+                </VBox>
+
+                <VBox >
+                    <HBox class="sapUiMediumMargin" alignContent="Center" justifyContent="Center">
+                        <Label text="Don't have an account?"/>
+                        <Button
+                            text="Sign up"
+				        	press="onPressSignup"
+                            class="sapUiSmallMargin"
+				        />
+                    </HBox>
+                </VBox>
+
+            </FlexBox>
         </content>
     </Page>
 </mvc:View>

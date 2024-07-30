@@ -1,0 +1,18 @@
+<mvc:View controllerName="bts.btsapp.controller.Login"
+    xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
+    xmlns="sap.m">
+    <Page id="page" title="Login">
+        <content>
+            <VBox class="sapUiSmallMargin" alignItems="Center" justifyContent="Center">
+                <Button
+                    text="Login"
+					press="onPressLogin"
+				>
+					<layoutData>
+						<FlexItemData growFactor="1" />
+					</layoutData>
+				</Button>
+            </VBox>
+        </content>
+    </Page>
+</mvc:View>

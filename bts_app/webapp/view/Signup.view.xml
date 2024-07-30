@@ -1,0 +1,9 @@
+<mvc:View controllerName="bts.btsapp.controller.Signup"
+    xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
+    xmlns="sap.m">
+    <Page id="page" title="Signup">
+        <content>
+            
+        </content>
+    </Page>
+</mvc:View>
