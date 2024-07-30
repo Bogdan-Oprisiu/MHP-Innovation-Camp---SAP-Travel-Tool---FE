@@ -16,3 +16,7 @@
   background: whitesmoke;
   opacity: 0.9;
 }
+
+.largeText {
+  size: 16rem;
+}

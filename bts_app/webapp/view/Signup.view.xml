@@ -1,22 +1,26 @@
 <mvc:View controllerName="bts.btsapp.controller.Signup"
     xmlns:mvc="sap.ui.core.mvc"
     xmlns="sap.m"
-    xmlns:core="sap.ui.core">
+    xmlns:core="sap.ui.core"
+>
     <VBox 
-        class="sapUiMediumMargin formContainer" 
-        alignContent="Center" 
-        justifyContent="Center"
-        width="25%"
-        height="30rem"
+        class="formContainer" 
+        alignItems="Center"
     >
+        <FormattedText 
+            class="sapUiMediumMargin"
+            htmlText="{/customSignupHTML}"
+        />
+
         <HBox 
-            class="sapUiMediumMarginStart sapUiMediumMarginEnd sapUiSmallMargin"
+            class="sapUiSmallMargin sapUiMediumMarginTop"
             alignItems="Center" 
             justifyContent="SpaceBetween"
+            width="75%"
         >
             <core:Icon
                 src="sap-icon://account"
-                class="size3" 
+                class="sapUiTinyMarginEnd size3" 
             />
             <Label
                 text="Username: "
@@ -30,13 +34,14 @@
         </HBox>
 
         <HBox 
-            class="sapUiMediumMarginStart sapUiMediumMarginEnd sapUiSmallMargin"
+            class="sapUiSmallMargin"
             alignItems="Center" 
             justifyContent="SpaceBetween"
+            width="75%"
         >
             <core:Icon
                 src="sap-icon://shield"
-                class="size3" 
+                class="sapUiTinyMarginEnd size3" 
             />
             <Label
                 text="Password: "
@@ -49,29 +54,17 @@
             />
         </HBox>
 
-        <HBox  
-            class="sapUiLargeMarginStart sapUiLargeMarginEnd"
-            alignItems="Center" 
-            justifyContent="Center"
-        >
-            <Button
-                text="Sign up"
-                press="onPressSignup"
-                class="sapUiSmallMargin"
-            />
-        </HBox>
+        <Button
+            class="sapUiSmallMargin"
+            text="Sign up"
+            press="onPressSignup"
+            type="Emphasized"
+        />
 
-        <HBox  
-            class="sapUiLargeMarginStart sapUiLargeMarginEnd sapUiLargeMarginTop"
-            alignItems="Center" 
-            justifyContent="SpaceBetween"
-        >
-            <Button
-                text="Already have an account? Log in"
-                press="onPressShowLogin"
-                class="sapUiSmallMargin"
-                width="100%"
-            />
-        </HBox>
+        <Button
+            class="sapUiSmallMargin"
+            text="Already have an account? Log in"
+            press="onPressShowLogin"
+        />
     </VBox>
 </mvc:View>

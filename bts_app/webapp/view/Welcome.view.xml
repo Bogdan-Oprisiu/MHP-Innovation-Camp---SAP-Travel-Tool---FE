@@ -7,8 +7,18 @@
     <Page id="page" title="{i18n>title}" class="pageContainer">
         <content>
             <FlexBox class="boxContainer" alignContent="Center" justifyContent="Center" width="100%" height="100%">
-                <mvc:XMLView viewName="bts.btsapp.view.Login" id="loginView" visible="{view>/showLoginForm}" class="sapUiMediumMargin"/>
-                <mvc:XMLView viewName="bts.btsapp.view.Signup" id="signupView" visible="{view>/showSignupForm}" class="sapUiMediumMargin"/>
+                <mvc:XMLView 
+                    viewName="bts.btsapp.view.Login"
+                    id="loginView" 
+                    visible="{view>/showLoginForm}" 
+                    class="sapUiMediumMargin"
+                    />
+                <mvc:XMLView 
+                    viewName="bts.btsapp.view.Signup" 
+                    id="signupView" 
+                    visible="{view>/showSignupForm}" 
+                    class="sapUiMediumMargin"
+                />
             </FlexBox>
         </content>
     </Page>
