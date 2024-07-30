@@ -81,6 +81,11 @@
           "name": "RouteWelcome",
           "pattern": ":?query:",
           "target": ["TargetWelcome"]
+        },
+        {
+          "name": "RouteTest",
+          "pattern": "test",
+          "target": ["TargetTest"]
         }
       ],
       "targets": {
@@ -90,6 +95,13 @@
           "clearControlAggregation": false,
           "viewId": "Welcome",
           "viewName": "Welcome"
+        },
+        "TargetTest": {
+          "viewType": "XML",
+          "transition": "slide",
+          "clearControlAggregation": false,
+          "viewId": "Test",
+          "viewName": "Test"
         }
       }
     },

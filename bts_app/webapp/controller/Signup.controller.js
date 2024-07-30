@@ -25,10 +25,18 @@ sap.ui.define(
       onPressSignup: function () {
         var username = this.getView().byId("usernameSignUp").getValue();
         var password = this.getView().byId("passwordSignUp").getValue();
+        var isManager = this.getView().byId("isManagerSignUp").getSelected();
 
         if (username && password) {
-          sap.m.MessageToast.show("Signup successful!");
+          var message = isManager
+            ? "Signup successful as manager"
+            : "Signup successful as user";
+          sap.m.MessageToast.show(message);
           // Add your signup logic here
+
+          // Navigate to a test view
+          var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+          oRouter.navTo("RouteTest");
         } else {
           sap.m.MessageToast.show("Please enter both username and password.");
         }

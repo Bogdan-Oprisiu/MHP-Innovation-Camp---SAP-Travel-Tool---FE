@@ -26,10 +26,19 @@ sap.ui.define(
       onPressLogin: function () {
         var username = this.getView().byId("usernameLogIn").getValue();
         var password = this.getView().byId("passwordLogIn").getValue();
+        var isManager = this.getView().byId("isManagerLogIn").getSelected();
 
         if (username && password) {
-          sap.m.MessageToast.show("Login successful!");
+          var message = isManager
+            ? "Login succesfull as manager"
+            : "Login succesfull as user";
+
+          sap.m.MessageToast.show(message);
           // Add your login logic here
+
+          // Navigate to a test view
+          var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+          oRouter.navTo("RouteTest");
         } else {
           sap.m.MessageToast.show("Please enter both username and password.");
         }

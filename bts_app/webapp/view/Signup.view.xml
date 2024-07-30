@@ -54,12 +54,26 @@
             />
         </HBox>
 
-        <Button
-            class="sapUiSmallMargin"
-            text="Sign up"
-            press="onPressSignup"
-            type="Emphasized"
-        />
+        <HBox 
+            alignItems="Center"
+            justifyContent="SpaceBetween"
+        >
+            <Label 
+                text="Manager" 
+                labelFor="isManagerSignUp"
+            />
+            <CheckBox 
+                id="isManagerSignUp"
+                valueState="Information"
+            />
+
+            <Button
+                class="sapUiSmallMargin"
+                text="Sign up"
+                press="onPressSignup"
+                type="Emphasized"
+            />
+        </HBox>
 
         <Button
             class="sapUiSmallMargin"
