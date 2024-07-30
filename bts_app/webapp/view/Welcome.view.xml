@@ -2,15 +2,13 @@
     xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
     xmlns="sap.m"
     xmlns:l="sap.ui.layout"
-	xmlns:f="sap.ui.layout.form"
-	xmlns:core="sap.ui.core">
-    <Page id="page" title="{i18n>title}">
+    xmlns:f="sap.ui.layout.form"
+    xmlns:core="sap.ui.core">
+    <Page id="page" title="{i18n>title}" class="pageContainer">
         <content>
-            <mvc:XMLView viewName="bts.btsapp.view.Login" class="sapUiMediumMargin" visible="false"/>
-            <mvc:XMLView viewName="bts.btsapp.view.Signup" class="sapUiMediumMargin" visible="false"/>
-            <FlexBox class="sapUiSmallMargin" alignContent="Center" justifyContent="Center">
+            <FlexBox class="boxContainer" alignContent="Center" justifyContent="Center" width="100%" height="100%">
                 <VBox 
-                    class="sapUiMediumMargin" 
+                    class="sapUiMediumMargin formContainer" 
                     alignContent="Center" 
                     justifyContent="Center" 
                     visible="{view>/showLoginForm}"
@@ -20,11 +18,11 @@
                     <HBox 
                         class="sapUiMediumMarginStart sapUiMediumMarginEnd sapUiSmallMargin"
                         alignItems="Center" 
-				        justifyContent="SpaceBetween"
+                        justifyContent="SpaceBetween"
                     >
                         <core:Icon
-			                src="sap-icon://account"
-			                class="size3" 
+                            src="sap-icon://account"
+                            class="size3" 
                         />
                         <Label
                             text="Username: "
@@ -33,19 +31,19 @@
                         <Input 
                             id="usernameLogIn"
                             type="Text"
+                            required="true"
                         />
                     </HBox>
                     
                     <HBox 
                         class="sapUiMediumMarginStart sapUiMediumMarginEnd sapUiSmallMargin"
                         alignItems="Center" 
-				        justifyContent="SpaceBetween"
+                        justifyContent="SpaceBetween"
                     >
                         <core:Icon
-			                src="sap-icon://shield"
-			                class="size3" 
+                            src="sap-icon://shield"
+                            class="size3" 
                         />
-                        
                         <Label
                             text="Password: "
                             labelFor="passwordLogIn"
@@ -53,39 +51,52 @@
                         <Input 
                             id="passwordLogIn"
                             type="Password"
+                            required="true"
                         />
                     </HBox>
 
-                    <HBox 
+                    <HBox  
                         class="sapUiLargeMarginStart sapUiLargeMarginEnd"
                         alignItems="Center" 
-				        justifyContent="SpaceBetween"
+                        justifyContent="Center"
                     >
-                        <Label text="Already have an account?"/>
                         <Button
-                        text="Log in"
-					    press="onPressShowSignup"
-                        class="sapUiSmallMargin"
-				        />
+                            text="Log in"
+                            press="onPressLogin"
+                            class="sapUiSmallMargin"
+                        />
+                    </HBox>
+
+                    <HBox  
+                        class=" sapUiLargeMarginTop"
+                        alignItems="Center" 
+                        justifyContent="Center"
+                    >
+                        <Button
+                            text="Don't have an account? Sign up"
+                            press="onPressShowSignup"
+                            class="sapUiSmallMargin"
+                            width="100%"
+                        />
                     </HBox>
                 </VBox>
 
                 <VBox 
-                    class="sapUiMediumMargin" 
+                    class="sapUiMediumMargin formContainer" 
                     alignContent="Center" 
                     justifyContent="Center" 
                     visible="{view>/showSignupForm}"
                     width="25%"
-                    height="25rem"
+                    height="30rem"
                 >
                     <HBox 
                         class="sapUiMediumMarginStart sapUiMediumMarginEnd sapUiSmallMargin"
                         alignItems="Center" 
-				        justifyContent="SpaceBetween"
+                        justifyContent="SpaceBetween"
                     >
                         <core:Icon
-			                src="sap-icon://account"
-			                class="size3" 
+                            src="sap-icon://account"
+                            class="size3" 
                         />
                         <Label
                             text="Username: "
@@ -94,19 +105,19 @@
                         <Input 
                             id="usernameSignUp"
                             type="Text"
+                            required="true"
                         />
                     </HBox>
                     
                     <HBox 
                         class="sapUiMediumMarginStart sapUiMediumMarginEnd sapUiSmallMargin"
                         alignItems="Center" 
-				        justifyContent="SpaceBetween"
+                        justifyContent="SpaceBetween"
                     >
                         <core:Icon
-			                src="sap-icon://shield"
-			                class="size3" 
+                            src="sap-icon://shield"
+                            class="size3" 
                         />
-                        
                         <Label
                             text="Password: "
                             labelFor="passwordSignUp"
@@ -114,20 +125,33 @@
                         <Input 
                             id="passwordSignUp"
                             type="Password"
+                            required="true"
                         />
                     </HBox>
 
                     <HBox  
                         class="sapUiLargeMarginStart sapUiLargeMarginEnd"
                         alignItems="Center" 
-				        justifyContent="SpaceBetween"
+                        justifyContent="Center"
                     >
-                        <Label text="Don't have an account?"/>
                         <Button
                             text="Sign up"
-				        	press="onPressShowLogin"
+                            press="onPressSignup"
                             class="sapUiSmallMargin"
-				        />
+                        />
+                    </HBox>
+
+                    <HBox  
+                        class="sapUiLargeMarginStart sapUiLargeMarginEnd sapUiLargeMarginTop"
+                        alignItems="Center" 
+                        justifyContent="SpaceBetween"
+                    >
+                        <Button
+                            text="Already have an account? Log in"
+                            press="onPressShowLogin"
+                            class="sapUiSmallMargin"
+                            width="100%"
+                        />
                     </HBox>
                 </VBox>
             </FlexBox>

@@ -1,6 +1,10 @@
 sap.ui.define(
-  ["sap/ui/core/mvc/Controller", "sap/ui/model/json/JSONModel"],
-  function (Controller, JSONModel) {
+  [
+    "sap/ui/core/mvc/Controller",
+    "sap/ui/model/json/JSONModel",
+    "sap/m/MessageToast",
+  ],
+  function (Controller, JSONModel, MessageToast) {
     "use strict";
 
     return Controller.extend("bts.btsapp.controller.Welcome", {
@@ -23,6 +27,30 @@ sap.ui.define(
         // Set properties to show login form and hide signup form
         this.getView().getModel("view").setProperty("/showLoginForm", true);
         this.getView().getModel("view").setProperty("/showSignupForm", false);
+      },
+
+      onPressLogin: function () {
+        var username = this.getView().byId("usernameLogIn").getValue();
+        var password = this.getView().byId("passwordLogIn").getValue();
+
+        if (username && password) {
+          MessageToast.show("Login successful!");
+          // Add your login logic here
+        } else {
+          MessageToast.show("Please enter both username and password.");
+        }
+      },
+
+      onPressSignup: function () {
+        var username = this.getView().byId("usernameSignUp").getValue();
+        var password = this.getView().byId("passwordSignUp").getValue();
+
+        if (username && password) {
+          MessageToast.show("Signup successful!");
+          // Add your signup logic here
+        } else {
+          MessageToast.show("Please enter both username and password.");
+        }
       },
     });
   }
