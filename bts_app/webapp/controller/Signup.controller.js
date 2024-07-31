@@ -23,23 +23,80 @@ sap.ui.define(
       },
 
       onPressSignup: function () {
+        const isUsernameUnique = (username, users) =>
+          !users.some((user) => user.username === username);
+
+        const isPasswordSecure = (password) => {
+          // Minimum 8 characters, at least one number and one special character
+          const minLength = 8;
+          const hasNumber = /\d/;
+          const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/;
+
+          return (
+            password.length >= minLength &&
+            hasNumber.test(password) &&
+            hasSpecialChar.test(password)
+          );
+        };
+
         var username = this.getView().byId("usernameSignUp").getValue();
         var password = this.getView().byId("passwordSignUp").getValue();
-        var isManager = this.getView().byId("isManagerSignUp").getSelected();
 
-        if (username && password) {
-          var message = isManager
-            ? "Signup successful as manager"
-            : "Signup successful as user";
-          sap.m.MessageToast.show(message);
-          // Add your signup logic here
-
-          // Navigate to a test view
-          var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
-          oRouter.navTo("RouteTest");
-        } else {
+        if (!username || !password) {
           sap.m.MessageToast.show("Please enter both username and password.");
+          return;
         }
+
+        // Retrieve the model named 'mockUserData'
+        const oModel = this.getOwnerComponent().getModel("mockUserData");
+        if (!oModel) {
+          sap.m.MessageToast.show(
+            "User data is not available. Please try again later."
+          );
+          return;
+        }
+
+        // Get the existing data from the model
+        var oData = oModel.getData() || {};
+        var users = oData.Users || [];
+
+        // Check if username is unique
+        if (!isUsernameUnique(username, users)) {
+          sap.m.MessageToast.show(
+            "Username already exists. Please choose a different username."
+          );
+          return;
+        }
+
+        // Check if the password is secure
+        if (!isPasswordSecure(password)) {
+          sap.m.MessageToast.show(
+            "Password must be at least 8 characters long and include at least one number and one special character."
+          );
+          return;
+        }
+
+        // Create a new user object
+        var newUser = {
+          username: username,
+          password: password,
+          isManager: false,
+        };
+
+        // Add the new user to the users array
+        users.push(newUser);
+
+        // Update the model with the new user data
+        oModel.setProperty("/Users", users);
+
+        // Display success message
+        sap.m.MessageToast.show(
+          `Signup successful as ${username} with the password ${password}`
+        );
+
+        // Navigate to a test view
+        var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+        oRouter.navTo("RouteTest");
       },
 
       onPressShowLogin: function () {
