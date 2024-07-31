@@ -57,6 +57,10 @@
         "settings": {
           "bundleName": "bts.btsapp.i18n.i18n"
         }
+      },
+      "mockUserData": {
+        "type": "sap.ui.model.json.JSONModel",
+        "uri": "model/mock_user_data.json"
       }
     },
     "resources": {

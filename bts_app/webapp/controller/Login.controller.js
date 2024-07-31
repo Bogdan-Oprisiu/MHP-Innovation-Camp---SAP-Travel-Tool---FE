@@ -24,23 +24,60 @@ sap.ui.define(
       },
 
       onPressLogin: function () {
-        var username = this.getView().byId("usernameLogIn").getValue();
-        var password = this.getView().byId("passwordLogIn").getValue();
-        var isManager = this.getView().byId("isManagerLogIn").getSelected();
+        // Function to check login information
+        const checkLogInInfo = (username, password) => {
+          const oModel = this.getOwnerComponent().getModel("mockUserData");
 
-        if (username && password) {
-          var message = isManager
-            ? "Login succesfull as manager"
-            : "Login succesfull as user";
+          // Ensure the model is available
+          if (!oModel) {
+            sap.m.MessageToast.show(
+              "User data is not available. Please try again later."
+            );
+            return false;
+          }
+
+          // Retrieve data from the model
+          const oData = oModel.getData();
+          const users = oData.Users || [];
+
+          // Check if the inputs are empty
+          if (!username || !password) {
+            sap.m.MessageToast.show("Please enter both username and password.");
+            return false;
+          }
+
+          // Validate the username and password against the data
+          const validUser = users.find(
+            (user) => user.username === username && user.password === password
+          );
+
+          if (!validUser) {
+            sap.m.MessageToast.show(
+              "Invalid username or password. Please try again."
+            );
+            return false;
+          }
+
+          return validUser;
+        };
+
+        const username = this.getView().byId("usernameLogIn").getValue();
+        const password = this.getView().byId("passwordLogIn").getValue();
+
+        // Check if the login information is valid
+        const validUser = checkLogInInfo.call(this, username, password);
+
+        if (validUser) {
+          // Display success message based on user role
+          const message = validUser.isManager
+            ? "Login successful as manager."
+            : "Login successful as user.";
 
           sap.m.MessageToast.show(message);
-          // Add your login logic here
 
-          // Navigate to a test view
+          // Navigate to the test view
           var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
           oRouter.navTo("RouteTest");
-        } else {
-          sap.m.MessageToast.show("Please enter both username and password.");
         }
       },
 

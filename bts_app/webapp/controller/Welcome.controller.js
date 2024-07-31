@@ -5,7 +5,16 @@ sap.ui.define(
 
     return Controller.extend("bts.btsapp.controller.Welcome", {
       onInit: function () {
-        // Set up a JSONModel with a property to manage form visibility
+        // // Log the mockUserData if it exists
+        // var oModel = this.getOwnerComponent().getModel("mockUserData");
+        // if (oModel) {
+        //   var oData = oModel.getData();
+        //   console.log("Existing User Data: ", oData);
+        // } else {
+        //   console.error("Model 'mockUserData' not found or not loaded.");
+        // }
+
+        // Set up a JSONModel for view-specific data like form visibility
         var oViewModel = new JSONModel({
           showLoginForm: true,
           showSignupForm: false,
