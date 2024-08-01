@@ -11,13 +11,15 @@
                     viewName="bts.btsapp.view.Login"
                     id="loginView" 
                     visible="{view>/showLoginForm}" 
-                    class="sapUiMediumMargin"
+                    class="sapUiLargeMargin"
+                    width="100%"
                     />
                 <mvc:XMLView 
                     viewName="bts.btsapp.view.Signup" 
                     id="signupView" 
                     visible="{view>/showSignupForm}" 
-                    class="sapUiMediumMargin"
+                    class="sapUiLargeMargin"
+                    width="100%"
                 />
             </FlexBox>
         </content>

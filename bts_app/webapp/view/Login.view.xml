@@ -6,16 +6,18 @@
         class="formContainer" 
         alignItems="Center"
     >
+
         <FormattedText 
             class="sapUiMediumMargin"
             htmlText="{/customLogInHTML}"
+            width="100%"
         />
 
         <HBox 
-            class="sapUiSmallMargin sapUiMediumMarginTop"
+            class="sapUiMediumMargin"
             alignItems="Center" 
             justifyContent="SpaceBetween"
-            width="75%"
+            width="50%"
         >
             <core:Icon
                 src="sap-icon://account"
@@ -33,10 +35,10 @@
         </HBox>
 
         <HBox 
-            class="sapUiSmallMargin"
+            class="sapUiSmallMargin sapUiMediumMarginBottom"
             alignItems="Center" 
             justifyContent="SpaceBetween"
-            width="75%"
+            width="50%"
         >
             <core:Icon
                 src="sap-icon://shield"
@@ -54,7 +56,7 @@
         </HBox>
 
         <Button
-            class="sapUiSmallMargin"
+            class="sapUiSmallMargin sapUiLargeMarginTop"
             text="Log in"
             press="onPressLogin"
             type="Emphasized"

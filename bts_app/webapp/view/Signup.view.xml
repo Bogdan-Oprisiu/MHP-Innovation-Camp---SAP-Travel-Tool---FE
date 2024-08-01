@@ -7,16 +7,18 @@
         class="formContainer" 
         alignItems="Center"
     >
+
         <FormattedText 
             class="sapUiMediumMargin"
             htmlText="{/customSignupHTML}"
+            width="100%"
         />
 
         <HBox 
             class="sapUiSmallMargin sapUiMediumMarginTop"
             alignItems="Center" 
             justifyContent="SpaceBetween"
-            width="75%"
+            width="50%"
         >
             <core:Icon
                 src="sap-icon://account"
@@ -37,7 +39,7 @@
             class="sapUiSmallMargin"
             alignItems="Center" 
             justifyContent="SpaceBetween"
-            width="75%"
+            width="50%"
         >
             <core:Icon
                 src="sap-icon://shield"
@@ -49,6 +51,27 @@
             />
             <Input 
                 id="passwordSignUp"
+                type="Password"
+                required="true"
+            />
+        </HBox>
+
+        <HBox 
+            class="sapUiSmallMargin"
+            alignItems="Center" 
+            justifyContent="SpaceBetween"
+            width="55%"
+        >
+            <core:Icon
+                src="sap-icon://shield"
+                class="sapUiTinyMarginEnd size3" 
+            />
+            <Label
+                text="Confirm Password: "
+                labelFor="passwordConfirmSignUp"
+            />
+            <Input 
+                id="passwordConfirmSignUp"
                 type="Password"
                 required="true"
             />

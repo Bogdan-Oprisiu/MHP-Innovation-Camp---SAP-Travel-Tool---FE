@@ -39,11 +39,19 @@ sap.ui.define(
           );
         };
 
-        var username = this.getView().byId("usernameSignUp").getValue();
-        var password = this.getView().byId("passwordSignUp").getValue();
+        const username = this.getView().byId("usernameSignUp").getValue();
+        const password = this.getView().byId("passwordSignUp").getValue();
+        const confirmPassword = this.getView()
+          .byId("passwordConfirmSignUp")
+          .getValue();
 
         if (!username || !password) {
           sap.m.MessageToast.show("Please enter both username and password.");
+          return;
+        }
+
+        if (password !== confirmPassword) {
+          sap.m.MessageToast.show("Passwords do not match.");
           return;
         }
 
