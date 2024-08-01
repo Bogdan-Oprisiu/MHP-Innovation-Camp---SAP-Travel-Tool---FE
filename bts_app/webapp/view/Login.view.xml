@@ -7,12 +7,14 @@
         alignItems="Center"
     >
 
-        <FormattedText 
+        <Title 
             class="sapUiMediumMargin"
-            htmlText="{/customLogInHTML}"
-            width="100%"
+            text="{i18n>loginTitle}"
+            level="H2" 
+            titleStyle="H2" 
         />
 
+        <!-- Use simple form -->
         <HBox 
             class="sapUiMediumMargin"
             alignItems="Center" 
@@ -24,7 +26,7 @@
                 class="sapUiTinyMarginEnd size3" 
             />
             <Label
-                text="Username"
+                text="{i18n>usernameLabel}"
                 labelFor="usernameLogIn"
             />
             <Input 
@@ -45,7 +47,7 @@
                 class="sapUiTinyMarginEnd size3" 
             />
             <Label
-                text="Password"
+                text="{i18n>passwordLabel}"
                 labelFor="passwordLogIn"
             />
             <Input 
@@ -57,14 +59,14 @@
 
         <Button
             class="sapUiSmallMargin sapUiLargeMarginTop"
-            text="Log in"
+            text="{i18n>logInButton}"
             press="onPressLogin"
             type="Emphasized"
         />
 
         <Button
             class="sapUiSmallMargin"
-            text="Don't have an account? Sign up"
+            text="{i18n>showSignupButton}"
             press="onPressShowSignup"
         />
     </VBox>
