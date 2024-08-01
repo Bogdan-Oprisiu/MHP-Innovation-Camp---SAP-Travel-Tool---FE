@@ -42,7 +42,7 @@
             width="50%"
         >
             <core:Icon
-                src="sap-icon://shield"
+                src="sap-icon://locked"
                 class="sapUiTinyMarginEnd size3" 
             />
             <Label
