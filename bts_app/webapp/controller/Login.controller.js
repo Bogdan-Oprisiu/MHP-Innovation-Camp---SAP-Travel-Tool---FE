@@ -8,8 +8,8 @@ sap.ui.define(
 
       onPressLogin: function () {
         // Function to check login information
-        const checkLogInInfo = (username, password) => {
-          const oModel = this.getOwnerComponent().getModel("mockUserData");
+        function checkLogInInfo() {
+          var oModel = this.getOwnerComponent().getModel("mockUserData");
 
           // Ensure the model is available
           if (!oModel) {
@@ -20,8 +20,8 @@ sap.ui.define(
           }
 
           // Retrieve data from the model
-          const oData = oModel.getData();
-          const users = oData.Users || [];
+          var oData = oModel.getData();
+          var users = oData.Users || [];
 
           // Check if the inputs are empty
           if (!username || !password) {
@@ -30,7 +30,7 @@ sap.ui.define(
           }
 
           // Validate the username and password against the data
-          const validUser = users.find(
+          var validUser = users.find(
             (user) => user.username === username && user.password === password
           );
 
@@ -42,17 +42,17 @@ sap.ui.define(
           }
 
           return validUser;
-        };
+        }
 
-        const username = this.getView().byId("usernameLogIn").getValue();
-        const password = this.getView().byId("passwordLogIn").getValue();
+        var username = this.getView().byId("usernameLogIn").getValue();
+        var password = this.getView().byId("passwordLogIn").getValue();
 
         // Check if the login information is valid
-        const validUser = checkLogInInfo.call(this, username, password);
+        var validUser = checkLogInInfo.call(this, username, password);
 
         if (validUser) {
           // Display success message based on user role
-          const message = validUser.isManager
+          var message = validUser.isManager
             ? "Login successful as manager."
             : "Login successful as user.";
 

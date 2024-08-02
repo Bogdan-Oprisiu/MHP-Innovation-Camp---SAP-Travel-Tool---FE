@@ -7,25 +7,26 @@ sap.ui.define(
       onInit: function () {},
 
       onPressSignup: function () {
-        const isUsernameUnique = (username, users) =>
-          !users.some((user) => user.username === username);
+        function isUsernameUnique(username, users) {
+          return !users.some((user) => user.username === username);
+        }
 
-        const isPasswordSecure = (password) => {
+        function isPasswordSecure(password) {
           // Minimum 8 characters, at least one number and one special character
-          const minLength = 8;
-          const hasNumber = /\d/;
-          const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/;
+          var minLength = 8;
+          var hasNumber = /\d/;
+          var hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/;
 
           return (
             password.length >= minLength &&
             hasNumber.test(password) &&
             hasSpecialChar.test(password)
           );
-        };
+        }
 
-        const username = this.getView().byId("usernameSignUp").getValue();
-        const password = this.getView().byId("passwordSignUp").getValue();
-        const confirmPassword = this.getView()
+        var username = this.getView().byId("usernameSignUp").getValue();
+        var password = this.getView().byId("passwordSignUp").getValue();
+        var confirmPassword = this.getView()
           .byId("passwordConfirmSignUp")
           .getValue();
 
@@ -40,7 +41,7 @@ sap.ui.define(
         }
 
         // Retrieve the model named 'mockUserData'
-        const oModel = this.getOwnerComponent().getModel("mockUserData");
+        var oModel = this.getOwnerComponent().getModel("mockUserData");
         if (!oModel) {
           sap.m.MessageToast.show(
             "User data is not available. Please try again later."
