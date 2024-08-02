@@ -1,10 +1,14 @@
 <mvc:View controllerName="bts.btsapp.controller.Login"
     xmlns:mvc="sap.ui.core.mvc"
     xmlns="sap.m"
-    xmlns:core="sap.ui.core">
+    xmlns:core="sap.ui.core"
+    xmlns:l="sap.ui.layout"
+	xmlns:f="sap.ui.layout.form"
+>
     <VBox 
         class="formContainer" 
         alignItems="Center"
+        renderType="Bare"
     >
 
         <Title 
@@ -14,48 +18,35 @@
             titleStyle="H2" 
         />
 
-        <!-- Use simple form -->
-        <HBox 
-            class="sapUiMediumMargin"
-            alignItems="Center" 
-            justifyContent="SpaceBetween"
+        <f:SimpleForm 
+            class="simpleForm"
+            id="LoginForm"
+			editable="true"
+			layout="ResponsiveGridLayout"
             width="50%"
         >
-            <core:Icon
-                src="sap-icon://account"
-                class="sapUiTinyMarginEnd size3" 
-            />
-            <Label
-                text="{i18n>usernameLabel}"
-                labelFor="usernameLogIn"
-            />
-            <Input 
-                id="usernameLogIn"
-                type="Text"
-                required="true"
-            />
-        </HBox>
+			<f:content>
+				<HBox class="sapUiSmallMarginTop">
+                    <core:Icon src="sap-icon://account" class="sapUiTinyMarginEnd size3" />
+                    <Label text="{i18n>usernameLabel}" labelFor="usernameLogIn" />
+                </HBox>
+                <Input 
+                    id="usernameLogIn"
+                    type="Text"
+                    required="true"
+                />
 
-        <HBox 
-            class="sapUiSmallMargin sapUiMediumMarginBottom"
-            alignItems="Center" 
-            justifyContent="SpaceBetween"
-            width="50%"
-        >
-            <core:Icon
-                src="sap-icon://locked"
-                class="sapUiTinyMarginEnd size3" 
-            />
-            <Label
-                text="{i18n>passwordLabel}"
-                labelFor="passwordLogIn"
-            />
-            <Input 
-                id="passwordLogIn"
-                type="Password"
-                required="true"
-            />
-        </HBox>
+                <HBox class="sapUiMediumMarginTop">
+                    <core:Icon src="sap-icon://locked" class="sapUiTinyMarginEnd size3" />
+                    <Label text="{i18n>passwordLabel}" labelFor="passwordLogIn" />
+                </HBox>
+                <Input 
+                    id="passwordLogIn"
+                    type="Password"
+                    required="true"
+                />
+			</f:content>
+		</f:SimpleForm>
 
         <Button
             class="sapUiSmallMargin sapUiLargeMarginTop"

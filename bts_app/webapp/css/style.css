@@ -15,11 +15,8 @@
   min-width: 400px;
 }
 
-.boxContainer {
-  background: whitesmoke;
-  opacity: 0.9;
+.simpleForm {
+  max-width: 500px; /* TODO: Find a better solution to style the simple form */
 }
 
-.largeText {
-  size: 16rem;
-}
+/* TODO ADD Some media querries for phones to change the sizes a bit or stop using pixels*/

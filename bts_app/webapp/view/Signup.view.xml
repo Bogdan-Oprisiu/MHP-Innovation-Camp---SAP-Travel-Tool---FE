@@ -2,10 +2,13 @@
     xmlns:mvc="sap.ui.core.mvc"
     xmlns="sap.m"
     xmlns:core="sap.ui.core"
+    xmlns:l="sap.ui.layout"
+	xmlns:f="sap.ui.layout.form"
 >
     <VBox 
         class="formContainer" 
         alignItems="Center"
+        renderType="Bare"
     >
 
         <Title 
@@ -15,68 +18,45 @@
             titleStyle="H2" 
         />
 
-        <HBox 
-            class="sapUiSmallMargin sapUiMediumMarginTop"
-            alignItems="Center" 
-            justifyContent="SpaceBetween"
+        <f:SimpleForm 
+            class="simpleForm"
+            id="SignupForm"
+			editable="true"
+			layout="ResponsiveGridLayout"
             width="50%"
         >
-            <core:Icon
-                src="sap-icon://account"
-                class="sapUiTinyMarginEnd size3" 
-            />
-            <Label
-                text="{i18n>usernameLabel}"
-                labelFor="usernameSignUp"
-            />
-            <Input 
-                id="usernameSignUp"
-                type="Text"
-                required="true"
-            />
-        </HBox>
+			<f:content>
+				<HBox>
+                    <core:Icon src="sap-icon://account" class="sapUiTinyMarginEnd size3" />
+                    <Label text="{i18n>usernameLabel}" labelFor="usernameSignUp" />
+                </HBox>
+                <Input 
+                    id="usernameSignUp"
+                    type="Text"
+                    required="true"
+                />
 
-        <HBox 
-            class="sapUiSmallMargin"
-            alignItems="Center" 
-            justifyContent="SpaceBetween"
-            width="50%"
-        >
-            <core:Icon
-                src="sap-icon://locked"
-                class="sapUiTinyMarginEnd size3" 
-            />
-            <Label
-                text="{i18n>passwordLabel}"
-                labelFor="passwordSignUp"
-            />
-            <Input 
-                id="passwordSignUp"
-                type="Password"
-                required="true"
-            />
-        </HBox>
+                <HBox class="sapUiSmallMarginTop">
+                    <core:Icon src="sap-icon://locked" class="sapUiTinyMarginEnd size3" />
+                    <Label text="{i18n>passwordLabel}" labelFor="passwordSignUp" />
+                </HBox>
+                <Input 
+                    id="passwordSignUp"
+                    type="Password"
+                    required="true"
+                />
 
-        <HBox 
-            class="sapUiSmallMargin"
-            alignItems="Center" 
-            justifyContent="SpaceBetween"
-            width="55%"
-        >
-            <core:Icon
-                src="sap-icon://shield"
-                class="sapUiTinyMarginEnd size3" 
-            />
-            <Label
-                text="{i18n>confirmPasswordLabel}"
-                labelFor="passwordConfirmSignUp"
-            />
-            <Input 
-                id="passwordConfirmSignUp"
-                type="Password"
-                required="true"
-            />
-        </HBox>
+                <HBox class="sapUiSmallMarginTop">
+                    <core:Icon src="sap-icon://shield" class="sapUiTinyMarginEnd size3" />
+                    <Label text="{i18n>confirmPasswordLabel}" labelFor="passwordConfirmSignUp" />
+                </HBox>
+                <Input 
+                    id="passwordConfirmSignUp"
+                    type="Password"
+                    required="true"
+                />
+			</f:content>
+		</f:SimpleForm>
 
         <Button
             class="sapUiSmallMargin"

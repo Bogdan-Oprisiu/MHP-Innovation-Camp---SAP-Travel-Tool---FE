@@ -14,7 +14,7 @@
                     id="loginView" 
                     visible="{view>/showLoginForm}" 
                     width="100%"
-                    />
+                />
                 <mvc:XMLView 
                     viewName="bts.btsapp.view.Signup" 
                     id="signupView" 
