@@ -17,6 +17,7 @@
 
 .simpleForm {
   max-width: 500px; /* TODO: Find a better solution to style the simple form */
+  max-height: 500px;
 }
 
 /* TODO ADD Some media querries for phones to change the sizes a bit or stop using pixels*/
