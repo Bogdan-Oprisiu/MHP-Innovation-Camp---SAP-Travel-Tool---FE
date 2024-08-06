@@ -19,25 +19,29 @@ sap.ui.define(
         this._loadAndAddFragment("loginForm", "bts.btsapp.view.Login");
         this._loadAndAddFragment("signupForm", "bts.btsapp.view.Signup");
       },
-
       _loadAndAddFragment: function (sContainerId, sFragmentName) {
         Fragment.load({
-          id: sContainerId,
+          id: this.getView().getId(),
           name: sFragmentName,
           controller: this,
-        }).then(
-          function (oFragment) {
-            var oContainer = this.byId(sContainerId);
-            if (oContainer.addItem) {
-              oContainer.addItem(oFragment);
-            } else {
-              console.error("Container does not support addItem method");
-            }
-          }.bind(this)
-        );
+        })
+          .then(
+            function (oFragment) {
+              this[sContainerId + "Fragment"] = oFragment; // Save fragment reference
+              var oContainer = this.byId(sContainerId);
+              oContainer.addItem(oFragment); // Use addItem to add the fragment content
+            }.bind(this)
+          )
+          .catch(function (error) {
+            console.error("Error loading fragment: ", error);
+          });
       },
 
       onPressLogin: function () {
+        if (!this.loginFormFragment) {
+          console.error("Login fragment is not loaded or assigned corectly");
+        }
+
         // Function to check login information
         function checkLogInInfo() {
           var oModel = this.getOwnerComponent().getModel("mockUserData");
@@ -75,8 +79,21 @@ sap.ui.define(
           return validUser;
         }
 
-        var username = this.getView().byId("usernameLogIn").getValue();
-        var password = this.getView().byId("passwordLogIn").getValue();
+        var username = this.loginFormFragment.byId("usernameLogIn").getValue();
+        var password = this.loginFormFragment.byId("passwordLogIn").getValue();
+
+        // Attempt to access an element directly, assuming the fragment is a control with elements
+        // console.log(this.loginFormFragment);
+        // var usernameControl = this.loginFormFragment.getContent()[0];
+        // var passwordControl = this.loginFormFragment.getContent()[1];
+
+        // var username = usernameControl.getValue();
+        // var password = passwordControl.getValue();
+
+        if (!username || !password) {
+          console.error("Input fields are not found in the fragment");
+          return;
+        }
 
         // Check if the login information is valid
         var validUser = checkLogInInfo.call(this, username, password);
@@ -123,9 +140,13 @@ sap.ui.define(
           );
         }
 
-        var username = this.getView().byId("usernameSignUp").getValue();
-        var password = this.getView().byId("passwordSignUp").getValue();
-        var confirmPassword = this.getView()
+        var username = this.signupFormFragment
+          .byId("usernameSignUp")
+          .getValue();
+        var password = this.signupFormFragment
+          .byId("passwordSignUp")
+          .getValue();
+        var confirmPassword = this.signupFormFragment
           .byId("passwordConfirmSignUp")
           .getValue();
 
