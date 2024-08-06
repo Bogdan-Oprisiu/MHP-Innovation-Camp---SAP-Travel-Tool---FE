@@ -3,7 +3,7 @@
     xmlns="sap.m">
     <Page id="page" title="{i18n>title}">
         <content>
-            <Text text="Hello World!"/>
+            <mvc:XMLView viewName="bts.btsapp.view.User"/>
         </content>
     </Page>
 </mvc:View>

@@ -1,0 +1,29 @@
+{
+    "Bts": [
+      {
+        "id": 1,
+        "location": "Germany",
+        "startDate": "2015-02-18",
+        "endDate": "2018-02-18",
+        "totalPrice": 21,
+        "status": "denied"
+      },
+      {
+        "id": 2,
+        "location": "Austria",
+        "startDate": "2015-02-18",
+        "endDate": "2019-02-18",
+        "totalPrice": 5,
+        "status": "approved"
+      },
+      {
+        "id": 3,
+        "location": "Hungary",
+        "startDate": "2015-02-18",
+        "endDate": "2015-02-20",
+        "totalPrice": 300,
+        "status": "in process"
+      }
+    ]
+  }
+  

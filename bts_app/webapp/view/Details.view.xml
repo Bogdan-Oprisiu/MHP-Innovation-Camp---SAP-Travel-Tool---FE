@@ -1,0 +1,13 @@
+<mvc:View
+    controllerName="bts.btsapp.controller.Details"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m">
+    
+    <Page
+        id="page"
+        title="{i18n>title}">
+        <content>
+            <Text text="Details of the selected item will be displayed here." />
+        </content>
+    </Page>
+</mvc:View>

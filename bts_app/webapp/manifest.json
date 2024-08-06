@@ -57,6 +57,10 @@
         "settings": {
           "bundleName": "bts.btsapp.i18n.i18n"
         }
+      },
+      "mockBTs":{
+        "type": "sap.ui.model.json.JSONModel",
+        "uri": "model/MockBTs.json"
       }
     },
     "resources": {
@@ -83,6 +87,11 @@
           "target": [
             "TargetWelcome"
           ]
+        },
+        {
+          "name": "Details",
+          "pattern": "details{btId}",
+          "target": ["TargetDetails"]
         }
       ],
       "targets": {
@@ -92,6 +101,13 @@
           "clearControlAggregation": false,
           "viewId": "Welcome",
           "viewName": "Welcome"
+        },
+        "TargetDetails": {
+          "viewType": "XML",
+          "transition": "slide",
+          "clearControlAggregation": false,
+          "viewId": "Details",
+          "viewName": "Details"
         }
       }
     },
