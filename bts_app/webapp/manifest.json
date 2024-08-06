@@ -79,7 +79,10 @@
           "defaultBindingMode": "TwoWay",
           "defaultCountMode": "Inline",
           "useBatch": true
-        }
+        },
+      "mockBTs":{
+        "type": "sap.ui.model.json.JSONModel",
+        "uri": "model/MockBTs.json"
       }
     },
     "resources": {
