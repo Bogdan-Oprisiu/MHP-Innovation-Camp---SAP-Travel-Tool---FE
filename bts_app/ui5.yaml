@@ -9,12 +9,16 @@ server:
     - name: fiori-tools-proxy
       afterMiddleware: compression
       configuration:
-        ignoreCertError: false # If set to true, certificate errors will be ignored. E.g. self-signed certificates will be accepted
+        ignoreCertError: true # If set to true, certificate errors will be ignored. E.g. self-signed certificates will be accepted
         ui5:
           path:
             - /resources
             - /test-resources
           url: https://ui5.sap.com
+        backend:
+          - path: /sap
+            url: https://ITSAPL0411.mymhp.net:44300
+            client: "100"
     - name: fiori-tools-appreload
       afterMiddleware: compression
       configuration:
@@ -26,3 +30,10 @@ server:
       configuration:
         component: bts.btsapp
         ui5Theme: sap_horizon
+framework:
+  name: OpenUI5
+  version: "1.125.0"
+  libraries:
+    - name: sap.m
+    - name: sap.ui.core
+    - name: themelib_sap_horizon
