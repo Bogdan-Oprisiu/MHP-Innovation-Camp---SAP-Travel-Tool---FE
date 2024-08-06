@@ -57,6 +57,10 @@
         "settings": {
           "bundleName": "bts.btsapp.i18n.i18n"
         }
+      },
+      "mockBTs":{
+        "type": "sap.ui.model.json.JSONModel",
+        "uri": "model/MockBTs.json"
       }
     },
     "resources": {
