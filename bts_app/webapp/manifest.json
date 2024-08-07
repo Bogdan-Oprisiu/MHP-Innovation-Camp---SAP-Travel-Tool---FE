@@ -72,6 +72,10 @@
         "type": "sap.ui.model.json.JSONModel",
         "uri": "model/mock_user_data.json"
       },
+      "mockBTs": {
+        "type": "sap.ui.model.json.JSONModel",
+        "uri": "model/MockBTs.json"
+      },
       "mainServiceModel": {
         "type": "sap.ui.model.odata.v2.ODataModel",
         "dataSource": "mainService",
@@ -79,10 +83,6 @@
           "defaultBindingMode": "TwoWay",
           "defaultCountMode": "Inline",
           "useBatch": true
-        },
-        "mockBTs": {
-          "type": "sap.ui.model.json.JSONModel",
-          "uri": "model/MockBTs.json"
         }
       }
     },
@@ -129,7 +129,7 @@
           "clearControlAggregation": false,
           "viewId": "Details",
           "viewName": "Details"
-          },
+        },
         "TargetTest": {
           "viewType": "XML",
           "transition": "slide",
