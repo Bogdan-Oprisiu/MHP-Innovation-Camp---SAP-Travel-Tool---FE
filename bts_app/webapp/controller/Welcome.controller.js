@@ -3,8 +3,9 @@ sap.ui.define(
     "sap/ui/core/mvc/Controller",
     "sap/ui/model/json/JSONModel",
     "sap/ui/core/Fragment",
+    "sap/m/MessageToast",
   ],
-  function (Controller, JSONModel, Fragment) {
+  function (Controller, JSONModel, Fragment, MessageToast) {
     "use strict";
 
     return Controller.extend("bts.btsapp.controller.Welcome", {
@@ -19,6 +20,7 @@ sap.ui.define(
         this._loadAndAddFragment("loginForm", "bts.btsapp.view.Login");
         this._loadAndAddFragment("signupForm", "bts.btsapp.view.Signup");
       },
+
       _loadAndAddFragment: function (sContainerId, sFragmentName) {
         Fragment.load({
           id: this.getView().getId(),
@@ -27,9 +29,9 @@ sap.ui.define(
         })
           .then(
             function (oFragment) {
-              this[sContainerId + "Fragment"] = oFragment; // Save fragment reference
+              this[sContainerId + "Fragment"] = oFragment;
               var oContainer = this.byId(sContainerId);
-              oContainer.addItem(oFragment); // Use addItem to add the fragment content
+              oContainer.addItem(oFragment);
             }.bind(this)
           )
           .catch(function (error) {
@@ -38,15 +40,54 @@ sap.ui.define(
       },
 
       onPressLogin: function () {
-        var isManager = true;
+        // Initialise router
         var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
 
-        if (isManager) oRouter.navTo("RouteManager");
-        else oRouter.navTo("RouteUser");
+        // Access the OData model set on the component
+        var oModel = this.getOwnerComponent().getModel("mainServiceModel");
 
-        // // Navigate to a test view
-        // var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
-        // oRouter.navTo("RouteTest");
+        // Acces the user input
+        var sUsername = this.byId("usernameLogIn").getValue();
+        var sPassword = this.byId("passwordLogIn").getValue();
+
+        // Read all employees from the OData service
+        oModel.read("/EmployeeSet", {
+          success: function (oData) {
+            var oEmployeeData = oData.results;
+            var bAuthenticated = false;
+            var bIsManager = false;
+
+            // Search for matching credentials
+            for (var i = 0; i < oEmployeeData.length; i++) {
+              if (
+                oEmployeeData[i].USERNAME === sUsername &&
+                oEmployeeData[i].PASSWORD === sPassword
+              ) {
+                bAuthenticated = true;
+                bIsManager = oEmployeeData[i].IsManager;
+                break;
+              }
+            }
+
+            if (bAuthenticated) {
+              if (bIsManager) {
+                oRouter.navTo("RouteManager");
+              } else {
+                oRouter.navTo("RouteUser");
+              }
+            } else {
+              MessageToast.show(
+                "Invalid username or password. Please try again."
+              );
+            }
+          },
+          error: function (oError) {
+            console.error("Error fetching employees data:", oError);
+            MessageToast.show(
+              "Failed to fetch data from server. Please try again later."
+            );
+          },
+        });
       },
 
       onPressShowSignup: function () {
@@ -60,9 +101,57 @@ sap.ui.define(
       },
 
       onPressSignup: function () {
-        // Navigate to a test view
+        // Initialise router
         var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
-        oRouter.navTo("RouteTest");
+
+        var oModel = this.getOwnerComponent().getModel("mainServiceModel");
+        var sUsername = this.byId("usernameSignUp").getValue();
+        var sPassword = this.byId("passwordSignUp").getValue();
+        var sConfirmPassword = this.byId("passwordConfirmSignUp").getValue();
+
+        // Validate inputs
+        if (!sUsername || !sPassword || sPassword !== sConfirmPassword) {
+          sap.m.MessageToast.show("Please check your input fields.");
+          return;
+        }
+
+        // Fetch from the OData service
+        oModel.read("/EmployeeSet", {
+          success: (oData) => {
+            var iMaxPersonalNumber = 0;
+            oData.results.forEach(function (employee) {
+              var currentNumber = parseInt(employee.PERSONAL_NUMBER);
+              if (currentNumber > iMaxPersonalNumber) {
+                iMaxPersonalNumber = currentNumber;
+              }
+            });
+
+            var oNewUser = {
+              PERSONAL_NUMBER: String(iMaxPersonalNumber + 1),
+              USERNAME: sUsername,
+              PASSWORD: sPassword,
+              IS_MANAGER: false,
+            };
+
+            // Create the new user
+            oModel.create("/EmployeeSet", oNewUser, {
+              success: function () {
+                sap.m.MessageToast.show("User registered successfully.");
+                oRouter.navTo("RouteUser");
+              },
+              error: function (oError) {
+                sap.m.MessageToast.show(
+                  "Registration failed. " + oError.message
+                );
+              },
+            });
+          },
+          error: (oError) => {
+            sap.m.MessageToast.show(
+              "Failed to fetch data from server. Please try again later."
+            );
+          },
+        });
       },
 
       onPressShowLogin: function () {
