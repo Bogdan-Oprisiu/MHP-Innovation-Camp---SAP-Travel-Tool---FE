@@ -1,34 +1,65 @@
 {
     "Bts": [
       {
-        "date": "2015-02-18T00:00:00",
+        "id": 1,
+        "location": "Germany",
+        "startDate": "2015-02-18",
+        "endDate": "2018-02-18",
         "totalPrice": 21,
-        "status": "denied",
-        "name" : "bt1"
+        "status": "denied"
       },
       {
-        "date": "2015-02-18T00:00:00",
+        "id": 2,
+        "location": "Austria",
+        "startDate": "2015-02-18",
+        "endDate": "2019-02-18",
         "totalPrice": 5,
-        "status": "approved",
-        "name" : "bt2"
+        "status": "approved"
       },
       {
-        "date": "2015-02-18T00:00:00",
+        "id": 3,
+        "location": "Hungary",
+        "startDate": "2015-02-18",
+        "endDate": "2015-02-20",
         "totalPrice": 300,
-        "status": "in process",
-        "name" : "bt3"
-      },
-      {
-        "date": "2015-02-18T00:00:00",
-        "totalPrice": 390,
-        "status": "in process",
-        "name" : "bt4"
-      },
-      {
-        "date": "2015-02-18T00:00:00",
-        "totalPrice": 450,
-        "status": "approved",
-        "name" : "bt5"
+        "status": "in process"
       }
     ]
   }
+
+// {
+//     "Bts": [
+//       {
+//         "date": "2015-02-18T00:00:00",
+//         "totalPrice": 21,
+//         "status": "denied",
+//         "name" : "bt1"
+//       },
+//       {
+//         "date": "2015-02-18T00:00:00",
+//         "totalPrice": 5,
+//         "status": "approved",
+//         "name" : "bt2"
+//       },
+//       {
+//         "date": "2015-02-18T00:00:00",
+//         "totalPrice": 300,
+//         "status": "in process",
+//         "name" : "bt3"
+//       },
+//       {
+//         "date": "2015-02-18T00:00:00",
+//         "totalPrice": 390,
+//         "status": "in process",
+//         "name" : "bt4"
+//       },
+//       {
+//         "date": "2015-02-18T00:00:00",
+//         "totalPrice": 450,
+//         "status": "approved",
+//         "name" : "bt5"
+//       }
+//     ]
+//   }
+  
+

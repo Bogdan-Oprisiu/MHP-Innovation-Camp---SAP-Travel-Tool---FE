@@ -1,0 +1,109 @@
+<mvc:View controllerName="bts.btsapp.controller.User"
+    xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
+    xmlns="sap.m">
+    <Panel 
+        headerText="{i18n>MyBusinessTripsText}"
+        class="sapUiResponsiveMargin"
+        width="auto">
+
+        <IconTabBar id="idIconTabBar"
+                    select=".onFilterSelect"
+                    class="sapUiResponsiveContentPadding">
+
+            <items>
+                <IconTabFilter
+                    text="All"
+                    key="all"
+                    icon="sap-icon://expand-all">
+                </IconTabFilter>
+                <IconTabFilter
+                    icon="sap-icon://accept"
+                    iconColor="Positive"
+                    text="Approved"
+                    key="approved">
+                    <Toolbar>
+                        <Label text="Location" />
+                        <Input id="locationFilterApproved" width="15%" />
+                        <Label text="Date" />
+                        <DatePicker id="dateFilterApproved" width="15%" />
+                        <Button text="Filter" press="onFilterTrips" />
+                        <Button text="Clear" press="onClearFilter" />
+                    </Toolbar>
+                </IconTabFilter>
+                <IconTabFilter
+                    icon="sap-icon://in-progress"
+                    iconColor="Critical"
+                    text="In process"
+                    key="in process">
+                    <Toolbar>
+                        <Label text="Location" />
+                        <Input id="locationFilterInProcess" width="15%" />
+                        <Label text="Date" />
+                        <DatePicker id="dateFilterInProcess" width="15%" />
+                        <Button text="Filter" press="onFilterTrips" />
+                        <Button text="Clear" press="onClearFilter" />
+                    </Toolbar>
+                </IconTabFilter>
+                <IconTabFilter
+                    icon="sap-icon://status-critical"
+                    iconColor="Negative"
+                    text="Denied"
+                    key="denied">
+                    <Toolbar>
+                        <Label text="Location" />
+                        <Input id="locationFilterDenied" width="15%" />
+                        <Label text="Date" />
+                        <DatePicker id="dateFilterDenied" width="15%" />
+                        <Button text="Filter" press="onFilterTrips" />
+                        <Button text="Clear" press="onClearFilter" />
+                    </Toolbar>
+                </IconTabFilter>
+            </items>
+        </IconTabBar>
+
+        <Table
+            id="btTable"
+            headerText="All of your business trips are displayed below"
+            items="{mockBTs>/Bts}">
+            <columns>
+                <Column>
+                    <header>
+                        <Label text="Location"/>
+                    </header>
+                </Column>
+                <Column>
+                    <header>
+                        <Label text="Date" />
+                    </header>
+                </Column>
+                <Column>
+                    <header>
+                        <Label text="Total Price" />
+                    </header>
+                </Column>
+                <Column>
+                    <header>
+                        <Label text="Status" />
+                    </header>
+                </Column>
+            </columns>
+            <items>
+                <ColumnListItem
+                 type="Navigation"
+                 press="onTableRowSelection">
+                    <cells>
+                        <Text text="{mockBTs>location}" />
+                        <Text text="{mockBTs>startDate}" />
+                        <Text text="{mockBTs>totalPrice}" />
+                        <Text text="{mockBTs>status}" />
+                        <Text text="{
+                            path: 'mockBTs>status',
+                            formatter: '.formatStatus'
+                        }" />
+                    </cells>
+                </ColumnListItem>
+            </items>
+        </Table>
+    </Panel>   
+</mvc:View>
+ 

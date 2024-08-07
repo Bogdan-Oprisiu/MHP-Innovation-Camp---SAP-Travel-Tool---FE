@@ -123,6 +123,13 @@
           "viewId": "Welcome",
           "viewName": "Welcome"
         },
+        "TargetDetails": {
+          "viewType": "XML",
+          "transition": "slide",
+          "clearControlAggregation": false,
+          "viewId": "Details",
+          "viewName": "Details"
+          },
         "TargetTest": {
           "viewType": "XML",
           "transition": "slide",
