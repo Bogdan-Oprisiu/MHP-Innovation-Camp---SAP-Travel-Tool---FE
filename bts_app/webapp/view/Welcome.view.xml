@@ -1,9 +1,31 @@
 <mvc:View controllerName="bts.btsapp.controller.Welcome"
     xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
-    xmlns="sap.m">
-    <Page id="page" title="{i18n>title}">
+    xmlns="sap.m"
+    xmlns:l="sap.ui.layout"
+    xmlns:f="sap.ui.layout.form"
+    xmlns:core="sap.ui.core">
+    <Page id="wlecomePage" title="{i18n>title}">
         <content>
-            <mvc:XMLView viewName="bts.btsapp.view.User"/>
+            <!-- <mvc:XMLView viewName="bts.btsapp.view.User"/> -->
+
+            <FlexBox 
+                id="loginForm" 
+                class="sapUiSmallMargin" 
+                visible="{view>/showLoginForm}" 
+                width="100%" 
+                alignItems="Center"
+                justifyContent="Center"
+            />
+
+            <FlexBox 
+                id="signupForm" 
+                class="sapUiSmallMargin" 
+                visible="{= !${view>/showLoginForm}}" 
+                width="100%" 
+                alignItems="Center"
+                justifyContent="Center"
+            />
+           <!-- <mvc:XMLView viewName="bts.btsapp.view.Manager"></mvc:XMLView> -->
         </content>
     </Page>
 </mvc:View>
