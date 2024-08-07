@@ -46,7 +46,7 @@ sap.ui.define(
         // Access the OData model set on the component
         var oModel = this.getOwnerComponent().getModel("mainServiceModel");
         var oSessionModel = this.getOwnerComponent().getModel("session");
-        console.log(oSessionModel.oData);
+        // console.log(oSessionModel.oData);
 
         // Acces the user input
         var sUsername = this.byId("usernameLogIn").getValue();

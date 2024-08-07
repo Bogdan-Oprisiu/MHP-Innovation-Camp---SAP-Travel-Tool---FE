@@ -11,12 +11,70 @@ sap.ui.define(
 
     return Controller.extend("bts.btsapp.controller.User", {
       onInit: function () {
-        var oModel = new JSONModel(
-          sap.ui.require.toUrl("bts/btsapp/model/MockBTs.json")
-        );
-        // this.getView().setModel(oModel, "mockBTs");
+        var oModel = this.getOwnerComponent().getModel("mainServiceModel");
+        var oSessionModel = this.getOwnerComponent().getModel("session");
+        var oSessionData = oSessionModel.getData();
 
-        this._router = this.getOwnerComponent().getRouter();
+        console.log(oSessionData);
+
+        var tripData = {
+          empTrips: [],
+          trips: [],
+          expenses: [],
+        };
+
+        // Fetch EmpTripSet data
+        oModel.read("/Emp_TripSet", {
+          success: (oData) => {
+            // Filter the data based on PERSONAL_NUMBER matching with session data
+            tripData.empTrips = oData.results.filter((empTrip) => {
+              return empTrip.PERSONAL_NUMBER === oSessionData.personalNumber;
+            });
+            console.log("Filtered EmpTripSet Data:", tripData.empTrips);
+
+            // Fetch TripSet data after Emp_TripSet is processed
+            oModel.read("/TripSet", {
+              success: (oData) => {
+                tripData.trips = oData.results.filter((trip) => {
+                  // Check if the tripId is in the filtered empTrips data
+                  return tripData.empTrips.some(
+                    (empTrip) => empTrip.TRIPID === trip.TRIPID
+                  );
+                });
+                console.log("Filtered TripSet Data:", tripData.trips);
+
+                // Fetch ExpensesSet data after TripSet is processed
+                oModel.read("/ExpensesSet", {
+                  success: (oData) => {
+                    // Extract EXPENSESID values from empTrips
+                    var expenseIds = tripData.empTrips.map((empTrip) =>
+                      empTrip.EXPENSESID.trim()
+                    );
+
+                    // Filter ExpensesSet based on EXPENSESID in empTrips
+                    tripData.expenses = oData.results.filter((expense) => {
+                      return expenseIds.includes(expense.EXPENSESID.trim());
+                    });
+
+                    console.log(
+                      "Filtered ExpensesSet Data:",
+                      tripData.expenses
+                    );
+                  },
+                  error: (oError) => {
+                    console.error("Error fetching ExpensesSet data:", oError);
+                  },
+                });
+              },
+              error: (oError) => {
+                console.error("Error fetching TripSet data:", oError);
+              },
+            });
+          },
+          error: (oError) => {
+            console.error("Error fetching EmpTripSet data:", oError);
+          },
+        });
       },
 
       _filterTrips: function (status) {
