@@ -45,6 +45,8 @@ sap.ui.define(
 
         // Access the OData model set on the component
         var oModel = this.getOwnerComponent().getModel("mainServiceModel");
+        var oSessionModel = this.getOwnerComponent().getModel("session");
+        console.log(oSessionModel.oData);
 
         // Acces the user input
         var sUsername = this.byId("usernameLogIn").getValue();
@@ -64,7 +66,15 @@ sap.ui.define(
                 oEmployeeData[i].PASSWORD === sPassword
               ) {
                 bAuthenticated = true;
-                bIsManager = oEmployeeData[i].IsManager;
+                bIsManager = oEmployeeData[i].IS_MANAGER;
+
+                oSessionModel.setData({
+                  authenticated: true,
+                  username: oEmployeeData[i].USERNAME,
+                  personalNumber: oEmployeeData[i].PERSONAL_NUMBER,
+                  isManager: oEmployeeData[i].IS_MANAGER,
+                });
+
                 break;
               }
             }
