@@ -113,6 +113,16 @@
           "name": "RouteTest",
           "pattern": "test",
           "target": ["TargetTest"]
+        },
+        {
+          "name": "RouteManager",
+          "pattern": "manager",
+          "target": ["TargetManager"]
+        },
+        {
+          "name": "RouteUser",
+          "pattern": "user",
+          "target": ["TargetUser"]
         }
       ],
       "targets": {
@@ -134,8 +144,22 @@
           "viewType": "XML",
           "transition": "slide",
           "clearControlAggregation": false,
-          "viewId": "Test",
-          "viewName": "Test"
+          "viewId": "Manager",
+          "viewName": "Manager"
+        },
+        "TargetUser": {
+          "viewType": "XML",
+          "transition": "slide",
+          "clearControlAggregation": false,
+          "viewId": "User",
+          "viewName": "User"
+        },
+        "TargetManager": {
+          "viewType": "XML",
+          "transition": "slide",
+          "clearControlAggregation": false,
+          "viewId": "Manager",
+          "viewName": "Manager"
         }
       }
     },
