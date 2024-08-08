@@ -205,22 +205,36 @@ sap.ui.define(
         var sKey = oEvent.getParameter("key");
         var oTable = this.byId("btTable");
         var oBinding = oTable.getBinding("items");
- 
-        var  aFilters = [];
- 
+
+        var aFilters = [];
+
         if (sKey === "all") {
           oBinding.filter([]);
         } else if (sKey === "in process") {
-          aFilters.push(new Filter("ACCEPTED", FilterOperator.EQ, "in process"));
+          aFilters.push(
+            new Filter("ACCEPTED", FilterOperator.EQ, "in process")
+          );
         } else if (sKey === "approved") {
           aFilters.push(new Filter("ACCEPTED", FilterOperator.EQ, "approved"));
         } else if (sKey === "denied") {
           aFilters.push(new Filter("ACCEPTED", FilterOperator.EQ, "denied"));
         }
- 
+
         oBinding.filter(aFilters);
-        
-      }
+      },
+
+      onLogout: function () {
+        var oSessionModel = this.getOwnerComponent().getModel("session");
+        oSessionModel.setData({
+          authenticated: false,
+          username: "",
+          personalNumber: "",
+          isManager: false,
+        });
+
+        var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+        oRouter.navTo("RouteWelcome");
+      },
     });
   }
 );

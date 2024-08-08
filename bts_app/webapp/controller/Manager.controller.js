@@ -169,6 +169,24 @@ sap.ui.define(
           btId: sBtId,
         });
       },
+
+      onLogout: function () {
+        var oSessionModel = this.getOwnerComponent().getModel("session");
+        oSessionModel.setData({
+          authenticated: false,
+          username: "",
+          personalNumber: "",
+          isManager: false,
+        });
+
+        var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+        oRouter.navTo("RouteWelcome");
+      },
+
+      onViewMyTrips: function () {
+        var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+        oRouter.navTo("RouteUser");
+      },
     });
   }
 );

@@ -6,6 +6,12 @@
         class="sapUiResponsiveMargin"
         width="auto">
 
+        <Toolbar>
+            <Title text="{i18n>MyBusinessTripsText}" />
+            <ToolbarSpacer />
+            <Button text="Logout" press="onLogout" type="Emphasized" />
+        </Toolbar>
+
         <IconTabBar id="idIconTabBar"
                     select=".onFilterSelect"
                     class="sapUiResponsiveContentPadding">
