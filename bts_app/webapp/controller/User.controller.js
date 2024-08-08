@@ -5,8 +5,16 @@ sap.ui.define(
     "sap/ui/model/json/JSONModel",
     "sap/ui/model/Filter",
     "sap/ui/model/FilterOperator",
+    "sap/ui/core/format/DateFormat",
   ],
-  function (Controller, MessageToast, JSONModel, Filter, FilterOperator) {
+  function (
+    Controller,
+    MessageToast,
+    JSONModel,
+    Filter,
+    FilterOperator,
+    DateFormat
+  ) {
     "use strict";
 
     return Controller.extend("bts.btsapp.controller.User", {
@@ -16,6 +24,7 @@ sap.ui.define(
 
         if (oSessionData.authenticated) {
           this._fetchData();
+          console.log(this.getView().getModel("myTrips").getData());
         } else {
           oSessionModel.attachPropertyChange(this._onSessionChange, this);
         }
@@ -27,7 +36,7 @@ sap.ui.define(
 
         if (oSessionData.authenticated) {
           this._fetchData();
-          oSessionModel.detachPropertyChange(this._onSessionChange, this);
+          // oSessionModel.detachPropertyChange(this._onSessionChange, this);
         }
       },
 
@@ -184,6 +193,17 @@ sap.ui.define(
         // this._router.navTo("Details", {
         //   btId: sObjectId,
         // });
+      },
+
+      formatDate: function (sDate) {
+        var oDateFormat = DateFormat.getDateInstance({
+          pattern: "yyyyMMdd",
+        });
+        var oFormattedDate = oDateFormat.parse(sDate);
+        var oDisplayFormat = DateFormat.getDateInstance({
+          style: "medium",
+        });
+        return oDisplayFormat.format(oFormattedDate);
       },
     });
   }

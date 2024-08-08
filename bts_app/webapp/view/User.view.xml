@@ -93,7 +93,10 @@
                  press="onTableRowSelection">
                     <cells>
                         <Text text="{myTrips>CITY}" />
-                        <Text text="{myTrips>START_DATE}" />
+                        <Text text="{
+                            path: 'myTrips>START_DATE',
+                            formatter: '.formatDate'
+                        }" />
                         <Text text="{myTrips>TOTAL_PRICE}" />
                         <Text text="{myTrips>ACCEPTED}" />
                         <Text text="{
