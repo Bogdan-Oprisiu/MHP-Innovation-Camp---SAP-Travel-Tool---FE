@@ -14,6 +14,16 @@
       "id": "@sap/generator-fiori:basic",
       "version": "1.14.2",
       "toolsId": "6fa51cee-2f8c-4227-bd18-d4f209e3276b"
+    },
+    "dataSources": {
+      "mainService": {
+        "uri": "/sap/opu/odata/sap/ZMHP_BUSINESS_TRIPS_SRV/",
+        "type": "OData",
+        "settings": {
+          "localUri": "localService/metadata.xml",
+          "odataVersion": "2.0"
+        }
+      }
     }
   },
   "sap.ui": {
@@ -33,7 +43,7 @@
     }
   },
   "sap.ui5": {
-    "flexEnabled": true,
+    "flexEnabled": false,
     "dependencies": {
       "minUI5Version": "1.126.2",
       "libs": {
@@ -58,9 +68,26 @@
           "bundleName": "bts.btsapp.i18n.i18n"
         }
       },
-      "mockBTs":{
+      "mockUserData": {
+        "type": "sap.ui.model.json.JSONModel",
+        "uri": "model/mock_user_data.json"
+      },
+      "mockBTs": {
         "type": "sap.ui.model.json.JSONModel",
         "uri": "model/MockBTs.json"
+      },
+      "mainServiceModel": {
+        "type": "sap.ui.model.odata.v2.ODataModel",
+        "dataSource": "mainService",
+        "settings": {
+          "defaultBindingMode": "TwoWay",
+          "defaultCountMode": "Inline",
+          "useBatch": true
+        }
+      },
+      "session": {
+        "type": "sap.ui.model.json.JSONModel",
+        "uri": "model/sessionModel.json"
       }
     },
     "resources": {
@@ -84,9 +111,22 @@
         {
           "name": "RouteWelcome",
           "pattern": ":?query:",
-          "target": [
-            "TargetWelcome"
-          ]
+          "target": ["TargetWelcome"]
+        },
+        {
+          "name": "RouteTest",
+          "pattern": "test",
+          "target": ["TargetTest"]
+        },
+        {
+          "name": "RouteManager",
+          "pattern": "manager",
+          "target": ["TargetManager"]
+        },
+        {
+          "name": "RouteUser",
+          "pattern": "user",
+          "target": ["TargetUser"]
         }
       ],
       "targets": {
@@ -96,6 +136,34 @@
           "clearControlAggregation": false,
           "viewId": "Welcome",
           "viewName": "Welcome"
+        },
+        "TargetDetails": {
+          "viewType": "XML",
+          "transition": "slide",
+          "clearControlAggregation": false,
+          "viewId": "Details",
+          "viewName": "Details"
+        },
+        "TargetTest": {
+          "viewType": "XML",
+          "transition": "slide",
+          "clearControlAggregation": false,
+          "viewId": "Manager",
+          "viewName": "Manager"
+        },
+        "TargetUser": {
+          "viewType": "XML",
+          "transition": "slide",
+          "clearControlAggregation": false,
+          "viewId": "User",
+          "viewName": "User"
+        },
+        "TargetManager": {
+          "viewType": "XML",
+          "transition": "slide",
+          "clearControlAggregation": false,
+          "viewId": "Manager",
+          "viewName": "Manager"
         }
       }
     },

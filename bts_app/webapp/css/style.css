@@ -1,1 +1,23 @@
-/* Enter your custom styles here */
+/* Welcome Page style */
+.formContainer {
+  border-radius: 10px; /* Rounded corners */
+  border: 2px solid black; /* Black border */
+  background: linear-gradient(
+    135deg,
+    lightskyblue,
+    lightcyan
+  ); /* Gradient background */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
+  opacity: 0.9; /* Semi-transparent effect */
+  color: black;
+  box-sizing: border-box;
+  min-height: 450px;
+  min-width: 400px;
+}
+
+.simpleForm {
+  max-width: 500px; /* TODO: Find a better solution to style the simple form */
+  max-height: 500px;
+}
+
+/* TODO ADD Some media querries for phones to change the sizes a bit or stop using pixels*/

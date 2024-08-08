@@ -1,0 +1,74 @@
+<core:FragmentDefinition
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:l="sap.ui.layout"
+	xmlns:f="sap.ui.layout.form"
+>
+    <VBox 
+        class="formContainer" 
+        alignItems="Center"
+        renderType="Bare"
+    >
+
+        <Title 
+            class="sapUiMediumMargin"
+            text="{i18n>signupTitle}"
+            level="H2" 
+            titleStyle="H2" 
+        />
+
+        <f:SimpleForm 
+            class="simpleForm"
+            id="SignupForm"
+			editable="true"
+			layout="ResponsiveGridLayout"
+            width="50%"
+        >
+			<f:content>
+				<HBox>
+                    <core:Icon src="sap-icon://account" class="sapUiTinyMarginEnd size3" />
+                    <Label text="{i18n>usernameLabel}" labelFor="usernameSignUp" />
+                </HBox>
+                <Input 
+                    id="usernameSignUp"
+                    type="Text"
+                    required="true"
+                />
+
+                <HBox class="sapUiSmallMarginTop">
+                    <core:Icon src="sap-icon://locked" class="sapUiTinyMarginEnd size3" />
+                    <Label text="{i18n>passwordLabel}" labelFor="passwordSignUp" />
+                </HBox>
+                <Input 
+                    id="passwordSignUp"
+                    type="Password"
+                    required="true"
+                />
+
+                <HBox class="sapUiSmallMarginTop">
+                    <core:Icon src="sap-icon://shield" class="sapUiTinyMarginEnd size3" />
+                    <Label text="{i18n>confirmPasswordLabel}" labelFor="passwordConfirmSignUp" />
+                </HBox>
+                <Input 
+                    id="passwordConfirmSignUp"
+                    type="Password"
+                    required="true"
+                />
+			</f:content>
+		</f:SimpleForm>
+
+        <Button
+            class="sapUiSmallMargin"
+            text="{i18n>signUpButton}"
+            press="onPressSignup"
+            type="Emphasized"
+        />
+
+        <Button
+            class="sapUiSmallMargin"
+            text="{i18n>showLoginButton}"
+            press="onPressShowLogin"
+        />
+    </VBox>
+</core:FragmentDefinition>

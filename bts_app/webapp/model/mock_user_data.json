@@ -1,0 +1,19 @@
+{
+  "Users": [
+    {
+      "username": "Obi Wan Kenobi",
+      "password": "1234",
+      "isManager": true
+    },
+    {
+      "username": "Paul Muhadib Atraides",
+      "password": "Lisan Al-Gaib",
+      "isManager": true
+    },
+    {
+      "username": "Bogdan",
+      "password": "1234",
+      "isManager": false
+    }
+  ]
+}

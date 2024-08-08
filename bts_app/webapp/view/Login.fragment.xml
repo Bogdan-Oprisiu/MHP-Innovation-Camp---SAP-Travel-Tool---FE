@@ -1,0 +1,65 @@
+<core:FragmentDefinition
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:l="sap.ui.layout"
+	xmlns:f="sap.ui.layout.form"
+>
+    <VBox 
+        class="formContainer" 
+        alignItems="Center"
+        renderType="Bare"
+    >
+
+        <Title 
+            class="sapUiMediumMargin"
+            text="{i18n>loginTitle}"
+            level="H2" 
+            titleStyle="H2" 
+        />
+
+        <f:SimpleForm 
+            class="simpleForm"
+            id="LoginForm"
+			editable="true"
+			layout="ResponsiveGridLayout"
+            width="50%"
+        >
+			<f:content>
+				<HBox class="sapUiSmallMarginTop">
+                    <core:Icon src="sap-icon://account" class="sapUiTinyMarginEnd size3" />
+                    <Label text="{i18n>usernameLabel}" labelFor="usernameLogIn" />
+                </HBox>
+                <Input 
+                    id="usernameLogIn"
+                    type="Text"
+                    required="true"
+                />
+
+                <HBox class="sapUiMediumMarginTop">
+                    <core:Icon src="sap-icon://locked" class="sapUiTinyMarginEnd size3" />
+                    <Label text="{i18n>passwordLabel}" labelFor="passwordLogIn" />
+                </HBox>
+                <Input 
+                    class="sapUiTinyMarginBottom"
+                    id="passwordLogIn"
+                    type="Password"
+                    required="true"
+                />
+			</f:content>
+		</f:SimpleForm>
+
+        <Button
+            class="sapUiSmallMargin sapUiLargeMarginTop"
+            text="{i18n>logInButton}"
+            press="onPressLogin"
+            type="Emphasized"
+        />
+
+        <Button
+            class="sapUiSmallMargin"
+            text="{i18n>showSignupButton}"
+            press="onPressShowSignup"
+        />
+    </VBox>
+</core:FragmentDefinition>
