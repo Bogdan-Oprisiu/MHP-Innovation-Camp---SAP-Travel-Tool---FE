@@ -1,13 +1,115 @@
 <mvc:View
     controllerName="bts.btsapp.controller.Details"
     xmlns:mvc="sap.ui.core.mvc"
-    xmlns="sap.m">
-    
-    <Page
-        id="page"
-        title="{i18n>title}">
-        <content>
-            <Text text="Details of the selected item will be displayed here." />
-        </content>
-    </Page>
+    xmlns="sap.m"
+    xmlns:l="sap.ui.layout"
+    xmlns:f="sap.ui.layout.form"
+    xmlns:core="sap.ui.core"
+    displayBlock="true">
+
+    <VBox class="sapUiSmallMargin">
+
+        <Toolbar>
+            <Title text="Business Trip Details" level="H2"></Title>
+            <ToolbarSpacer />
+            <Button id="approve" text="Approve" type="Emphasized" visible="true" press="handleApprovePress"></Button>
+            <Button id="decline" text="Decline" type="Emphasized" visible="true" press="handleDeclinePress"></Button>
+          
+        </Toolbar>
+
+        <f:Form id="FormChange354" editable="true">
+            <f:layout>
+                <f:ResponsiveGridLayout
+                    labelSpanXL="3"
+                    labelSpanL="3"
+                    labelSpanM="3"
+                    labelSpanS="12"
+                    adjustLabelSpan="false"
+                    emptySpanXL="4"
+                    emptySpanL="4"
+                    emptySpanM="4"
+                    emptySpanS="0"
+                    columnsXL="1"
+                    columnsL="1"
+                    columnsM="1"
+                    singleContainerFullSize="false" />
+            </f:layout>
+            <f:formContainers>
+                
+                <!-- General Information -->
+                <f:FormContainer title="General Information">
+                    <f:formElements>
+                        <f:FormElement label="Email">
+                            <f:fields>
+                                <Input value="{email}" id="email"/>
+                            </f:fields>
+                        </f:FormElement>
+                        <f:FormElement label="Supervisor">
+                            <f:fields>
+                                <Input value="{supervisor}" id="supervisor"/>
+                            </f:fields>
+                        </f:FormElement>
+                        <f:FormElement label="Phone Number">
+                            <f:fields>
+                                <Input value="{phoneNumber}" id="phoneNumber"/>
+                            </f:fields>
+                        </f:FormElement>
+                    </f:formElements>
+                </f:FormContainer>
+
+                <!-- Information about Travel Country -->
+                <f:FormContainer title="Information about Travel Country">
+                    <f:formElements>
+                        <f:FormElement label="Reason for Travel">
+                            <f:fields>
+                                <Input value="{reasonForTravel}" id="reasonForTravel"/>
+                            </f:fields>
+                        </f:FormElement>
+                        <f:FormElement label="Requestor">
+                            <f:fields>
+                                <Input value="{requestor}" id="requestor"/>
+                            </f:fields>
+                        </f:FormElement>
+                        <f:FormElement label="Country">
+                            <f:fields>
+                                <Input value="{country}" id="country"/>
+                            </f:fields>
+                        </f:FormElement>
+                        <f:FormElement label="City">
+                            <f:fields>
+                                <Input value="{city}" id="city"/>
+                            </f:fields>
+                        </f:FormElement>
+                    </f:formElements>
+                </f:FormContainer>
+
+                <!-- Business Trip Request -->
+                <f:FormContainer title="Business Trip Request">
+                    <f:formElements>
+                        <f:FormElement label="Total Cost">
+                            <f:fields>
+                                <Input value="{totalCost}" id="totalCost"/>
+                            </f:fields>
+                        </f:FormElement>
+                        <f:FormElement label="Start Business Trip">
+                            <f:fields>
+                                <Input value="{startBusinessTrip}" id="startBusinessTrip"/>
+                            </f:fields>
+                        </f:FormElement>
+                        <f:FormElement label="End Business Trip">
+                            <f:fields>
+                                <Input value="{endBusinessTrip}" id="endBusinessTrip"/>
+                            </f:fields>
+                        </f:FormElement>
+                        <f:FormElement label="Advance Payment Needed">
+                            <f:fields>
+                                <Input value="{advancePaymentNeeded}" id="advancePaymentNeeded"/>
+                            </f:fields>
+                        </f:FormElement>
+                    </f:formElements>
+                </f:FormContainer>
+
+            </f:formContainers>
+        </f:Form>
+    </VBox> 
 </mvc:View>
