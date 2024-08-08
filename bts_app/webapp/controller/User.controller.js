@@ -5,22 +5,104 @@ sap.ui.define(
     "sap/ui/model/json/JSONModel",
     "sap/ui/model/Filter",
     "sap/ui/model/FilterOperator",
+    "sap/ui/core/format/DateFormat",
   ],
-  function (Controller, MessageToast, JSONModel, Filter, FilterOperator) {
+  function (
+    Controller,
+    MessageToast,
+    JSONModel,
+    Filter,
+    FilterOperator,
+    DateFormat
+  ) {
     "use strict";
 
     return Controller.extend("bts.btsapp.controller.User", {
       onInit: function () {
-        var oModel = this.getOwnerComponent().getModel("mainServiceModel");
         var oSessionModel = this.getOwnerComponent().getModel("session");
         var oSessionData = oSessionModel.getData();
 
-        console.log(oSessionData);
+        if (oSessionData.authenticated) {
+          this._fetchData();
+          console.log(this.getView().getModel("myTrips").getData());
+        } else {
+          oSessionModel.attachPropertyChange(this._onSessionChange, this);
+        }
+      },
+
+      _onSessionChange: function (oEvent) {
+        var oSessionModel = oEvent.getSource();
+        var oSessionData = oSessionModel.getData();
+
+        if (oSessionData.authenticated) {
+          this._fetchData();
+          // oSessionModel.detachPropertyChange(this._onSessionChange, this);
+        }
+      },
+
+      _fetchData: function () {
+        var oModel = this.getOwnerComponent().getModel("mainServiceModel");
+        var oSessionModel = this.getOwnerComponent().getModel("session");
+        var oSessionData = oSessionModel.getData();
 
         var tripData = {
           empTrips: [],
           trips: [],
           expenses: [],
+          combinedData: [],
+        };
+
+        var combineData = () => {
+          tripData.combinedData = tripData.empTrips.map((empTrip) => {
+            let trip = tripData.trips.find(
+              (trip) => trip.TRIPID === empTrip.TRIPID
+            );
+            let expense = tripData.expenses.find(
+              (expense) =>
+                expense.EXPENSESID.trim() === empTrip.EXPENSESID.trim()
+            );
+
+            // Calculate the total price for expenses
+            let totalPrice = 0;
+            if (expense) {
+              totalPrice =
+                parseFloat(expense.DIEM_RATE) +
+                parseFloat(expense.HOTEL_COSTS) +
+                parseFloat(expense.TRAIN_TICKETS) +
+                parseFloat(expense.RENTAL_CAR) +
+                parseFloat(expense.GAS_COSTS) +
+                parseFloat(expense.BANK_CHARGES) +
+                parseFloat(expense.BUSINESS_MEALS) +
+                parseFloat(expense.FOOD_BEVERAGES) +
+                parseFloat(expense.IT_SUPPLIES) +
+                parseFloat(expense.OFFICE_SUPPLIES) +
+                parseFloat(expense.AIR_FARE);
+            }
+
+            return {
+              ...empTrip,
+              ...trip,
+              ...expense,
+              TOTAL_PRICE: totalPrice,
+            };
+          });
+        };
+
+        // Create the view model with initial empty data
+        var oViewModel = new JSONModel(tripData);
+        this.getView().setModel(oViewModel, "myTrips");
+
+        // Function to update the view model
+        var updateViewModel = function () {
+          combineData();
+          oViewModel.setData({
+            empTrips: tripData.empTrips,
+            trips: tripData.trips,
+            expenses: tripData.expenses,
+            combinedData: tripData.combinedData,
+          });
+
+          console.log(tripData.combinedData);
         };
 
         // Fetch EmpTripSet data
@@ -30,7 +112,6 @@ sap.ui.define(
             tripData.empTrips = oData.results.filter((empTrip) => {
               return empTrip.PERSONAL_NUMBER === oSessionData.personalNumber;
             });
-            console.log("Filtered EmpTripSet Data:", tripData.empTrips);
 
             // Fetch TripSet data after Emp_TripSet is processed
             oModel.read("/TripSet", {
@@ -41,7 +122,6 @@ sap.ui.define(
                     (empTrip) => empTrip.TRIPID === trip.TRIPID
                   );
                 });
-                console.log("Filtered TripSet Data:", tripData.trips);
 
                 // Fetch ExpensesSet data after TripSet is processed
                 oModel.read("/ExpensesSet", {
@@ -56,10 +136,8 @@ sap.ui.define(
                       return expenseIds.includes(expense.EXPENSESID.trim());
                     });
 
-                    console.log(
-                      "Filtered ExpensesSet Data:",
-                      tripData.expenses
-                    );
+                    // Update the view model after all data is fetched and processed
+                    updateViewModel();
                   },
                   error: (oError) => {
                     console.error("Error fetching ExpensesSet data:", oError);
@@ -75,13 +153,6 @@ sap.ui.define(
             console.error("Error fetching EmpTripSet data:", oError);
           },
         });
-
-        var oViewModel = new JSONModel({
-          empTrips: tripData.empTrips,
-          trips: tripData.trips,
-          expenses: tripData.expenses,
-        });
-        this.getView().setModel(oViewModel, "myTrips");
       },
 
       _filterTrips: function (status) {
@@ -113,16 +184,26 @@ sap.ui.define(
       },
 
       onTableRowSelection: function (oEvent) {
-        // Get the selected item
-        var oSelectedItem =
-          oEvent.getParameter("listItem") || oEvent.getSource();
-        var oContext = oSelectedItem.getBindingContext("mockBTs");
-        var sObjectId = oContext.getProperty("id"); // Assuming `id` is the unique identifier
+        // // Get the selected item
+        // var oSelectedItem =
+        //   oEvent.getParameter("listItem") || oEvent.getSource();
+        // var oContext = oSelectedItem.getBindingContext("mockBTs");
+        // var sObjectId = oContext.getProperty("id"); // Assuming `id` is the unique identifier
+        // // Navigate to the details view with the selected item ID
+        // this._router.navTo("Details", {
+        //   btId: sObjectId,
+        // });
+      },
 
-        // Navigate to the details view with the selected item ID
-        this._router.navTo("Details", {
-          btId: sObjectId,
+      formatDate: function (sDate) {
+        var oDateFormat = DateFormat.getDateInstance({
+          pattern: "yyyyMMdd",
         });
+        var oFormattedDate = oDateFormat.parse(sDate);
+        var oDisplayFormat = DateFormat.getDateInstance({
+          style: "medium",
+        });
+        return oDisplayFormat.format(oFormattedDate);
       },
     });
   }
