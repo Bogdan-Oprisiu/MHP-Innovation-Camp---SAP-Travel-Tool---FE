@@ -41,7 +41,7 @@ sap.ui.define(
 
         var oDetailModel = new sap.ui.model.json.JSONModel(oSelectedTrip);
         this.getView().setModel(oDetailModel, "detail");
-        console.log("Detail model set with data: ", oDetailModel.getData());
+        // console.log("Detail model set with data: ", oDetailModel.getData());
       },
 
       onNavBack: function () {
