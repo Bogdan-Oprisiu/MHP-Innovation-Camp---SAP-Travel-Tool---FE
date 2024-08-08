@@ -76,7 +76,7 @@
             <Table
                 id="btTable"
                 headerText="All business trips are displayed below"
-                items="{mockBTs>/Bts}">
+                items="{allTrips>/combinedData}">
             <columns>
                 <Column>
                     <header>
@@ -102,14 +102,10 @@
             <items>
                 <ColumnListItem press="onTableRowSelection">
                     <cells>
-                        <Text text="{mockBTs>name}" />
-                        <Text text="{mockBTs>date}" />
-                        <Text text="{mockBTs>totalPrice}" />
-                        <Text text="{mockBTs>status}" />
-                        <Text text="{
-                            path: 'mockBTs>status',
-                            formatter: '.formatStatus'
-                        }" />
+                        <Text text="{allTrips>FIRST_NAME}" />
+                        <Text text="{allTrips>START_DATE}" />
+                        <Text text="{allTrips>RENTAL_CAR}" />
+                        <Text text="{allTrips>ACCEPTED}" />
                     </cells>
                 </ColumnListItem>
             </items>
