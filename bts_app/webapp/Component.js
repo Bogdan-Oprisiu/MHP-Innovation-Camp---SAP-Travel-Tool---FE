@@ -3,7 +3,13 @@
  */
 
 sap.ui.define(
-  ["sap/ui/core/UIComponent", "sap/ui/Device", "bts/btsapp/model/models"],
+  [
+    "sap/ui/core/UIComponent",
+    "sap/ui/Device",
+    "bts/btsapp/model/models",
+    "sap/ui/model/odata/v2/ODataModel",
+    "sap/ui/core/routing/History",
+  ],
   function (UIComponent, Device, models) {
     "use strict";
 

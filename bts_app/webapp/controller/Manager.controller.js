@@ -14,7 +14,7 @@ sap.ui.define(
         var oModel = new JSONModel(
           sap.ui.require.toUrl("bts/btsapp/model/MockBTs.json")
         );
-        this.getView().setModel(oModel, "mockBTs");
+        // this.getView().setModel(oModel, "mockBTs");
       },
 
       onShowAllInProcess() {

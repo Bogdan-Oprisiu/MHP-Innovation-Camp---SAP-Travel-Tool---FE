@@ -84,6 +84,10 @@
           "defaultCountMode": "Inline",
           "useBatch": true
         }
+      },
+      "session": {
+        "type": "sap.ui.model.json.JSONModel",
+        "uri": "model/sessionModel.json"
       }
     },
     "resources": {
