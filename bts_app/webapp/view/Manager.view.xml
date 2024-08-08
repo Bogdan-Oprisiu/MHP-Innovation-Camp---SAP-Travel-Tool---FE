@@ -31,7 +31,7 @@
                         <Label text="Name" />
                         <Input id="nameFilterApproved" width="15%" />
                         <Button text="Filter" press="onFilterTripsA" />
-                        <Button text="Clear" press="onClearFilterA" />
+                        <Button text="Clear" press="onClearFilterA" /> 
                     </Toolbar>
                  </IconTabFilter>    
 			<IconTabFilter
