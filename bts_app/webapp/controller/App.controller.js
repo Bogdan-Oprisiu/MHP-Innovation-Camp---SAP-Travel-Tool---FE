@@ -18,6 +18,7 @@ sap.ui.define(
 
         if (sRouteName !== "RouteWelcome" && isAuthenticated === false) {
           oRouter.navTo("RouteWelcome");
+          window.location.reload(true);
         }
 
         if (sRouteName === "RouteManager" && isManager === false) {

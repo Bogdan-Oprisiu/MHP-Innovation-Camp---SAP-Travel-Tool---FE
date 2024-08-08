@@ -24,7 +24,6 @@ sap.ui.define(
 
         if (oSessionData.authenticated) {
           this._fetchData();
-          console.log(this.getView().getModel("myTrips").getData());
         } else {
           oSessionModel.attachPropertyChange(this._onSessionChange, this);
         }
@@ -36,7 +35,6 @@ sap.ui.define(
 
         if (oSessionData.authenticated) {
           this._fetchData();
-          // oSessionModel.detachPropertyChange(this._onSessionChange, this);
         }
       },
 
@@ -46,6 +44,7 @@ sap.ui.define(
         var oSessionData = oSessionModel.getData();
 
         var tripData = {
+          emp: [],
           empTrips: [],
           trips: [],
           expenses: [],
@@ -60,6 +59,9 @@ sap.ui.define(
             let expense = tripData.expenses.find(
               (expense) =>
                 expense.EXPENSESID.trim() === empTrip.EXPENSESID.trim()
+            );
+            let emp = tripData.emp.find(
+              (emp) => emp.PERSONAL_NUMBER === empTrip.PERSONAL_NUMBER
             );
 
             // Calculate the total price for expenses
@@ -83,26 +85,22 @@ sap.ui.define(
               ...empTrip,
               ...trip,
               ...expense,
+              ...emp,
               TOTAL_PRICE: totalPrice,
             };
           });
         };
 
-        // Create the view model with initial empty data
-        var oViewModel = new JSONModel(tripData);
-        this.getView().setModel(oViewModel, "myTrips");
-
         // Function to update the view model
-        var updateViewModel = function () {
+        var updateViewModel = () => {
           combineData();
+          var oViewModel = this.getView().getModel("myTrips");
           oViewModel.setData({
             empTrips: tripData.empTrips,
             trips: tripData.trips,
             expenses: tripData.expenses,
             combinedData: tripData.combinedData,
           });
-
-          console.log(tripData.combinedData);
         };
 
         // Fetch EmpTripSet data
@@ -136,8 +134,24 @@ sap.ui.define(
                       return expenseIds.includes(expense.EXPENSESID.trim());
                     });
 
-                    // Update the view model after all data is fetched and processed
-                    updateViewModel();
+                    // Fetch EmployeeSet data after ExpensesSet is processed
+                    oModel.read("/EmployeeSet", {
+                      success: (oEmployeeData) => {
+                        var employees = oEmployeeData.results;
+                        // console.log(employees);
+                        tripData.emp = employees;
+
+                        // Update the view model after all data is fetched and processed
+                        updateViewModel();
+                        // console.log(tripData.combinedData);
+                      },
+                      error: (oError) => {
+                        console.error(
+                          "Error fetching EmployeeSet data:",
+                          oError
+                        );
+                      },
+                    });
                   },
                   error: (oError) => {
                     console.error("Error fetching ExpensesSet data:", oError);
@@ -184,15 +198,24 @@ sap.ui.define(
       },
 
       onTableRowSelection: function (oEvent) {
-        // // Get the selected item
-        // var oSelectedItem =
-        //   oEvent.getParameter("listItem") || oEvent.getSource();
-        // var oContext = oSelectedItem.getBindingContext("mockBTs");
-        // var sObjectId = oContext.getProperty("id"); // Assuming `id` is the unique identifier
-        // // Navigate to the details view with the selected item ID
-        // this._router.navTo("Details", {
-        //   btId: sObjectId,
-        // });
+        var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+        var oSelectedItem =
+          oEvent.getParameter("listItem") || oEvent.getSource();
+        var oContext = oSelectedItem.getBindingContext("myTrips");
+        var sEmpId = oContext.getProperty("PERSONAL_NUMBER");
+        var sBtId = oContext.getProperty("TRIPID");
+
+        var oModel = this.getView().getModel("myTrips");
+        var aCombinedData = oModel.getProperty("/combinedData");
+
+        if (aCombinedData && aCombinedData.length > 0) {
+          oRouter.navTo("RouteDetails", {
+            empId: sEmpId,
+            btId: sBtId,
+          });
+        } else {
+          console.warn("Combined data is not yet available.");
+        }
       },
 
       formatDate: function (sDate) {

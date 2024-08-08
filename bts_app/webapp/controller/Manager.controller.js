@@ -37,7 +37,7 @@ sap.ui.define(
               (emp) =>
                 emp.PERSONAL_NUMBER.trim() === empTrip.PERSONAL_NUMBER.trim()
             );
- 
+
             // Calculate the total price for expenses
             let totalPrice = 0;
             if (expense) {
@@ -54,7 +54,7 @@ sap.ui.define(
                 parseFloat(expense.OFFICE_SUPPLIES) +
                 parseFloat(expense.AIR_FARE);
             }
- 
+
             return {
               ...emp,
               ...empTrip,
@@ -92,19 +92,21 @@ sap.ui.define(
                     tripData.expenses = expenses;
 
                     // Fetch EmployeeSet data
-                  oModel.read("/EmployeeSet", {
-                    success: (oEmployeeData) => {
-                      var employees = oEmployeeData.results;
-                      console.log(employees);
-                      tripData.emp = employees;
+                    oModel.read("/EmployeeSet", {
+                      success: (oEmployeeData) => {
+                        var employees = oEmployeeData.results;
+                        console.log(employees);
+                        tripData.emp = employees;
 
-                    combineData();
-                  },
-                  error: (oError) => {
-                    console.error("Error fetching ExpensesSet data:", oError);
-                  },
-                });
-
+                        combineData();
+                      },
+                      error: (oError) => {
+                        console.error(
+                          "Error fetching ExpensesSet data:",
+                          oError
+                        );
+                      },
+                    });
                   },
                   error: (oError) => {
                     console.error("Error fetching ExpensesSet data:", oError);
