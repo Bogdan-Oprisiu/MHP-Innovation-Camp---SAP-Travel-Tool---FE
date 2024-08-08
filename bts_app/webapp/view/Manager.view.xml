@@ -3,7 +3,6 @@
     xmlns="sap.m">
     <Panel headerText="{i18n>managerPanel}" class="sapUiResponsiveMargin" width="auto">
         <Toolbar>
-            <Title text="{i18n>MyBusinessTripsText}" />
             <ToolbarSpacer />
             <Button text="View My Trips" press="onViewMyTrips" type="Emphasized" />
             <Button text="Logout" press="onLogout" type="Emphasized" />

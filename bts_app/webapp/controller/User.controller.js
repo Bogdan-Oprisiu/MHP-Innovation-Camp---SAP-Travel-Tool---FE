@@ -6,6 +6,7 @@ sap.ui.define(
     "sap/ui/model/Filter",
     "sap/ui/model/FilterOperator",
     "sap/ui/core/format/DateFormat",
+    "../utils/CookieUtils",
   ],
   function (
     Controller,
@@ -13,7 +14,8 @@ sap.ui.define(
     JSONModel,
     Filter,
     FilterOperator,
-    DateFormat
+    DateFormat,
+    CookieUtils
   ) {
     "use strict";
 
@@ -231,6 +233,11 @@ sap.ui.define(
           personalNumber: "",
           isManager: false,
         });
+
+        // Erase cookies
+        CookieUtils.eraseCookie("username");
+        CookieUtils.eraseCookie("personalNumber");
+        CookieUtils.eraseCookie("isManager");
 
         var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
         oRouter.navTo("RouteWelcome");
