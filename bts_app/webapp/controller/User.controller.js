@@ -75,6 +75,13 @@ sap.ui.define(
             console.error("Error fetching EmpTripSet data:", oError);
           },
         });
+
+        var oViewModel = new JSONModel({
+          empTrips: tripData.empTrips,
+          trips: tripData.trips,
+          expenses: tripData.expenses,
+        });
+        this.getView().setModel(oViewModel, "myTrips");
       },
 
       _filterTrips: function (status) {
