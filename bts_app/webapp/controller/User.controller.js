@@ -168,35 +168,6 @@ sap.ui.define(
           },
         });
       },
-
-      _filterTrips: function (status) {
-        var oList = this.byId("btList");
-        var oBinding = oList.getBinding("items");
-        var aFilters = [];
-        if (status) {
-          aFilters.push(new Filter("status", FilterOperator.EQ, status));
-        }
-        oBinding.filter(aFilters);
-      },
-
-      onFilterSelect: function (oEvent) {
-        var oBinding = this.byId("btTable").getBinding("items"),
-          sKey = oEvent.getParameter("key"),
-          aFilters = [];
-
-        if (sKey === "all") {
-          oBinding.filter([]);
-        } else if (sKey === "in process") {
-          aFilters.push(new Filter("status", FilterOperator.EQ, "in process"));
-        } else if (sKey === "approved") {
-          aFilters.push(new Filter("status", FilterOperator.EQ, "approved"));
-        } else if (sKey === "denied") {
-          aFilters.push(new Filter("status", FilterOperator.EQ, "denied"));
-        }
-
-        oBinding.filter(aFilters);
-      },
-
       onTableRowSelection: function (oEvent) {
         var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
         var oSelectedItem =
@@ -228,6 +199,27 @@ sap.ui.define(
         });
         return oDisplayFormat.format(oFormattedDate);
       },
+
+      // Method to handle filter changes based on IconTabBar selection
+      onFilterSelect: function (oEvent) {
+        var sKey = oEvent.getParameter("key");
+        var oTable = this.byId("btTable");
+        var oBinding = oTable.getBinding("items");
+ 
+        var  aFilters = [];
+ 
+        if (sKey === "all") {
+          oBinding.filter([]);
+        } else if (sKey === "in process") {
+          aFilters.push(new Filter("ACCEPTED", FilterOperator.EQ, "in process"));
+        } else if (sKey === "approved") {
+          aFilters.push(new Filter("ACCEPTED", FilterOperator.EQ, "approved"));
+        } else if (sKey === "denied") {
+          aFilters.push(new Filter("ACCEPTED", FilterOperator.EQ, "denied"));
+        }
+ 
+        oBinding.filter(aFilters);
+      }
     });
   }
 );

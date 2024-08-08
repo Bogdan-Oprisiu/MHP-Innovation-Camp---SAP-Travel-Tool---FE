@@ -5,8 +5,16 @@ sap.ui.define(
     "sap/ui/model/json/JSONModel",
     "sap/ui/model/Filter",
     "sap/ui/model/FilterOperator",
+    "sap/ui/core/format/DateFormat",
   ],
-  function (Controller, MessageToast, JSONModel, Filter, FilterOperator) {
+  function (
+    Controller,
+    MessageToast,
+    JSONModel,
+    Filter,
+    FilterOperator,
+    DateFormat
+  ) {
     "use strict";
 
     return Controller.extend("bts.btsapp.controller.Manager", {
@@ -38,7 +46,6 @@ sap.ui.define(
                 emp.PERSONAL_NUMBER.trim() === empTrip.PERSONAL_NUMBER.trim()
             );
 
-            // Calculate the total price for expenses
             let totalPrice = 0;
             if (expense) {
               totalPrice =
@@ -64,8 +71,6 @@ sap.ui.define(
             };
           });
 
-          console.log(tripData);
-
           // Update the model with combined data
           oViewModel.setProperty("/combinedData", tripData.combinedData);
         };
@@ -74,35 +79,32 @@ sap.ui.define(
         oModel.read("/Emp_TripSet", {
           success: (oEmpTripData) => {
             var empTrips = oEmpTripData.results;
-            console.log(empTrips);
             tripData.empTrips = empTrips;
 
             // Fetch TripSet data
             oModel.read("/TripSet", {
               success: (oTripData) => {
                 var trips = oTripData.results;
-                console.log(trips);
                 tripData.trips = trips;
 
                 // Fetch ExpensesSet data
                 oModel.read("/ExpensesSet", {
                   success: (oExpensesData) => {
                     var expenses = oExpensesData.results;
-                    console.log(expenses);
                     tripData.expenses = expenses;
 
                     // Fetch EmployeeSet data
                     oModel.read("/EmployeeSet", {
                       success: (oEmployeeData) => {
                         var employees = oEmployeeData.results;
-                        console.log(employees);
                         tripData.emp = employees;
 
+                        // Combine data after fetching all sets
                         combineData();
                       },
                       error: (oError) => {
                         console.error(
-                          "Error fetching ExpensesSet data:",
+                          "Error fetching EmployeeSet data:",
                           oError
                         );
                       },
@@ -122,6 +124,36 @@ sap.ui.define(
             console.error("Error fetching EmpTripSet data:", oError);
           },
         });
+      },
+
+      formatDate: function (sDate) {
+        var oDateFormat = DateFormat.getDateInstance({
+          pattern: "yyyyMMdd",
+        });
+        var oFormattedDate = oDateFormat.parse(sDate);
+        var oDisplayFormat = DateFormat.getDateInstance({
+          style: "medium",
+        });
+        return oDisplayFormat.format(oFormattedDate);
+      },
+
+      onFilterSelect: function (oEvent) {
+        var sKey = oEvent.getParameter("key");
+        var oTable = this.byId("btTable");
+        var oBinding = oTable.getBinding("items");
+
+        var aFilters = [];
+        if (sKey === "Ok") {
+          aFilters.push(new Filter("ACCEPTED", FilterOperator.EQ, "approved"));
+        } else if (sKey === "In process") {
+          aFilters.push(
+            new Filter("ACCEPTED", FilterOperator.EQ, "in process")
+          );
+        } else if (sKey === "Denied") {
+          aFilters.push(new Filter("ACCEPTED", FilterOperator.EQ, "denied"));
+        }
+
+        oBinding.filter(aFilters);
       },
     });
   }
