@@ -102,7 +102,7 @@
                         </f:FormElement>
                         <f:FormElement label="Advance Payment Needed">
                             <f:fields>
-                                <Input value="{detail>/ADVANCE_PAYMENT}" id="advancePaymentNeeded"/>
+                                <Input value="{detail>/ADVANCED_PAYMENT}" id="advancePaymentNeeded"/>
                             </f:fields>
                         </f:FormElement>
                     </f:formElements>

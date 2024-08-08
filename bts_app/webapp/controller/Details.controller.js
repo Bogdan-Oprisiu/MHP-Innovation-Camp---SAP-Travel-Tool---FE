@@ -5,10 +5,6 @@ sap.ui.define(
 
     return Controller.extend("bts.btsapp.controller.Details", {
       onInit: function () {
-        var oSessionModel = this.getOwnerComponent().getModel("session");
-        var oSessionData = oSessionModel.getData();
-        // console.log("Session Data: ", oSessionData);
-
         var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
         oRouter
           .getRoute("RouteDetails")
@@ -45,7 +41,7 @@ sap.ui.define(
 
         var oDetailModel = new sap.ui.model.json.JSONModel(oSelectedTrip);
         this.getView().setModel(oDetailModel, "detail");
-        // console.log("Detail model set with data: ", oDetailModel.getData());
+        console.log("Detail model set with data: ", oDetailModel.getData());
       },
 
       onNavBack: function () {

@@ -121,7 +121,7 @@ sap.ui.define(
             });
           },
           error: (oError) => {
-            console.error("Error fetching EmpTripSet data:", oError); 
+            console.error("Error fetching EmpTripSet data:", oError);
           },
         });
       },
@@ -154,6 +154,20 @@ sap.ui.define(
         }
 
         oBinding.filter(aFilters);
+      },
+
+      onTableRowSelection: function (oEvent) {
+        var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+        var oSelectedItem =
+          oEvent.getParameter("listItem") || oEvent.getSource();
+        var oContext = oSelectedItem.getBindingContext("allTrips");
+        var sEmpId = oContext.getProperty("PERSONAL_NUMBER");
+        var sBtId = oContext.getProperty("TRIPID");
+
+        oRouter.navTo("RouteDetails", {
+          empId: sEmpId,
+          btId: sBtId,
+        });
       },
     });
   }
