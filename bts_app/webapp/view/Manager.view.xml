@@ -1,55 +1,134 @@
-<mvc:View controllerName="bts.btsapp.controller.Manager"
+<mvc:View xmlns:mdc="sap.ui.mdc" controllerName="bts.btsapp.controller.Manager"
     xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
     xmlns="sap.m">
-    <Panel headerText="{i18n>managerPanel}" class="sapUiResponsiveMargin" width="auto">
-        <Toolbar>
-            <ToolbarSpacer />
-            <Button text="View My Trips" press="onViewMyTrips" type="Emphasized" />
-            <Button text="Logout" press="onLogout" type="Emphasized" />
-        </Toolbar>
+    <Panel 
+        headerText="{i18n>managerPanel}"
+        class="sapUiResponsiveMargin"
+        width="auto">
 
-        <IconTabBar id="idIconTabBar" select=".onFilterSelect" class="sapUiResponsiveContentPadding">
+        <IconTabBar
+            id="idIconTabBar"
+            select=".onFilterSelect"
+            class="sapUiResponsiveContentPadding">
             <items>
-                <IconTabFilter text="All" key="all" icon="sap-icon://expand-all" />
-                <IconTabFilter icon="sap-icon://accept" iconColor="Positive" text="Approved" key="Ok">
-                    <Toolbar>
-                        <Label text="Location" />
-                        <Input id="locationFilterApproved" width="15%" />
-                        <Label text="Date" />
-                        <DatePicker id="dateFilterApproved" width="15%" />
-                        <Label text="Name" />
-                        <Input id="nameFilterApproved" width="15%" />
-                        <Button text="Filter" press="onFilterTripsA" />
-                        <Button text="Clear" press="onClearFilterA" />
-                    </Toolbar>
+                <IconTabFilter
+                    text="All"
+                    key="all"
+                    icon="sap-icon://expand-all">
+
+                    <fb:FilterBar id="filterBarAll" xmlns:fb="sap.ui.comp.filterbar"
+                        reset="onResetAll" search="onSearchAll" showRestoreButton="true" showClearButton="true" useToolbar="false" showToolbar="false" showAdaptFiltersButton="false">
+                        <fb:filterGroupItems>
+                            <fb:FilterGroupItem groupName="__ALL" name="nameAll" label="Name" visibleInFilterBar="true">
+                                <fb:control>
+                                    <Input id="nameFilterAll" width="15%" />
+                                </fb:control>
+                            </fb:FilterGroupItem>
+                            <fb:FilterGroupItem groupName="__ALL" name="locationAll" label="Location" visibleInFilterBar="true">
+                                <fb:control>
+                                    <Input id="locationFilterAll" width="15%" />
+                                </fb:control>
+                            </fb:FilterGroupItem>
+                            <fb:FilterGroupItem groupName="__ALL" name="dateAll" label="Date" visibleInFilterBar="true">
+                                <fb:control>
+                                    <DatePicker id="dateFilterAll" width="15%" />
+                                </fb:control>
+                            </fb:FilterGroupItem>
+                        </fb:filterGroupItems>
+                    </fb:FilterBar>
+
                 </IconTabFilter>
-                <IconTabFilter icon="sap-icon://in-progress" iconColor="Critical" text="In process" key="In process">
-                    <Toolbar>
-                        <Label text="Location" />
-                        <Input id="locationFilterIP" width="15%" />
-                        <Label text="Date" />
-                        <DatePicker id="dateFilterIP" width="15%" />
-                        <Label text="Name" />
-                        <Input id="nameFilterIP" width="15%" />
-                        <Button text="Filter" press="onFilterTrips" />
-                        <Button text="Clear" press="onClearFilter" />
-                    </Toolbar>
-                </IconTabFilter>
-                <IconTabFilter icon="sap-icon://status-critical" iconColor="Negative" text="Denied" key="Denied">
-                    <Toolbar>
-                        <Label text="Location" />
-                        <Input id="locationFilterD" width="15%" />
-                        <Label text="Date" />
-                        <DatePicker id="dateFilterD" width="15%" />
-                        <Label text="Name" />
-                        <Input id="nameFilterD" width="15%" />
-                        <Button text="Filter" press="onFilterTrips" />
-                        <Button text="Clear" press="onClearFilter" />
-                    </Toolbar>
-                </IconTabFilter>
+                <IconTabFilter
+                    icon="sap-icon://accept"
+                    iconColor="Positive"
+                    text="Approved"
+                    key="Ok" >
+
+                    <fb:FilterBar id="filterBarApproved" xmlns:fb="sap.ui.comp.filterbar"
+                        reset="onResetApproved" search="onSearchApproved" showRestoreButton="true" showClearButton="true" useToolbar="false" showToolbar="false" showAdaptFiltersButton="false">
+                        <fb:filterGroupItems>
+                        <fb:FilterGroupItem groupName="__ALL" name="nameApproved" label="Name" visibleInFilterBar="true">
+                                <fb:control>
+                                    <Input id="nameFilterApproved" width="15%" />
+                                </fb:control>
+                            </fb:FilterGroupItem>
+                            <fb:FilterGroupItem groupName="__ALL" name="locationApproved" label="Location" visibleInFilterBar="true">
+                                <fb:control>
+                                    <Input id="locationFilterApproved" width="15%" />
+                                </fb:control>
+                            </fb:FilterGroupItem>
+                            <fb:FilterGroupItem groupName="__ALL" name="dateApproved" label="Date" visibleInFilterBar="true">
+                                <fb:control>
+                                    <DatePicker id="dateFilterApproved" width="15%" />
+                                </fb:control>
+                            </fb:FilterGroupItem>
+                        </fb:filterGroupItems>
+                    </fb:FilterBar>
+                    
+                </IconTabFilter>    
+                <IconTabFilter
+                    icon="sap-icon://in-progress"
+                    iconColor="Critical"
+                    text="In process"
+                    key="In process" >
+                    
+                    <fb:FilterBar id="filterBarInProcess" xmlns:fb="sap.ui.comp.filterbar"
+                        reset="onResetInProcess" search="onSearchInProcess" showRestoreButton="true" showClearButton="true" useToolbar="false" showToolbar="false" showAdaptFiltersButton="false">
+                        <fb:filterGroupItems>
+                            <fb:FilterGroupItem groupName="__ALL" name="nameInProcess" label="Name" visibleInFilterBar="true">
+                                    <fb:control>
+                                        <Input id="nameFilterInProcess" width="15%" />
+                                    </fb:control>
+                                </fb:FilterGroupItem>
+                            <fb:FilterGroupItem groupName="__ALL" name="locationInProcess" label="Location" visibleInFilterBar="true">
+                                <fb:control>
+                                    <Input id="locationFilterInProcess" width="15%" />
+                                </fb:control>
+                            </fb:FilterGroupItem>
+                            <fb:FilterGroupItem groupName="__ALL" name="dateInProcess" label="Date" visibleInFilterBar="true">
+                                <fb:control>
+                                    <DatePicker id="dateFilterInProcess" width="15%" />
+                                </fb:control>
+                            </fb:FilterGroupItem>
+                        </fb:filterGroupItems>
+                    </fb:FilterBar>
+
+                </IconTabFilter>  
+                <IconTabFilter
+                    icon="sap-icon://status-critical"
+                    iconColor="Negative"
+                    text="Denied"
+                    key="Denied" >
+                    
+                    <fb:FilterBar id="filterBarDenied" xmlns:fb="sap.ui.comp.filterbar"
+                        reset="onResetDenied" search="onSearchDenied" showRestoreButton="true" showClearButton="true" useToolbar="false" showToolbar="false" showAdaptFiltersButton="false">
+                        <fb:filterGroupItems>
+                            <fb:FilterGroupItem groupName="__ALL" name="nameDenied" label="Name" visibleInFilterBar="true">
+                                <fb:control>
+                                    <Input id="nameFilterDenied" width="15%" />
+                                </fb:control>
+                            </fb:FilterGroupItem>
+                            <fb:FilterGroupItem groupName="__ALL" name="locationDenied" label="Location" visibleInFilterBar="true">
+                                <fb:control>
+                                    <Input id="locationFilterDenied" width="15%" />
+                                </fb:control>
+                            </fb:FilterGroupItem>
+                            <fb:FilterGroupItem groupName="__ALL" name="dateDenied" label="Date" visibleInFilterBar="true">
+                                <fb:control>
+                                    <DatePicker id="dateFilterDenied" width="15%" />
+                                </fb:control>
+                            </fb:FilterGroupItem>
+                        </fb:filterGroupItems>
+                    </fb:FilterBar>
+
+                </IconTabFilter>  
             </items>
         </IconTabBar>
-        <Table id="btTable" headerText="All business trips are displayed below" items="{allTrips>/combinedData}">
+
+        <Table
+            id="btTable"
+            headerText="All business trips are displayed below"
+            items="{allTrips>/combinedData}">
             <columns>
                 <Column>
                     <header>
@@ -86,5 +165,5 @@
                 </ColumnListItem>
             </items>
         </Table>
-    </Panel>
+    </Panel>   
 </mvc:View>
