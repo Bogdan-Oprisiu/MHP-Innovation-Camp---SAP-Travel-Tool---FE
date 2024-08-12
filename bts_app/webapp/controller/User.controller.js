@@ -2,7 +2,6 @@ sap.ui.define(
   [
     "sap/ui/core/mvc/Controller",
     "sap/m/MessageToast",
-    "sap/ui/model/json/JSONModel",
     "sap/ui/model/Filter",
     "sap/ui/model/FilterOperator",
     "sap/ui/core/format/DateFormat",
@@ -11,7 +10,6 @@ sap.ui.define(
   function (
     Controller,
     MessageToast,
-    JSONModel,
     Filter,
     FilterOperator,
     DateFormat,
@@ -21,6 +19,8 @@ sap.ui.define(
 
     return Controller.extend("bts.btsapp.controller.User", {
       onInit: function () {
+        this._clearManagerModel();
+
         var oSessionModel = this.getOwnerComponent().getModel("session");
         var oSessionData = oSessionModel.getData();
 
@@ -28,6 +28,13 @@ sap.ui.define(
           this._fetchData();
         } else {
           oSessionModel.attachPropertyChange(this._onSessionChange, this);
+        }
+      },
+
+      _clearManagerModel: function () {
+        var oAllTripsModel = this.getOwnerComponent().getModel("allTrips");
+        if (oAllTripsModel) {
+          oAllTripsModel.setData({});
         }
       },
 
@@ -103,11 +110,13 @@ sap.ui.define(
             expenses: tripData.expenses,
             combinedData: tripData.combinedData,
           });
+          // console.log(tripData);
         };
 
         // Fetch EmpTripSet data
         oModel.read("/Emp_TripSet", {
           success: (oData) => {
+            // console.log(oData.results);
             // Filter the data based on PERSONAL_NUMBER matching with session data
             tripData.empTrips = oData.results.filter((empTrip) => {
               return empTrip.PERSONAL_NUMBER === oSessionData.personalNumber;
@@ -116,6 +125,7 @@ sap.ui.define(
             // Fetch TripSet data after Emp_TripSet is processed
             oModel.read("/TripSet", {
               success: (oData) => {
+                // console.log(oData.results);
                 tripData.trips = oData.results.filter((trip) => {
                   // Check if the tripId is in the filtered empTrips data
                   return tripData.empTrips.some(
@@ -126,6 +136,7 @@ sap.ui.define(
                 // Fetch ExpensesSet data after TripSet is processed
                 oModel.read("/ExpensesSet", {
                   success: (oData) => {
+                    // console.log(oData.results);
                     // Extract EXPENSESID values from empTrips
                     var expenseIds = tripData.empTrips.map((empTrip) =>
                       empTrip.EXPENSESID.trim()
@@ -138,14 +149,14 @@ sap.ui.define(
 
                     // Fetch EmployeeSet data after ExpensesSet is processed
                     oModel.read("/EmployeeSet", {
-                      success: (oEmployeeData) => {
-                        var employees = oEmployeeData.results;
+                      success: (oData) => {
+                        // console.log(oData.results);
+                        var employees = oData.results;
                         // console.log(employees);
                         tripData.emp = employees;
 
                         // Update the view model after all data is fetched and processed
                         updateViewModel();
-                        // console.log(tripData.combinedData);
                       },
                       error: (oError) => {
                         console.error(
@@ -170,6 +181,7 @@ sap.ui.define(
           },
         });
       },
+
       onTableRowSelection: function (oEvent) {
         var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
         var oSelectedItem =
@@ -241,6 +253,7 @@ sap.ui.define(
 
         var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
         oRouter.navTo("RouteWelcome");
+        window.location.reload(true);
       },
     });
   }

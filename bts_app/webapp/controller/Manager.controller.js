@@ -2,7 +2,6 @@ sap.ui.define(
   [
     "sap/ui/core/mvc/Controller",
     "sap/m/MessageToast",
-    "sap/ui/model/json/JSONModel",
     "sap/ui/model/Filter",
     "sap/ui/model/FilterOperator",
     "sap/ui/core/format/DateFormat",
@@ -11,7 +10,6 @@ sap.ui.define(
   function (
     Controller,
     MessageToast,
-    JSONModel,
     Filter,
     FilterOperator,
     DateFormat,
@@ -21,60 +19,91 @@ sap.ui.define(
 
     return Controller.extend("bts.btsapp.controller.Manager", {
       onInit: function () {
+        this._clearUserModel();
+
         var oModel = this.getOwnerComponent().getModel("mainServiceModel");
+        var oSessionModel = this.getOwnerComponent().getModel("session");
 
         var tripData = {
           emp: [],
           empTrips: [],
           trips: [],
           expenses: [],
+          teams: [],
           combinedData: [],
         };
 
-        var oViewModel = new JSONModel(tripData);
-        this.getView().setModel(oViewModel, "allTrips");
+        var oAllTripsModel = this.getOwnerComponent().getModel("allTrips");
+        oAllTripsModel.setData(tripData);
 
         var combineData = () => {
-          tripData.combinedData = tripData.empTrips.map((empTrip) => {
-            let trip = tripData.trips.find(
-              (trip) => trip.TRIPID === empTrip.TRIPID
-            );
-            let expense = tripData.expenses.find(
-              (expense) =>
-                expense.EXPENSESID.trim() === empTrip.EXPENSESID.trim()
-            );
-            let emp = tripData.emp.find(
-              (emp) =>
-                emp.PERSONAL_NUMBER.trim() === empTrip.PERSONAL_NUMBER.trim()
-            );
-
-            let totalPrice = 0;
-            if (expense) {
-              totalPrice =
-                parseFloat(expense.DIEM_RATE) +
-                parseFloat(expense.HOTEL_COSTS) +
-                parseFloat(expense.TRAIN_TICKETS) +
-                parseFloat(expense.RENTAL_CAR) +
-                parseFloat(expense.GAS_COSTS) +
-                parseFloat(expense.BANK_CHARGES) +
-                parseFloat(expense.BUSINESS_MEALS) +
-                parseFloat(expense.FOOD_BEVERAGES) +
-                parseFloat(expense.IT_SUPPLIES) +
-                parseFloat(expense.OFFICE_SUPPLIES) +
-                parseFloat(expense.AIR_FARE);
-            }
-
-            return {
-              ...emp,
-              ...empTrip,
-              ...trip,
-              ...expense,
-              TOTAL_PRICE: totalPrice,
-            };
+          // Find the team where the current manager is the supervisor
+          var managerTeam = tripData.teams.find((team) => {
+            return team.SUPERVISOR === oSessionModel.getData().username;
           });
 
-          // Update the model with combined data
-          oViewModel.setProperty("/combinedData", tripData.combinedData);
+          if (!managerTeam) {
+            console.error("No team found for the current manager.");
+            return;
+          }
+
+          // Filter the employees who are members of the manager's team
+          var subordinatePersonalNumbers = tripData.emp
+            .filter((emp) => emp.TEAMID === managerTeam.TEAMID)
+            .map((emp) => emp.PERSONAL_NUMBER);
+
+          // Filter the trips based on the subordinates' personal numbers
+          tripData.combinedData = tripData.empTrips
+            .filter((empTrip) => {
+              return subordinatePersonalNumbers.includes(
+                empTrip.PERSONAL_NUMBER.trim()
+              );
+            })
+            .map((empTrip) => {
+              let trip = tripData.trips.find(
+                (trip) => trip.TRIPID === empTrip.TRIPID
+              );
+              let expense = tripData.expenses.find(
+                (expense) =>
+                  expense.EXPENSESID.trim() === empTrip.EXPENSESID.trim()
+              );
+              let emp = tripData.emp.find(
+                (emp) =>
+                  emp.PERSONAL_NUMBER.trim() === empTrip.PERSONAL_NUMBER.trim()
+              );
+              let team = tripData.teams.find(
+                (team) => team.TEAMID === emp.TEAMID
+              );
+
+              let totalPrice = 0;
+              if (expense) {
+                totalPrice =
+                  parseFloat(expense.DIEM_RATE) +
+                  parseFloat(expense.HOTEL_COSTS) +
+                  parseFloat(expense.TRAIN_TICKETS) +
+                  parseFloat(expense.RENTAL_CAR) +
+                  parseFloat(expense.GAS_COSTS) +
+                  parseFloat(expense.BANK_CHARGES) +
+                  parseFloat(expense.BUSINESS_MEALS) +
+                  parseFloat(expense.FOOD_BEVERAGES) +
+                  parseFloat(expense.IT_SUPPLIES) +
+                  parseFloat(expense.OFFICE_SUPPLIES) +
+                  parseFloat(expense.AIR_FARE);
+              }
+
+              return {
+                ...emp,
+                ...empTrip,
+                ...trip,
+                ...expense,
+                team: team ? team.NAME : "No Team",
+                TOTAL_PRICE: totalPrice,
+              };
+            });
+
+          // Update the allTrips model with combined data
+          oAllTripsModel.setProperty("/combinedData", tripData.combinedData);
+          // console.log(oAllTripsModel.getData());
         };
 
         // Fetch EmpTripSet data
@@ -101,8 +130,21 @@ sap.ui.define(
                         var employees = oEmployeeData.results;
                         tripData.emp = employees;
 
-                        // Combine data after fetching all sets
-                        combineData();
+                        oModel.read("/TeamSet", {
+                          success: (oTeamData) => {
+                            var teams = oTeamData.results;
+                            tripData.teams = teams;
+
+                            // Combine data after fetching all sets
+                            combineData();
+                          },
+                          error: (oError) => {
+                            console.error(
+                              "Error fetching TeamSet data:",
+                              oError
+                            );
+                          },
+                        });
                       },
                       error: (oError) => {
                         console.error(
@@ -126,6 +168,13 @@ sap.ui.define(
             console.error("Error fetching EmpTripSet data:", oError);
           },
         });
+      },
+
+      _clearUserModel: function () {
+        var oMyTripsModel = this.getOwnerComponent().getModel("myTrips");
+        if (oMyTripsModel) {
+          oMyTripsModel.setData({});
+        }
       },
 
       formatDate: function (sDate) {
@@ -242,6 +291,7 @@ sap.ui.define(
 
         var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
         oRouter.navTo("RouteWelcome");
+        window.location.reload(true);
       },
 
       onViewMyTrips: function () {
