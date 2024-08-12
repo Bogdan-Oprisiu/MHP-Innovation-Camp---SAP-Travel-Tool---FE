@@ -155,6 +155,71 @@ sap.ui.define(
 
         oBinding.filter(aFilters);
       },
+
+      onSearchAll: function (oEvent) {
+        var oFilterBar = this.byId("filterBarAll");
+        var aFilters = [];
+
+        // Extract values from the FilterBar controls
+        var sName = oFilterBar.getFilterGroupItems()[0].getControl().getValue();
+        var sLocation = oFilterBar.getFilterGroupItems()[1].getControl().getValue();
+        var sDate = oFilterBar.getFilterGroupItems()[2].getControl().getDateValue();
+
+        if (sName) {
+          aFilters.push(new Filter("FIRST_NAME", FilterOperator.Contains, sName));
+        }
+        if (sLocation) {
+          aFilters.push(new Filter("CITY", FilterOperator.Contains, sLocation));
+        }
+        if (sDate) {
+          // Format date for comparison
+          var sFormattedDate = DateFormat.getDateInstance({ pattern: "yyyyMMdd" }).format(sDate);
+          aFilters.push(new Filter("START_DATE", FilterOperator.EQ, sFormattedDate));
+        }
+
+        // Apply filters to the table binding
+        var oTable = this.byId("btTable");
+        var oBinding = oTable.getBinding("items");
+        oBinding.filter(aFilters);
+      },
+
+      onSearchApproved: function (oEvent) {
+        var oFilterBar = this.byId("filterBarApproved");
+        var aFilters = [];
+
+        // Extract values from the FilterBar controls
+        var sName = oFilterBar.getFilterGroupItems()[0].getControl().getValue();
+        var sLocation = oFilterBar.getFilterGroupItems()[1].getControl().getValue();
+        var sDate = oFilterBar.getFilterGroupItems()[2].getControl().getDateValue();
+
+        if (sName) {
+          aFilters.push(new Filter("FIRST_NAME", FilterOperator.Contains, sName));
+        }
+        if (sLocation) {
+          aFilters.push(new Filter("CITY", FilterOperator.Contains, sLocation));
+        }
+        if (sDate) {
+          // Format date for comparison
+          var sFormattedDate = DateFormat.getDateInstance({ pattern: "yyyyMMdd" }).format(sDate);
+          aFilters.push(new Filter("START_DATE", FilterOperator.EQ, sFormattedDate));
+        }
+
+        // Apply filters to the table binding
+        var oTable = this.byId("btTable");
+        var oBinding = oTable.getBinding("items");
+        oBinding.filter(aFilters);
+      }
+
+      // onResetAll: function () {
+      //   var oFilterBar = this.byId("filterBarAll");
+      //   oFilterBar.getFilterGroupItems().forEach(function (oFilterGroupItem) {
+      //     oFilterGroupItem.getControl().setValue(""); // Clear input values
+      //   });
+
+      //   var oTable = this.byId("btTable");
+      //   var oBinding = oTable.getBinding("items");
+      //   oBinding.filter([]); // Clear all filters
+      // },
     });
   }
 );
