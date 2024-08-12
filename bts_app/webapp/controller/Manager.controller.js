@@ -2,7 +2,6 @@ sap.ui.define(
   [
     "sap/ui/core/mvc/Controller",
     "sap/m/MessageToast",
-    "sap/ui/model/json/JSONModel",
     "sap/ui/model/Filter",
     "sap/ui/model/FilterOperator",
     "sap/ui/core/format/DateFormat",
@@ -11,7 +10,6 @@ sap.ui.define(
   function (
     Controller,
     MessageToast,
-    JSONModel,
     Filter,
     FilterOperator,
     DateFormat,
@@ -21,7 +19,10 @@ sap.ui.define(
 
     return Controller.extend("bts.btsapp.controller.Manager", {
       onInit: function () {
+        this._clearUserModel();
+
         var oModel = this.getOwnerComponent().getModel("mainServiceModel");
+        var oSessionModel = this.getOwnerComponent().getModel("session");
 
         var tripData = {
           emp: [],
@@ -37,9 +38,9 @@ sap.ui.define(
 
         var combineData = () => {
           // Find the team where the current manager is the supervisor
-          var managerTeam = tripData.teams.find(
-            (team) => team.SUPERVISOR === "Raluca" // Replace with the actual manager's username
-          );
+          var managerTeam = tripData.teams.find((team) => {
+            return team.SUPERVISOR === oSessionModel.getData().username;
+          });
 
           if (!managerTeam) {
             console.error("No team found for the current manager.");
@@ -102,7 +103,7 @@ sap.ui.define(
 
           // Update the allTrips model with combined data
           oAllTripsModel.setProperty("/combinedData", tripData.combinedData);
-          console.log(oAllTripsModel.getData());
+          // console.log(oAllTripsModel.getData());
         };
 
         // Fetch EmpTripSet data
@@ -167,6 +168,13 @@ sap.ui.define(
             console.error("Error fetching EmpTripSet data:", oError);
           },
         });
+      },
+
+      _clearUserModel: function () {
+        var oMyTripsModel = this.getOwnerComponent().getModel("myTrips");
+        if (oMyTripsModel) {
+          oMyTripsModel.setData({});
+        }
       },
 
       formatDate: function (sDate) {

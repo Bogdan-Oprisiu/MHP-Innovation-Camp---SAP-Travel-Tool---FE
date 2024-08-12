@@ -2,7 +2,6 @@ sap.ui.define(
   [
     "sap/ui/core/mvc/Controller",
     "sap/m/MessageToast",
-    "sap/ui/model/json/JSONModel",
     "sap/ui/model/Filter",
     "sap/ui/model/FilterOperator",
     "sap/ui/core/format/DateFormat",
@@ -11,7 +10,6 @@ sap.ui.define(
   function (
     Controller,
     MessageToast,
-    JSONModel,
     Filter,
     FilterOperator,
     DateFormat,
@@ -21,6 +19,8 @@ sap.ui.define(
 
     return Controller.extend("bts.btsapp.controller.User", {
       onInit: function () {
+        this._clearManagerModel();
+
         var oSessionModel = this.getOwnerComponent().getModel("session");
         var oSessionData = oSessionModel.getData();
 
@@ -28,6 +28,13 @@ sap.ui.define(
           this._fetchData();
         } else {
           oSessionModel.attachPropertyChange(this._onSessionChange, this);
+        }
+      },
+
+      _clearManagerModel: function () {
+        var oAllTripsModel = this.getOwnerComponent().getModel("allTrips");
+        if (oAllTripsModel) {
+          oAllTripsModel.setData({});
         }
       },
 

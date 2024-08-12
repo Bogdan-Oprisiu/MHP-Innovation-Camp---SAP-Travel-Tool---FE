@@ -27,8 +27,8 @@ sap.ui.define(
             ? oMyTripsModel
             : oAllTripsModel;
 
-        console.log(oModel.getData());
-        console.log(oAllTripsModel.getData());
+        // console.log(oModel.getData());
+        // console.log(oAllTripsModel.getData());
 
         if (!oModel) {
           console.error("Neither myTrips nor allTrips model is available");
