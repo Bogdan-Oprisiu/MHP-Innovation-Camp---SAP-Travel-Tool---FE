@@ -31,8 +31,8 @@ sap.ui.define(
           combinedData: [],
         };
 
-        var oViewModel = new JSONModel(tripData);
-        this.getView().setModel(oViewModel, "allTrips");
+        var oAllTripsModel = this.getOwnerComponent().getModel("allTrips");
+        oAllTripsModel.setData(tripData);
 
         var combineData = () => {
           tripData.combinedData = tripData.empTrips.map((empTrip) => {
@@ -73,8 +73,9 @@ sap.ui.define(
             };
           });
 
-          // Update the model with combined data
-          oViewModel.setProperty("/combinedData", tripData.combinedData);
+          // Update the allTrips model with combined data
+          oAllTripsModel.setProperty("/combinedData", tripData.combinedData);
+          console.log(oAllTripsModel.getData());
         };
 
         // Fetch EmpTripSet data
@@ -188,6 +189,7 @@ sap.ui.define(
 
         var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
         oRouter.navTo("RouteWelcome");
+        window.location.reload(true);
       },
 
       onViewMyTrips: function () {

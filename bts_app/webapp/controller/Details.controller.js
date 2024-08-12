@@ -18,15 +18,26 @@ sap.ui.define(
         var sEmpId = oEvent.getParameter("arguments").empId;
         var sBtId = oEvent.getParameter("arguments").btId;
 
-        var oModel = this.getOwnerComponent().getModel("myTrips");
+        // Determine if we should use the 'myTrips' or 'allTrips' model
+        var oMyTripsModel = this.getOwnerComponent().getModel("myTrips");
+        var oAllTripsModel = this.getOwnerComponent().getModel("allTrips");
+
+        var oModel =
+          oMyTripsModel.getData() && oMyTripsModel.getData().combinedData
+            ? oMyTripsModel
+            : oAllTripsModel;
+
+        console.log(oModel.getData());
+        console.log(oAllTripsModel.getData());
+
         if (!oModel) {
-          console.error("myTrips model is not available");
+          console.error("Neither myTrips nor allTrips model is available");
           return;
         }
 
         var aCombinedData = oModel.getProperty("/combinedData");
         if (!aCombinedData) {
-          console.error("combinedData is not available in myTrips model");
+          console.error("combinedData is not available in the selected model");
           return;
         }
 
@@ -45,7 +56,11 @@ sap.ui.define(
       },
 
       onNavBack: function () {
-        this.getOwnerComponent().getRouter().navTo("User");
+        var oSessionModel = this.getOwnerComponent().getModel("session");
+        var bIsManager = oSessionModel.getProperty("/isManager");
+
+        var sRoute = bIsManager ? "RouteManager" : "RouteUser";
+        this.getOwnerComponent().getRouter().navTo(sRoute);
       },
 
       formatDate: function (sDate) {

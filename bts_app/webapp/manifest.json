@@ -91,6 +91,9 @@
       },
       "myTrips": {
         "type": "sap.ui.model.json.JSONModel"
+      },
+      "allTrips": {
+        "type": "sap.ui.model.json.JSONModel"
       }
     },
     "resources": {
