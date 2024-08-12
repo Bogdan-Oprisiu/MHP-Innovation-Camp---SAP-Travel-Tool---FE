@@ -152,15 +152,14 @@
                 </Column>
             </columns>
             <items>
-                <ColumnListItem press="onTableRowSelection">
+                <ColumnListItem type="Navigation" press="onTableRowSelection">
                     <cells>
                         <Text text="{allTrips>FIRST_NAME}" />
-                        <!-- <Text text="{allTrips>START_DATE}" /> -->
                         <Text text="{
                             path: 'allTrips>START_DATE',
                             formatter: '.formatDate'
                         }" />
-                        <Text text="{allTrips>RENTAL_CAR}" />
+                        <Text text="{allTrips>TOTAL_PRICE}" />
                         <Text text="{allTrips>ACCEPTED}" />
                     </cells>
                 </ColumnListItem>

@@ -4,8 +4,9 @@ sap.ui.define(
     "sap/ui/model/json/JSONModel",
     "sap/ui/core/Fragment",
     "sap/m/MessageToast",
+    "../utils/CookieUtils",
   ],
-  function (Controller, JSONModel, Fragment, MessageToast) {
+  function (Controller, JSONModel, Fragment, MessageToast, CookieUtils) {
     "use strict";
 
     return Controller.extend("bts.btsapp.controller.Welcome", {
@@ -73,6 +74,19 @@ sap.ui.define(
                   personalNumber: oEmployeeData[i].PERSONAL_NUMBER,
                   isManager: oEmployeeData[i].IS_MANAGER,
                 });
+
+                // Set cookies
+                CookieUtils.setCookie("username", oEmployeeData[i].USERNAME, 7);
+                CookieUtils.setCookie(
+                  "personalNumber",
+                  oEmployeeData[i].PERSONAL_NUMBER,
+                  7
+                );
+                CookieUtils.setCookie(
+                  "isManager",
+                  oEmployeeData[i].IS_MANAGER,
+                  7
+                );
 
                 break;
               }

@@ -61,6 +61,8 @@
             </items>
         </IconTabBar>
 
+        <Button text="Logout" press="onLogout" type="Emphasized" />
+
         <Table
             id="btTable"
             headerText="All of your business trips are displayed below"

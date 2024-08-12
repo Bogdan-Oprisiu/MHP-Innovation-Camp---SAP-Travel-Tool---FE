@@ -6,6 +6,7 @@ sap.ui.define(
     "sap/ui/model/Filter",
     "sap/ui/model/FilterOperator",
     "sap/ui/core/format/DateFormat",
+    "../utils/CookieUtils",
   ],
   function (
     Controller,
@@ -13,7 +14,8 @@ sap.ui.define(
     JSONModel,
     Filter,
     FilterOperator,
-    DateFormat
+    DateFormat,
+    CookieUtils
   ) {
     "use strict";
 
@@ -121,7 +123,7 @@ sap.ui.define(
             });
           },
           error: (oError) => {
-            console.error("Error fetching EmpTripSet data:", oError); 
+            console.error("Error fetching EmpTripSet data:", oError);
           },
         });
       },
@@ -210,16 +212,42 @@ sap.ui.define(
         oBinding.filter(aFilters);
       }
 
-      // onResetAll: function () {
-      //   var oFilterBar = this.byId("filterBarAll");
-      //   oFilterBar.getFilterGroupItems().forEach(function (oFilterGroupItem) {
-      //     oFilterGroupItem.getControl().setValue(""); // Clear input values
-      //   });
+      onTableRowSelection: function (oEvent) {
+        var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+        var oSelectedItem =
+          oEvent.getParameter("listItem") || oEvent.getSource();
+        var oContext = oSelectedItem.getBindingContext("allTrips");
+        var sEmpId = oContext.getProperty("PERSONAL_NUMBER");
+        var sBtId = oContext.getProperty("TRIPID");
 
-      //   var oTable = this.byId("btTable");
-      //   var oBinding = oTable.getBinding("items");
-      //   oBinding.filter([]); // Clear all filters
-      // },
+        oRouter.navTo("RouteDetails", {
+          empId: sEmpId,
+          btId: sBtId,
+        });
+      },
+
+      onLogout: function () {
+        var oSessionModel = this.getOwnerComponent().getModel("session");
+        oSessionModel.setData({
+          authenticated: false,
+          username: "",
+          personalNumber: "",
+          isManager: false,
+        });
+
+        // Erase cookies
+        CookieUtils.eraseCookie("username");
+        CookieUtils.eraseCookie("personalNumber");
+        CookieUtils.eraseCookie("isManager");
+
+        var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+        oRouter.navTo("RouteWelcome");
+      },
+
+      onViewMyTrips: function () {
+        var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+        oRouter.navTo("RouteUser");
+      },
     });
   }
 );

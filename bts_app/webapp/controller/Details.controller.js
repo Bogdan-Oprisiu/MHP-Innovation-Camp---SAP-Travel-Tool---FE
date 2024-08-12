@@ -5,10 +5,6 @@ sap.ui.define(
 
     return Controller.extend("bts.btsapp.controller.Details", {
       onInit: function () {
-        var oSessionModel = this.getOwnerComponent().getModel("session");
-        var oSessionData = oSessionModel.getData();
-        // console.log("Session Data: ", oSessionData);
-
         var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
         oRouter
           .getRoute("RouteDetails")
