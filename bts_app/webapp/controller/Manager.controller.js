@@ -158,6 +158,7 @@ sap.ui.define(
         oBinding.filter(aFilters);
       },
 
+
       onSearchAll: function (oEvent) {
         var oFilterBar = this.byId("filterBarAll");
         var aFilters = [];
@@ -188,6 +189,70 @@ sap.ui.define(
       onSearchApproved: function (oEvent) {
         var oFilterBar = this.byId("filterBarApproved");
         var aFilters = [];
+      
+        // Extract values from the FilterBar controls
+        var sName = oFilterBar.getFilterGroupItems()[0].getControl().getValue();
+        var sLocation = oFilterBar.getFilterGroupItems()[1].getControl().getValue();
+        var sDate = oFilterBar.getFilterGroupItems()[2].getControl().getDateValue();
+      
+        // Ensure status filter is applied
+        aFilters.push(new Filter("ACCEPTED", FilterOperator.EQ, "approved"));
+      
+        // Apply additional filters
+        if (sName) {
+          aFilters.push(new Filter("FIRST_NAME", FilterOperator.Contains, sName));
+        }
+        if (sLocation) {
+          aFilters.push(new Filter("CITY", FilterOperator.Contains, sLocation));
+        }
+        if (sDate) {
+          var sFormattedDate = DateFormat.getDateInstance({ pattern: "yyyyMMdd" }).format(sDate);
+          aFilters.push(new Filter("START_DATE", FilterOperator.EQ, sFormattedDate));
+        }
+      
+        // Apply filters to the table binding
+        var oTable = this.byId("btTable");
+        var oBinding = oTable.getBinding("items");
+        oBinding.filter(aFilters);
+      },
+      
+
+      onSearchInProcess: function (oEvent) {
+        var oFilterBar = this.byId("filterBarInProcess");
+        var aFilters = [];
+
+        // Extract values from the FilterBar controls
+        var sName = oFilterBar.getFilterGroupItems()[0].getControl().getValue();
+        var sLocation = oFilterBar.getFilterGroupItems()[1].getControl().getValue();
+        var sDate = oFilterBar.getFilterGroupItems()[2].getControl().getDateValue();
+
+        // Ensure status filter is applied
+        aFilters.push(new Filter("ACCEPTED", FilterOperator.EQ, "in process"));
+
+        if (sName) {
+          aFilters.push(new Filter("FIRST_NAME", FilterOperator.Contains, sName));
+        }
+        if (sLocation) {
+          aFilters.push(new Filter("CITY", FilterOperator.Contains, sLocation));
+        }
+        if (sDate) {
+          // Format date for comparison
+          var sFormattedDate = DateFormat.getDateInstance({ pattern: "yyyyMMdd" }).format(sDate);
+          aFilters.push(new Filter("START_DATE", FilterOperator.EQ, sFormattedDate));
+        }
+
+        // Apply filters to the table binding
+        var oTable = this.byId("btTable");
+        var oBinding = oTable.getBinding("items");
+        oBinding.filter(aFilters);
+      },
+
+      onSearchDenied: function (oEvent) {
+        var oFilterBar = this.byId("filterBarDenied");
+        var aFilters = [];
+
+        // Ensure status filter is applied
+        aFilters.push(new Filter("ACCEPTED", FilterOperator.EQ, "denied"));
 
         // Extract values from the FilterBar controls
         var sName = oFilterBar.getFilterGroupItems()[0].getControl().getValue();
@@ -210,7 +275,7 @@ sap.ui.define(
         var oTable = this.byId("btTable");
         var oBinding = oTable.getBinding("items");
         oBinding.filter(aFilters);
-      }
+      },
 
       onTableRowSelection: function (oEvent) {
         var oRouter = sap.ui.core.UIComponent.getRouterFor(this);

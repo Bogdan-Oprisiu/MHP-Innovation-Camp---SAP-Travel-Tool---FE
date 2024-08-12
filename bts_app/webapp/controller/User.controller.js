@@ -170,6 +170,7 @@ sap.ui.define(
           },
         });
       },
+
       onTableRowSelection: function (oEvent) {
         var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
         var oSelectedItem =
@@ -224,6 +225,108 @@ sap.ui.define(
 
         oBinding.filter(aFilters);
       },
+
+      onSearchAll: function (oEvent) {
+        var oFilterBar = this.byId("filterBarAll");
+        var aFilters = [];
+
+        // Extract values from the FilterBar controls
+        var sLocation = oFilterBar.getFilterGroupItems()[0].getControl().getValue();
+        var sDate = oFilterBar.getFilterGroupItems()[1].getControl().getDateValue();
+
+        if (sLocation) {
+          aFilters.push(new Filter("CITY", FilterOperator.Contains, sLocation));
+        }
+        if (sDate) {
+          // Format date for comparison
+          var sFormattedDate = DateFormat.getDateInstance({ pattern: "yyyyMMdd" }).format(sDate);
+          aFilters.push(new Filter("START_DATE", FilterOperator.EQ, sFormattedDate));
+        }
+
+        // Apply filters to the table binding
+        var oTable = this.byId("btTable");
+        var oBinding = oTable.getBinding("items");
+        oBinding.filter(aFilters);
+      },
+
+      onSearchApproved: function (oEvent) {
+        var oFilterBar = this.byId("filterBarApproved");
+        var aFilters = [];
+
+        // Extract values from the FilterBar controls
+        var sLocation = oFilterBar.getFilterGroupItems()[0].getControl().getValue();
+        var sDate = oFilterBar.getFilterGroupItems()[1].getControl().getDateValue();
+
+        // Ensure status filter is applied
+        aFilters.push(new Filter("ACCEPTED", FilterOperator.EQ, "in process"));
+
+        // Ensure status filter is applied
+        aFilters.push(new Filter("ACCEPTED", FilterOperator.EQ, "approved"));
+
+        if (sLocation) {
+          aFilters.push(new Filter("CITY", FilterOperator.Contains, sLocation));
+        }
+        if (sDate) {
+          // Format date for comparison
+          var sFormattedDate = DateFormat.getDateInstance({ pattern: "yyyyMMdd" }).format(sDate);
+          aFilters.push(new Filter("START_DATE", FilterOperator.EQ, sFormattedDate));
+        }
+
+        // Apply filters to the table binding
+        var oTable = this.byId("btTable");
+        var oBinding = oTable.getBinding("items");
+        oBinding.filter(aFilters);
+      },
+
+      onSearchInProcess: function (oEvent) {
+        var oFilterBar = this.byId("filterBarInProcess");
+        var aFilters = [];
+
+        // Extract values from the FilterBar controls
+        var sLocation = oFilterBar.getFilterGroupItems()[0].getControl().getValue();
+        var sDate = oFilterBar.getFilterGroupItems()[1].getControl().getDateValue();
+
+        // Ensure status filter is applied
+        aFilters.push(new Filter("ACCEPTED", FilterOperator.EQ, "denied"));
+
+        if (sLocation) {
+          aFilters.push(new Filter("CITY", FilterOperator.Contains, sLocation));
+        }
+        if (sDate) {
+          // Format date for comparison
+          var sFormattedDate = DateFormat.getDateInstance({ pattern: "yyyyMMdd" }).format(sDate);
+          aFilters.push(new Filter("START_DATE", FilterOperator.EQ, sFormattedDate));
+        }
+
+        // Apply filters to the table binding
+        var oTable = this.byId("btTable");
+        var oBinding = oTable.getBinding("items");
+        oBinding.filter(aFilters);
+      },
+
+      onSearchDenied: function (oEvent) {
+        var oFilterBar = this.byId("filterBarDenied");
+        var aFilters = [];
+
+        // Extract values from the FilterBar controls
+        var sLocation = oFilterBar.getFilterGroupItems()[0].getControl().getValue();
+        var sDate = oFilterBar.getFilterGroupItems()[1].getControl().getDateValue();
+
+        if (sLocation) {
+          aFilters.push(new Filter("CITY", FilterOperator.Contains, sLocation));
+        }
+        if (sDate) {
+          // Format date for comparison
+          var sFormattedDate = DateFormat.getDateInstance({ pattern: "yyyyMMdd" }).format(sDate);
+          aFilters.push(new Filter("START_DATE", FilterOperator.EQ, sFormattedDate));
+        }
+
+        // Apply filters to the table binding
+        var oTable = this.byId("btTable");
+        var oBinding = oTable.getBinding("items");
+        oBinding.filter(aFilters);
+      },
+
 
       onLogout: function () {
         var oSessionModel = this.getOwnerComponent().getModel("session");
