@@ -14,13 +14,13 @@
                     <u:FileUploader
                         id="fileUploader"
                         name="myFileUpload"
-                        uploadUrl="upload/"
+                        uploadUrl="/Upload_FileSet"
                         tooltip="Upload your file to the local server"
                         uploadComplete="handleUploadComplete"/>
                     <Button
                         text="Upload File"
                         press="handleUploadPress"/>
-	</l:VerticalLayout>
+	                </l:VerticalLayout>
 
         <IconTabBar id="idIconTabBar"
                     select=".onFilterSelect"
