@@ -9,10 +9,15 @@
     "sapui5"
   ],
   "main": "webapp/index.html",
-  "dependencies": {},
+  "dependencies": {
+    "xlsx": "^0.18.5"
+  },
   "devDependencies": {
+    "@sap/ux-ui5-tooling": "1",
     "@ui5/cli": "^3.11.1",
-    "@sap/ux-ui5-tooling": "1"
+    "ui5-tooling-modules": "^3.9.0",
+    "@ui5/fs": "^3.0.1",
+    "@ui5/logger": "^3.0.1"
   },
   "scripts": {
     "start": "fiori run --open \"test/flpSandbox.html?sap-ui-xx-viewCache=false#btsbtsapp-display\"",
