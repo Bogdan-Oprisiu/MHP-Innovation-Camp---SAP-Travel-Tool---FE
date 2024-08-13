@@ -21,42 +21,63 @@
                     iconColor="Positive"
                     text="Approved"
                     key="approved">
-                    <Toolbar>
-                        <Label text="Location" />
-                        <Input id="locationFilterApproved" width="15%" />
-                        <Label text="Date" />
-                        <DatePicker id="dateFilterApproved" width="15%" />
-                        <Button text="Filter" press="onFilterTrips" />
-                        <Button text="Clear" press="onClearFilter" />
-                    </Toolbar>
+                    <fb:FilterBar id="filterBarApproved" xmlns:fb="sap.ui.comp.filterbar"
+                        reset="onResetApproved" search="onSearchApproved" showRestoreButton="true" showClearButton="true">
+                        <fb:filterGroupItems>
+                            <fb:FilterGroupItem groupName="__ALL" name="locationApproved" label="Location" visibleInFilterBar="true">
+                                <fb:control>
+                                    <Input id="locationFilterApproved" width="15%" />
+                                </fb:control>
+                            </fb:FilterGroupItem>
+                            <fb:FilterGroupItem groupName="__ALL" name="dateApproved" label="Date" visibleInFilterBar="true">
+                                <fb:control>
+                                    <DatePicker id="dateFilterApproved" width="15%" />
+                                </fb:control>
+                            </fb:FilterGroupItem>
+                        </fb:filterGroupItems>
+                    </fb:FilterBar> 
                 </IconTabFilter>
                 <IconTabFilter
                     icon="sap-icon://in-progress"
                     iconColor="Critical"
                     text="In process"
                     key="in process">
-                    <Toolbar>
-                        <Label text="Location" />
-                        <Input id="locationFilterInProcess" width="15%" />
-                        <Label text="Date" />
-                        <DatePicker id="dateFilterInProcess" width="15%" />
-                        <Button text="Filter" press="onFilterTrips" />
-                        <Button text="Clear" press="onClearFilter" />
-                    </Toolbar>
+                    <fb:FilterBar id="filterBarInProcess" xmlns:fb="sap.ui.comp.filterbar"
+                        reset="onResetInProcess" search="onSearchInProcess" showRestoreButton="true" showClearButton="true">
+                        <fb:filterGroupItems>
+                            <fb:FilterGroupItem groupName="__ALL" name="locationInProcess" label="Location" visibleInFilterBar="true">
+                                <fb:control>
+                                    <Input id="locationFilterInProcess" width="15%" />
+                                </fb:control>
+                            </fb:FilterGroupItem>
+                            <fb:FilterGroupItem groupName="__ALL" name="dateInProcess" label="Date" visibleInFilterBar="true">
+                                <fb:control>
+                                    <DatePicker id="dateFilterInProcess" width="15%" />
+                                </fb:control>
+                            </fb:FilterGroupItem>
+                        </fb:filterGroupItems>
+                    </fb:FilterBar>
                 </IconTabFilter>
                 <IconTabFilter
                     icon="sap-icon://status-critical"
                     iconColor="Negative"
                     text="Denied"
                     key="denied">
-                    <Toolbar>
-                        <Label text="Location" />
-                        <Input id="locationFilterDenied" width="15%" />
-                        <Label text="Date" />
-                        <DatePicker id="dateFilterDenied" width="15%" />
-                        <Button text="Filter" press="onFilterTrips" />
-                        <Button text="Clear" press="onClearFilter" />
-                    </Toolbar>
+                    <fb:FilterBar id="filterBarDenied" xmlns:fb="sap.ui.comp.filterbar"
+                        reset="onResetDenied" search="onSearchDenied" showRestoreButton="true" showClearButton="true">
+                        <fb:filterGroupItems>
+                            <fb:FilterGroupItem groupName="__ALL" name="locationDenied" label="Location" visibleInFilterBar="true">
+                                <fb:control>
+                                    <Input id="locationFilterDenied" width="15%" />
+                                </fb:control>
+                            </fb:FilterGroupItem>
+                            <fb:FilterGroupItem groupName="__ALL" name="dateDenied" label="Date" visibleInFilterBar="true">
+                                <fb:control>
+                                    <DatePicker id="dateFilterDenied" width="15%" />
+                                </fb:control>
+                            </fb:FilterGroupItem>
+                        </fb:filterGroupItems>
+                    </fb:FilterBar>
                 </IconTabFilter>
             </items>
         </IconTabBar>
@@ -109,4 +130,3 @@
         </Table>
     </Panel>   
 </mvc:View>
- 

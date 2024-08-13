@@ -78,6 +78,11 @@
                 headerText="All business trips are displayed below"
                 items="{allTrips>/combinedData}">
             <columns>
+                 <Column>
+                    <header>
+                        <Label text="Location"/>
+                    </header>
+                </Column>
                 <Column>
                     <header>
                         <Label text="Name" />
@@ -102,6 +107,7 @@
             <items>
                 <ColumnListItem press="onTableRowSelection">
                     <cells>
+                         <Text text="{allTrips>CITY}" />
                         <Text text="{allTrips>FIRST_NAME}" />
                         <Text text="{allTrips>START_DATE}" />
                         <Text text="{allTrips>RENTAL_CAR}" />

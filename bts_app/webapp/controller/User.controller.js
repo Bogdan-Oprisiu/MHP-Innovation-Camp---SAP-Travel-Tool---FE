@@ -164,20 +164,23 @@ sap.ui.define(
         }
         oBinding.filter(aFilters);
       },
+     
 
       onFilterSelect: function (oEvent) {
-        var oBinding = this.byId("btTable").getBinding("items"),
-          sKey = oEvent.getParameter("key"),
-          aFilters = [];
-
+        var sKey = oEvent.getParameter("key");
+        var oTable = this.byId("btTable");
+        var oBinding = oTable.getBinding("items");
+ 
+        var  aFilters = [];
+ 
         if (sKey === "all") {
           oBinding.filter([]);
         } else if (sKey === "in process") {
-          aFilters.push(new Filter("status", FilterOperator.EQ, "in process"));
+          aFilters.push(new Filter("ACCEPTED", FilterOperator.EQ, "in process"));
         } else if (sKey === "approved") {
-          aFilters.push(new Filter("status", FilterOperator.EQ, "approved"));
+          aFilters.push(new Filter("ACCEPTED", FilterOperator.EQ, "approved"));
         } else if (sKey === "denied") {
-          aFilters.push(new Filter("status", FilterOperator.EQ, "denied"));
+          aFilters.push(new Filter("ACCEPTED", FilterOperator.EQ, "denied"));
         }
 
         oBinding.filter(aFilters);
