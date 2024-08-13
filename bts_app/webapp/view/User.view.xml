@@ -51,14 +51,12 @@
                             </fb:FilterGroupItem>
                         </fb:filterGroupItems>
                     </fb:FilterBar>
-
                 </IconTabFilter>
                 <IconTabFilter
                     icon="sap-icon://accept"
                     iconColor="Positive"
                     text="Approved"
-                    key="approved">
-                    
+                    key="approved">     
                     <fb:FilterBar id="filterBarApproved" xmlns:fb="sap.ui.comp.filterbar"
                         reset="onResetApproved" search="onSearchApproved" showRestoreButton="true" showClearButton="true" useToolbar="false" showToolbar="false" showAdaptFiltersButton="false">
                         <fb:filterGroupItems>
@@ -74,14 +72,12 @@
                             </fb:FilterGroupItem>
                         </fb:filterGroupItems>
                     </fb:FilterBar>
-
                 </IconTabFilter>
                 <IconTabFilter
                     icon="sap-icon://in-progress"
                     iconColor="Critical"
                     text="In process"
-                    key="in process">
-                    
+                    key="in process">  
                     <fb:FilterBar id="filterBarInProcess" xmlns:fb="sap.ui.comp.filterbar"
                         reset="onResetInProcess" search="onSearchInProcess" showRestoreButton="true" showClearButton="true" useToolbar="false" showToolbar="false" showAdaptFiltersButton="false">
                         <fb:filterGroupItems>
@@ -97,14 +93,12 @@
                             </fb:FilterGroupItem>
                         </fb:filterGroupItems>
                     </fb:FilterBar>
-
                 </IconTabFilter>
                 <IconTabFilter
                     icon="sap-icon://status-critical"
                     iconColor="Negative"
                     text="Denied"
-                    key="denied">
-                    
+                    key="denied">                    
                     <fb:FilterBar id="filterBarDenied" xmlns:fb="sap.ui.comp.filterbar"
                         reset="onResetDenied" search="onSearchDenied" showRestoreButton="true" showClearButton="true" useToolbar="false" showToolbar="false" showAdaptFiltersButton="false">
                         <fb:filterGroupItems>
@@ -120,7 +114,6 @@
                             </fb:FilterGroupItem>
                         </fb:filterGroupItems>
                     </fb:FilterBar>
-
                 </IconTabFilter>
             </items>
         </IconTabBar>
@@ -175,4 +168,3 @@
         </Table>
     </Panel>   
 </mvc:View>
- 

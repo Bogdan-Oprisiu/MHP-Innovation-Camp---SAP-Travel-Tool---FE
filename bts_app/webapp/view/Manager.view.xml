@@ -130,6 +130,11 @@
             headerText="All business trips are displayed below"
             items="{allTrips>/combinedData}">
             <columns>
+                 <Column>
+                    <header>
+                        <Label text="Location"/>
+                    </header>
+                </Column>
                 <Column>
                     <header>
                         <Label text="Name" />
@@ -154,6 +159,7 @@
             <items>
                 <ColumnListItem type="Navigation" press="onTableRowSelection">
                     <cells>
+                         <Text text="{allTrips>CITY}" />
                         <Text text="{allTrips>FIRST_NAME}" />
                         <Text text="{
                             path: 'allTrips>START_DATE',

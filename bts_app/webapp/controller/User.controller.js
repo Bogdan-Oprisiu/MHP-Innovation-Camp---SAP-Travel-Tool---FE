@@ -203,6 +203,7 @@ sap.ui.define(
           console.warn("Combined data is not yet available.");
         }
       },
+     
 
       formatDate: function (sDate) {
         var oDateFormat = DateFormat.getDateInstance({
@@ -220,15 +221,13 @@ sap.ui.define(
         var sKey = oEvent.getParameter("key");
         var oTable = this.byId("btTable");
         var oBinding = oTable.getBinding("items");
-
-        var aFilters = [];
-
+ 
+        var  aFilters = [];
+ 
         if (sKey === "all") {
           oBinding.filter([]);
         } else if (sKey === "in process") {
-          aFilters.push(
-            new Filter("ACCEPTED", FilterOperator.EQ, "in process")
-          );
+          aFilters.push(new Filter("ACCEPTED", FilterOperator.EQ, "in process"));
         } else if (sKey === "approved") {
           aFilters.push(new Filter("ACCEPTED", FilterOperator.EQ, "approved"));
         } else if (sKey === "denied") {
