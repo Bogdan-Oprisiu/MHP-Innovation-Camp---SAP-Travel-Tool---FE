@@ -6,7 +6,8 @@ sap.ui.define(
     "sap/ui/model/FilterOperator",
     "sap/ui/core/format/DateFormat",
     "../utils/CookieUtils",
-    "sap/ui/unified/FileUploader"
+    "sap/ui/unified/FileUploader",
+    "xlsx"
   ],
   function (
     Controller,
@@ -14,7 +15,8 @@ sap.ui.define(
     Filter,
     FilterOperator,
     DateFormat,
-    CookieUtils
+    CookieUtils,
+    XLSX
   ) {
     "use strict";
 
@@ -337,6 +339,99 @@ sap.ui.define(
         var oBinding = oTable.getBinding("items");
         oBinding.filter(aFilters);
       },
+      handleUploadPress: function(oEvent) {
+        // Get the FileUploader control
+        var oFileUploader = this.byId("fileUploader");
+        var oFile = oFileUploader.oFileUpload.files[0];
+        
+        if (oFile) {
+            var reader = new FileReader();
+            
+            // Define what happens when file is read
+            reader.onload = function(e) {
+                var data = e.target.result;
+                var workbook = XLSX.read(data, {
+                    type: 'binary'
+                });
+                
+                // Assume the data is in the first sheet
+                var sheetName = workbook.SheetNames[0];
+                var sheet = workbook.Sheets[sheetName];
+                
+                // Convert the sheet data to JSON
+                var excelData = XLSX.utils.sheet_to_json(sheet);
+                
+                // Process the Excel data (you can pass it to the backend here)
+                this._sendDataToBackend(excelData);
+            }.bind(this);
+            
+            // Read the file as binary string
+            reader.readAsBinaryString(oFile);
+        } else {
+            sap.m.MessageToast.show("Please choose a file first.");
+        }
+    },
+    handleUploadComplete: function(oEvent) {
+      var sResponse = oEvent.getParameter("response");
+      if (sResponse) {
+          sap.m.MessageToast.show("File uploaded successfully");
+      } else {
+          sap.m.MessageToast.show("File upload failed");
+      }
+  },_sendDataToBackend: function(excelData) {
+    var oModel = this.getView().getModel();
+    
+    // Prepare payload according to backend structure
+    var payload = {
+        ExcelData: excelData.map(function(row) {
+            return {
+                LAST_NAME: row["A"],
+                FIRST_NAME: row["B"],
+                JOB_TYPE: row["C"],
+                PERSONAL_NUMBER: row["D"],
+                COST_CENTER: row["E"],
+                EMAIL: row["F"],
+                PHONE: row["G"],
+                SUPERVISOR: row["H"],
+                TEAMID: row["I"],
+                CITY: row["J"],
+                ZIP_CODE: row["K"],
+                HOME_ADDRESS: row["L"],
+                REASON: row["M"],
+                COUNTRYINFO: row["N"],
+                COUNTRY: row["O"],
+                REQUESTER: row["P"],
+                CURRENCY: row["Q"],
+                START_DATE: row["R"],
+                END_DATE: row["S"],
+                CLIENT: row["T"],
+                JOB_NUMBER: row["U"],
+                ADVANCED_PAYMENT: row["V"],
+                DIEM_RATE: row["W"],
+                HOTEL_COSTS: row["X"],
+                TRAIN_TICKETS: row["Y"],
+                RENTAL_CAR: row["Z"],
+                GAS_COSTS: row["AA"],
+                BANK_CHARGES: row["AB"],
+                BUSINESS_MEALS: row["AC"],
+                FOOD_BEVERAGES: row["AD"],
+                IT_SUPPLIES: row["AD"],
+                OFFICE_SUPPLIES: row["AE"],
+                AIR_FARE: row["AF"],
+
+            };
+        })
+    };
+
+    // VINE SCHIMBAT AICI
+    oModel.create("/Upload_FileSet", payload, {
+        success: function(oData, response) {
+            sap.m.MessageToast.show("Data uploaded successfully!");
+        },
+        error: function(oError) {
+            sap.m.MessageToast.show("Error uploading data.");
+        }
+    })},
 
 
       onLogout: function () {

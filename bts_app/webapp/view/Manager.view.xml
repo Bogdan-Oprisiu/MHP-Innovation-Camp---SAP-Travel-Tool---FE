@@ -93,6 +93,9 @@
                         </fb:filterGroupItems>
                     </fb:FilterBar>
 
+
+
+
                 </IconTabFilter>  
                 <IconTabFilter
                     icon="sap-icon://status-critical"
@@ -124,6 +127,10 @@
                 </IconTabFilter>  
             </items>
         </IconTabBar>
+
+
+
+         <Button text="Logout" press="onLogout" type="Emphasized" />
 
         <Table
             id="btTable"

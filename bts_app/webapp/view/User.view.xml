@@ -8,27 +8,24 @@
         class="sapUiResponsiveMargin"
         width="auto">
 
-        <!-- <Button text="Upload Excel" press="onUploadExcel" type="Emphasized" />
-        <FileUploader id="fileUploader" 
-               uploadUrl="" 
-               fileType="xls,xlsx" 
-               change="onFileChange" 
-               type="FileUploader" /> -->
 
-        <!-- <l:VerticalLayout>
-		<u:FileUploader
-			id="fileUploader"
-			name="myFileUpload"
-			tooltip="Upload your file to the local server"
-			change="onFileChange"/>
-		<Button
-			text="Upload File"
-			press="handleUploadPress"/>
-	    </l:VerticalLayout> -->
+        
+                    <l:VerticalLayout>
+                    <u:FileUploader
+                        id="fileUploader"
+                        name="myFileUpload"
+                        uploadUrl="upload/"
+                        tooltip="Upload your file to the local server"
+                        uploadComplete="handleUploadComplete"/>
+                    <Button
+                        text="Upload File"
+                        press="handleUploadPress"/>
+	</l:VerticalLayout>
 
         <IconTabBar id="idIconTabBar"
                     select=".onFilterSelect"
                     class="sapUiResponsiveContentPadding">
+
 
             <items>
                 <IconTabFilter
