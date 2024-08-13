@@ -1,10 +1,30 @@
 <mvc:View controllerName="bts.btsapp.controller.User"
     xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
-    xmlns="sap.m">
+    xmlns="sap.m"
+    xmlns:l="sap.ui.layout"
+	xmlns:u="sap.ui.unified">
     <Panel 
         headerText="{i18n>MyBusinessTripsText}"
         class="sapUiResponsiveMargin"
         width="auto">
+
+        <!-- <Button text="Upload Excel" press="onUploadExcel" type="Emphasized" />
+        <FileUploader id="fileUploader" 
+               uploadUrl="" 
+               fileType="xls,xlsx" 
+               change="onFileChange" 
+               type="FileUploader" /> -->
+
+        <!-- <l:VerticalLayout>
+		<u:FileUploader
+			id="fileUploader"
+			name="myFileUpload"
+			tooltip="Upload your file to the local server"
+			change="onFileChange"/>
+		<Button
+			text="Upload File"
+			press="handleUploadPress"/>
+	    </l:VerticalLayout> -->
 
         <IconTabBar id="idIconTabBar"
                     select=".onFilterSelect"
@@ -15,14 +35,30 @@
                     text="All"
                     key="all"
                     icon="sap-icon://expand-all">
+
+                    <fb:FilterBar id="filterBarAll" xmlns:fb="sap.ui.comp.filterbar"
+                        reset="onResetAll" search="onSearchAll" showRestoreButton="true" showClearButton="true" useToolbar="false" showToolbar="false" showAdaptFiltersButton="false">
+                        <fb:filterGroupItems>
+                            <fb:FilterGroupItem groupName="__ALL" name="locationAll" label="Location" visibleInFilterBar="true">
+                                <fb:control>
+                                    <Input id="locationFilterAll" width="15%" />
+                                </fb:control>
+                            </fb:FilterGroupItem>
+                            <fb:FilterGroupItem groupName="__ALL" name="dateAll" label="Date" visibleInFilterBar="true">
+                                <fb:control>
+                                    <DatePicker id="dateFilterAll" width="15%" />
+                                </fb:control>
+                            </fb:FilterGroupItem>
+                        </fb:filterGroupItems>
+                    </fb:FilterBar>
                 </IconTabFilter>
                 <IconTabFilter
                     icon="sap-icon://accept"
                     iconColor="Positive"
                     text="Approved"
-                    key="approved">
+                    key="approved">     
                     <fb:FilterBar id="filterBarApproved" xmlns:fb="sap.ui.comp.filterbar"
-                        reset="onResetApproved" search="onSearchApproved" showRestoreButton="true" showClearButton="true">
+                        reset="onResetApproved" search="onSearchApproved" showRestoreButton="true" showClearButton="true" useToolbar="false" showToolbar="false" showAdaptFiltersButton="false">
                         <fb:filterGroupItems>
                             <fb:FilterGroupItem groupName="__ALL" name="locationApproved" label="Location" visibleInFilterBar="true">
                                 <fb:control>
@@ -35,15 +71,15 @@
                                 </fb:control>
                             </fb:FilterGroupItem>
                         </fb:filterGroupItems>
-                    </fb:FilterBar> 
+                    </fb:FilterBar>
                 </IconTabFilter>
                 <IconTabFilter
                     icon="sap-icon://in-progress"
                     iconColor="Critical"
                     text="In process"
-                    key="in process">
+                    key="in process">  
                     <fb:FilterBar id="filterBarInProcess" xmlns:fb="sap.ui.comp.filterbar"
-                        reset="onResetInProcess" search="onSearchInProcess" showRestoreButton="true" showClearButton="true">
+                        reset="onResetInProcess" search="onSearchInProcess" showRestoreButton="true" showClearButton="true" useToolbar="false" showToolbar="false" showAdaptFiltersButton="false">
                         <fb:filterGroupItems>
                             <fb:FilterGroupItem groupName="__ALL" name="locationInProcess" label="Location" visibleInFilterBar="true">
                                 <fb:control>
@@ -62,9 +98,9 @@
                     icon="sap-icon://status-critical"
                     iconColor="Negative"
                     text="Denied"
-                    key="denied">
+                    key="denied">                    
                     <fb:FilterBar id="filterBarDenied" xmlns:fb="sap.ui.comp.filterbar"
-                        reset="onResetDenied" search="onSearchDenied" showRestoreButton="true" showClearButton="true">
+                        reset="onResetDenied" search="onSearchDenied" showRestoreButton="true" showClearButton="true" useToolbar="false" showToolbar="false" showAdaptFiltersButton="false">
                         <fb:filterGroupItems>
                             <fb:FilterGroupItem groupName="__ALL" name="locationDenied" label="Location" visibleInFilterBar="true">
                                 <fb:control>
@@ -81,6 +117,8 @@
                 </IconTabFilter>
             </items>
         </IconTabBar>
+
+        <Button text="Logout" press="onLogout" type="Emphasized" />
 
         <Table
             id="btTable"

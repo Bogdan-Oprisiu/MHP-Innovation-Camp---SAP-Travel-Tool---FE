@@ -88,6 +88,12 @@
       "session": {
         "type": "sap.ui.model.json.JSONModel",
         "uri": "model/sessionModel.json"
+      },
+      "myTrips": {
+        "type": "sap.ui.model.json.JSONModel"
+      },
+      "allTrips": {
+        "type": "sap.ui.model.json.JSONModel"
       }
     },
     "resources": {
@@ -127,6 +133,11 @@
           "name": "RouteUser",
           "pattern": "user",
           "target": ["TargetUser"]
+        },
+        {
+          "name": "RouteDetails",
+          "pattern": "details/{empId}/{btId}",
+          "target": ["TargetDetails"]
         }
       ],
       "targets": {

@@ -12,12 +12,11 @@
         <Toolbar>
             <Title text="Business Trip Details" level="H2"></Title>
             <ToolbarSpacer />
-            <Button id="approve" text="Approve" type="Emphasized" visible="true" press="handleApprovePress"></Button>
-            <Button id="decline" text="Decline" type="Emphasized" visible="true" press="handleDeclinePress"></Button>
-          
+            <Button id="approve" text="Approve" type="Emphasized" visible="{session>/isManager}" press="handleApprovePress" />
+            <Button id="decline" text="Decline" type="Emphasized" visible="{session>/isManager}" press="handleDeclinePress" />
         </Toolbar>
 
-        <f:Form id="FormChange354" editable="true">
+        <f:Form id="DetailForm" editable="true">
             <f:layout>
                 <f:ResponsiveGridLayout
                     labelSpanXL="3"
@@ -41,17 +40,17 @@
                     <f:formElements>
                         <f:FormElement label="Email">
                             <f:fields>
-                                <Input value="{email}" id="email"/>
+                                <Input value="{detail>/EMAIL}" id="email"/>
                             </f:fields>
                         </f:FormElement>
                         <f:FormElement label="Supervisor">
                             <f:fields>
-                                <Input value="{supervisor}" id="supervisor"/>
+                                <Input value="{detail>/SUPERVISOR}" id="supervisor"/>
                             </f:fields>
                         </f:FormElement>
                         <f:FormElement label="Phone Number">
                             <f:fields>
-                                <Input value="{phoneNumber}" id="phoneNumber"/>
+                                <Input value="{detail>/PHONE}" id="phoneNumber"/>
                             </f:fields>
                         </f:FormElement>
                     </f:formElements>
@@ -62,22 +61,22 @@
                     <f:formElements>
                         <f:FormElement label="Reason for Travel">
                             <f:fields>
-                                <Input value="{reasonForTravel}" id="reasonForTravel"/>
+                                <Input value="{detail>/REASON}" id="reasonForTravel"/>
                             </f:fields>
                         </f:FormElement>
                         <f:FormElement label="Requestor">
                             <f:fields>
-                                <Input value="{requestor}" id="requestor"/>
+                                <Input value="{detail>/REQUESTER}" id="requestor"/>
                             </f:fields>
                         </f:FormElement>
                         <f:FormElement label="Country">
                             <f:fields>
-                                <Input value="{country}" id="country"/>
+                                <Input value="{detail>/COUNTRY}" id="country"/>
                             </f:fields>
                         </f:FormElement>
                         <f:FormElement label="City">
                             <f:fields>
-                                <Input value="{city}" id="city"/>
+                                <Input value="{detail>/CITY}" id="city"/>
                             </f:fields>
                         </f:FormElement>
                     </f:formElements>
@@ -88,22 +87,22 @@
                     <f:formElements>
                         <f:FormElement label="Total Cost">
                             <f:fields>
-                                <Input value="{totalCost}" id="totalCost"/>
+                                <Input value="{detail>/TOTAL_PRICE}" id="totalCost"/>
                             </f:fields>
                         </f:FormElement>
                         <f:FormElement label="Start Business Trip">
                             <f:fields>
-                                <Input value="{startBusinessTrip}" id="startBusinessTrip"/>
+                                <Input value="{parts: [{path: 'detail>/START_DATE'}], formatter: '.formatDate'}" id="startBusinessTrip"/>
                             </f:fields>
                         </f:FormElement>
                         <f:FormElement label="End Business Trip">
                             <f:fields>
-                                <Input value="{endBusinessTrip}" id="endBusinessTrip"/>
+                                <Input value="{parts: [{path: 'detail>/END_DATE'}], formatter: '.formatDate'}" id="endBusinessTrip"/>
                             </f:fields>
                         </f:FormElement>
                         <f:FormElement label="Advance Payment Needed">
                             <f:fields>
-                                <Input value="{advancePaymentNeeded}" id="advancePaymentNeeded"/>
+                                <Input value="{detail>/ADVANCED_PAYMENT}" id="advancePaymentNeeded"/>
                             </f:fields>
                         </f:FormElement>
                     </f:formElements>
