@@ -1,10 +1,30 @@
 <mvc:View controllerName="bts.btsapp.controller.User"
     xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
-    xmlns="sap.m">
+    xmlns="sap.m"
+    xmlns:l="sap.ui.layout"
+	xmlns:u="sap.ui.unified">
     <Panel 
         headerText="{i18n>MyBusinessTripsText}"
         class="sapUiResponsiveMargin"
         width="auto">
+
+        <!-- <Button text="Upload Excel" press="onUploadExcel" type="Emphasized" />
+        <FileUploader id="fileUploader" 
+               uploadUrl="" 
+               fileType="xls,xlsx" 
+               change="onFileChange" 
+               type="FileUploader" /> -->
+
+        <!-- <l:VerticalLayout>
+		<u:FileUploader
+			id="fileUploader"
+			name="myFileUpload"
+			tooltip="Upload your file to the local server"
+			change="onFileChange"/>
+		<Button
+			text="Upload File"
+			press="handleUploadPress"/>
+	    </l:VerticalLayout> -->
 
         <IconTabBar id="idIconTabBar"
                     select=".onFilterSelect"

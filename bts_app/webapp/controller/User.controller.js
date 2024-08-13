@@ -6,6 +6,7 @@ sap.ui.define(
     "sap/ui/model/FilterOperator",
     "sap/ui/core/format/DateFormat",
     "../utils/CookieUtils",
+    "sap/ui/unified/FileUploader"
   ],
   function (
     Controller,
@@ -269,9 +270,6 @@ sap.ui.define(
         var sDate = oFilterBar.getFilterGroupItems()[1].getControl().getDateValue();
 
         // Ensure status filter is applied
-        aFilters.push(new Filter("ACCEPTED", FilterOperator.EQ, "in process"));
-
-        // Ensure status filter is applied
         aFilters.push(new Filter("ACCEPTED", FilterOperator.EQ, "approved"));
 
         if (sLocation) {
@@ -298,7 +296,7 @@ sap.ui.define(
         var sDate = oFilterBar.getFilterGroupItems()[1].getControl().getDateValue();
 
         // Ensure status filter is applied
-        aFilters.push(new Filter("ACCEPTED", FilterOperator.EQ, "denied"));
+        aFilters.push(new Filter("ACCEPTED", FilterOperator.EQ, "in process"));
 
         if (sLocation) {
           aFilters.push(new Filter("CITY", FilterOperator.Contains, sLocation));
@@ -322,6 +320,9 @@ sap.ui.define(
         // Extract values from the FilterBar controls
         var sLocation = oFilterBar.getFilterGroupItems()[0].getControl().getValue();
         var sDate = oFilterBar.getFilterGroupItems()[1].getControl().getDateValue();
+
+        aFilters.push(new Filter("ACCEPTED", FilterOperator.EQ, "denied"));
+
 
         if (sLocation) {
           aFilters.push(new Filter("CITY", FilterOperator.Contains, sLocation));
@@ -357,6 +358,44 @@ sap.ui.define(
         oRouter.navTo("RouteWelcome");
         window.location.reload(true);
       },
+
+    //   onFileChange: function(oEvent) {
+    //     var oFileUploader = oEvent.getSource();
+    //     var oFiles = oFileUploader.getFocusDomRef().files;
+    
+    //     if (oFiles && oFiles.length > 0) {
+    //         var oFile = oFiles[0];
+    
+    //         // Log the name of the file in the console
+    //         console.log("Selected file:", oFile.name);
+    //     } else {
+    //         console.warn("No files selected or file input is empty.");
+    //     }
+    // },
+    
+
+      // handleUploadComplete: function(oEvent) {
+      //   var sResponse = oEvent.getParameter("response"),
+      //     aRegexResult = /\d{4}/.exec(sResponse),
+      //     iHttpStatusCode = aRegexResult && parseInt(aRegexResult[0]),
+      //     sMessage;
+  
+      //   if (sResponse) {
+      //     sMessage = iHttpStatusCode === 200 ? sResponse + " (Upload Success)" : sResponse + " (Upload Error)";
+      //     MessageToast.show(sMessage);
+      //   }
+      // },
+  
+      // handleUploadPress: function() {
+      //   var oFileUploader = this.byId("fileUploader");
+      //   oFileUploader.checkFileReadable().then(function() {
+      //     oFileUploader.upload();
+      //   }, function(error) {
+      //     MessageToast.show("The file cannot be read. It may have changed.");
+      //   }).then(function() {
+      //     oFileUploader.clear();
+      //   });
+      // }
     });
   }
 );
