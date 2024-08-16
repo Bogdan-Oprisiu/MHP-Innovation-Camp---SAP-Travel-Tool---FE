@@ -6,8 +6,7 @@ sap.ui.define(
     "sap/ui/model/FilterOperator",
     "sap/ui/core/format/DateFormat",
     "../utils/CookieUtils",
-    "sap/ui/unified/FileUploader",
-    "../model/xlsx/xlsx"
+    "sap/ui/unified/FileUploader"
   ],
   function (
     Controller,
@@ -15,8 +14,7 @@ sap.ui.define(
     Filter,
     FilterOperator,
     DateFormat,
-    CookieUtils,
-    XLSX
+    CookieUtils
   ) {
     "use strict";
 
@@ -51,7 +49,7 @@ sap.ui.define(
       },
 
       _fetchData: function () {
-        var oModel = this.getOwnerComponent().getModel("mainServiceModel");
+        var oModel = this.getOwnerComponent().getModel();
         var oSessionModel = this.getOwnerComponent().getModel("session");
         var oSessionData = oSessionModel.getData();
 
@@ -340,16 +338,35 @@ sap.ui.define(
         oBinding.filter(aFilters);
       },
 
-
       handleUploadPress: function(oEvent) {
-
         var oFileUploader = this.getView().byId("fileUploader");
-
-        var headerParma2 = new sap.ui.unified.FileUploaderParameter();
-        headerParma2.setName('slug');
-        headerParma2.setValue(oFileUploader.getValue());
-        oFileUploader.addHeaderParameter(headerParma2);
-
+    
+        // Retrieve the CSRF token
+        this.csrfToken = this.getView().getModel().getSecurityToken();
+        oFileUploader.setSendXHR(true);
+    
+        // Add CSRF Token header
+        var oCsrfTokenHeader = new sap.ui.unified.FileUploaderParameter({
+            name: 'x-csrf-token',
+            value: this.csrfToken
+        });
+        oFileUploader.addHeaderParameter(oCsrfTokenHeader);
+    
+        // Add Slug header (if needed)
+        var oSlugHeader = new sap.ui.unified.FileUploaderParameter({
+            name: 'slug',
+            value: oFileUploader.getValue()
+        });
+        oFileUploader.addHeaderParameter(oSlugHeader);
+    
+        // Add X-Requested-With header
+        var oXRequestedWithHeader = new sap.ui.unified.FileUploaderParameter({
+            name: 'X-Requested-With',
+            value: 'XMLHttpRequest'
+        });
+        oFileUploader.addHeaderParameter(oXRequestedWithHeader);
+    
+        // Upload the file
         oFileUploader.checkFileReadable().then(function() {
             oFileUploader.upload();
             oFileUploader.destroyHeaderParameters();
@@ -359,6 +376,7 @@ sap.ui.define(
             oFileUploader.clear();
         });
     },
+    
     
     handleUploadComplete: function(oEvent) {
       var sResponse = oEvent.getParameter("response");
@@ -384,7 +402,7 @@ sap.ui.define(
         CookieUtils.eraseCookie("isManager");
 
         var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
-        oRouter.navTo("RouteWelcome");
+        oRouter.navTo("RouteWelcome")
         window.location.reload(true);
       }
     });

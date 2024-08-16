@@ -45,7 +45,7 @@ sap.ui.define(
         var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
 
         // Access the OData model
-        var oModel = this.getOwnerComponent().getModel("mainServiceModel");
+        var oModel = this.getOwnerComponent().getModel();
         var oSessionModel = this.getOwnerComponent().getModel("session");
 
         // Acces the user input

@@ -14,7 +14,7 @@
                     <u:FileUploader
                         id="fileUploader"
                         name="myFileUpload"
-                        uploadUrl="/Upload_FileSet"
+                        uploadUrl="/sap/opu/odata/sap/ZMHP_BUSINESS_TRIPS_SRV/Upload_FileSet"
                         tooltip="Upload your file to the local server"
                         uploadComplete="handleUploadComplete"/>
                     <Button
