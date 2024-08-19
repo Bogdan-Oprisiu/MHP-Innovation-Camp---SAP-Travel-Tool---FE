@@ -76,7 +76,7 @@
         "type": "sap.ui.model.json.JSONModel",
         "uri": "model/MockBTs.json"
       },
-      "": {
+      "mainServiceModel": {
         "type": "sap.ui.model.odata.v2.ODataModel",
         "dataSource": "mainService",
         "settings": {
@@ -93,6 +93,12 @@
         "type": "sap.ui.model.json.JSONModel"
       },
       "allTrips": {
+        "type": "sap.ui.model.json.JSONModel"
+      },
+      "oDetails": {
+        "type": "sap.ui.model.json.JSONModel"
+      },
+      "detail": {
         "type": "sap.ui.model.json.JSONModel"
       }
     },

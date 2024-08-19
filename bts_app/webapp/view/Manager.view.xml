@@ -6,6 +6,15 @@
         class="sapUiResponsiveMargin"
         width="auto">
 
+        <headerToolbar>
+            <Toolbar>
+                <Title text="{i18n>MyBusinessTripsText}" />
+                <ToolbarSpacer />
+                <Button text="Logout" press="onLogout" type="Emphasized" />
+            </Toolbar>
+        </headerToolbar>
+
+
         <IconTabBar
             id="idIconTabBar"
             select=".onFilterSelect"
@@ -127,10 +136,6 @@
                 </IconTabFilter>  
             </items>
         </IconTabBar>
-
-
-
-         <Button text="Logout" press="onLogout" type="Emphasized" />
 
         <Table
             id="btTable"

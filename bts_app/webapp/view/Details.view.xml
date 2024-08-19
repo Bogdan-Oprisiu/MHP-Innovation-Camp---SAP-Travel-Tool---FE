@@ -14,6 +14,7 @@
             <ToolbarSpacer />
             <Button id="approve" text="Approve" type="Emphasized" visible="{session>/isManager}" press="handleApprovePress" />
             <Button id="decline" text="Decline" type="Emphasized" visible="{session>/isManager}" press="handleDeclinePress" />
+            <Button id="modifyBT" text="Modify Business Trip" type="Emphasized" visible="{session>IsUser}" press="handleModifyPress" />
         </Toolbar>
 
         <f:Form id="DetailForm" editable="true">
