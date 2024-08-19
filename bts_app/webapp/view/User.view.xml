@@ -6,11 +6,19 @@
     <Panel 
         headerText="{i18n>MyBusinessTripsText}"
         class="sapUiResponsiveMargin"
-        width="auto">
+        width="auto"
+        >
 
+        <headerToolbar>
+            <Toolbar>
+                <Title text="{i18n>MyBusinessTripsText}" />
+                <ToolbarSpacer />
+                <Button text="Logout" press="onLogout" type="Emphasized" />
+            </Toolbar>
+        </headerToolbar>
 
         
-                    <l:VerticalLayout>
+                    <l:HorizontalLayout>
                     <u:FileUploader
                         id="fileUploader"
                         name="myFileUpload"
@@ -20,7 +28,7 @@
                     <Button
                         text="Upload File"
                         press="handleUploadPress"/>
-	                </l:VerticalLayout>
+	                </l:HorizontalLayout>
 
         <IconTabBar id="idIconTabBar"
                     select=".onFilterSelect"
@@ -114,8 +122,6 @@
                 </IconTabFilter>
             </items>
         </IconTabBar>
-
-        <Button text="Logout" press="onLogout" type="Emphasized" />
 
         <Table
             id="btTable"

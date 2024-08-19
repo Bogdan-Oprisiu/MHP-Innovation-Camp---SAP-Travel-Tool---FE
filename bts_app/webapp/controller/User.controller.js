@@ -49,7 +49,7 @@ sap.ui.define(
       },
 
       _fetchData: function () {
-        var oModel = this.getOwnerComponent().getModel();
+        var oModel = this.getOwnerComponent().getModel("mainServiceModel");
         var oSessionModel = this.getOwnerComponent().getModel("session");
         var oSessionData = oSessionModel.getData();
 

@@ -21,7 +21,8 @@ sap.ui.define(
       onInit: function () {
         this._clearUserModel();
 
-        var oModel = this.getOwnerComponent().getModel();
+        //
+        var oModel = this.getOwnerComponent().getModel("mainServiceModel");
         var oSessionModel = this.getOwnerComponent().getModel("session");
 
         var tripData = {
