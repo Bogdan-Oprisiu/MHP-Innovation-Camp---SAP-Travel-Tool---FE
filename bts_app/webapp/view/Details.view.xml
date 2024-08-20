@@ -39,6 +39,18 @@
                 <!-- General Information -->
                 <f:FormContainer title="General Information">
                     <f:formElements>
+
+                    <f:FormElement visible="false">
+                        <f:fields>
+                            <Input value="{detail>/PERSONAL_NUMBER}" id="personalNumber"/>
+                        </f:fields>
+                    </f:FormElement>
+                    <f:FormElement visible="false">
+                        <f:fields>
+                            <Input value="{detail>/TRIPID}" id="tripId"/>
+                        </f:fields>
+                    </f:FormElement>
+        
                         <f:FormElement label="Email">
                             <f:fields>
                                 <Input value="{detail>/EMAIL}" id="email" editable="false"/>
@@ -101,6 +113,11 @@
                                 <Input value="{parts: [{path: 'detail>/END_DATE'}], formatter: '.formatDate'}" id="endBusinessTrip"/>
                             </f:fields>
                         </f:FormElement>
+                        <f:FormElement visible="false">
+                        <f:fields>
+                            <Input value="{detail>/EXPENSESID}" id="expensesID"/>
+                        </f:fields>
+                    </f:FormElement>
                         <f:FormElement label="Advance Payment Needed">
                             <f:fields>
                                 <Input value="{detail>/ADVANCED_PAYMENT}" id="advancePaymentNeeded"/>

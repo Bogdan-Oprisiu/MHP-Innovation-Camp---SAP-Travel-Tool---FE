@@ -17,7 +17,7 @@
           
         </Toolbar>
 
-        <f:Form id="FormChange354" editable="true">
+        <f:Form id="DetailForm" editable="true">
             <f:layout>
                 <f:ResponsiveGridLayout
                     labelSpanXL="3"
@@ -39,6 +39,17 @@
                 <!-- General Information -->
                 <f:FormContainer title="General Information">
                     <f:formElements>
+                          <f:FormElement visible="false">
+                        <f:fields>
+                            <Input value="{detail>/PERSONAL_NUMBER}" id="personalNumber"/>
+                        </f:fields>
+                    </f:FormElement>
+                    <f:FormElement visible="false">
+                        <f:fields>
+                            <Input value="{detail>/TRIPID}" id="tripId"/>
+                        </f:fields>
+                    </f:FormElement>
+        
                         <f:FormElement label="Email">
                             <f:fields>
                                 <Input value="{email}" id="email"/>

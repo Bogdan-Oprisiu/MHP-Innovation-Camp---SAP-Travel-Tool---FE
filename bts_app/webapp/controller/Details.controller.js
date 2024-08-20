@@ -82,15 +82,76 @@ sap.ui.define(
         return oDisplayFormat.format(oFormattedDate);
       },
 
-      convertDateToBackendFormat: function(sDate) {
+    convertDateToBackendFormat: function(sDate) {
         var oDisplayFormat = DateFormat.getDateInstance({ style: "medium" }); // Match the format used in the DatePicker
         var oDate = oDisplayFormat.parse(sDate);
         var oBackendFormat = DateFormat.getDateInstance({ pattern: "yyyyMMdd" });
         return oBackendFormat.format(oDate);
     },
-    
+      
+      handleApprovePress: function () {
+        this._updateTripStatus("approved");
+    },
 
-    handleModifyPress: function(oEvent) {
+    handleDeclinePress: function () {
+        this._updateTripStatus("denied");
+    },
+
+     _updateTripStatus: function (status) {
+      var oView = this.getView();
+
+      var sEmpId = this.getView().getModel("oDetails").getProperty("/sEmployeeId");
+      var sTripId = this.getView().getModel("oDetails").getProperty("/sTripId");
+      var oDetailsModel = this.getOwnerComponent().getModel("detail");
+
+      console.log(oDetailsModel);
+
+      var sReasonForTravel = oView.byId("reasonForTravel").getValue();
+      var sRequestor = oView.byId("requestor").getValue();
+      var sStartDate = oView.byId("startBusinessTrip").getValue();
+      var sEndDate = oView.byId("endBusinessTrip").getValue();
+      var sExpensesId = oView.byId("expensesID").getValue();
+
+
+     // var sPersonalNumber = oContext.getProperty("PERSONAL_NUMBER");
+      //var sTripId = oContext.getProperty("TRIPID");
+
+
+      if (!sEmpId || !sEmpId) {
+        sap.m.MessageToast.show("Missing trip details. Cannot proceed with the update.");
+        return;
+    }
+
+    var oModel = this.getOwnerComponent().getModel("mainServiceModel");
+    console.log(oModel);
+
+
+    var sPath = `/Emp_TripSet(PERSONAL_NUMBER='${sEmpId}',TRIPID='${sEmpId}')`;
+
+    var oUpdatedData = {
+        PERSONAL_NUMBER: sEmpId,
+        TRIPID: sTripId,
+        EXPENSESID: sExpensesId,
+        REQUESTER: sRequestor,
+        START_DATE: sStartDate,
+        END_DATE: sEndDate,
+        ACCEPTED: status,
+        REASON: sReasonForTravel,
+    };
+
+    oModel.update(sPath, oUpdatedData, {
+        success: function() {
+            sap.m.MessageToast.show("BT's status modifed!");
+            oModel.refresh(true);
+        },
+        error: function(oError) {
+            sap.m.MessageToast.show("Error");
+            console.error("Error updating trip details:", oError);
+        }
+    });
+  },
+    
+      handleModifyPress: function(oEvent) {
       var oView = this.getView();
 
       var sEmpId = this.getView().getModel("oDetails").getProperty("/sEmployeeId");
@@ -142,8 +203,13 @@ sap.ui.define(
           }
       });
   }
-  
-    
+      
+
+      
     });
-  }
-);
+}
+
+
+});
+    });
+
