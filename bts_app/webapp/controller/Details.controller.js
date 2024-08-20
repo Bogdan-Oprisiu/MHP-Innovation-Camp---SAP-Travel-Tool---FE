@@ -82,6 +82,13 @@ sap.ui.define(
         return oDisplayFormat.format(oFormattedDate);
       },
 
+      convertDateToBackendFormat: function(sDate) {
+        var oDisplayFormat = DateFormat.getDateInstance({ style: "medium" }); // Match the format used in the DatePicker
+        var oDate = oDisplayFormat.parse(sDate);
+        var oBackendFormat = DateFormat.getDateInstance({ pattern: "yyyyMMdd" });
+        return oBackendFormat.format(oDate);
+    },
+    
 
     handleModifyPress: function(oEvent) {
       var oView = this.getView();
@@ -89,15 +96,20 @@ sap.ui.define(
       var sEmpId = this.getView().getModel("oDetails").getProperty("/sEmployeeId");
       var sTripId = this.getView().getModel("oDetails").getProperty("/sTripId");
       var oDetailsModel = this.getOwnerComponent().getModel("detail");
-      
-      console.log(oDetailsModel);
   
       var sReasonForTravel = oView.byId("reasonForTravel").getValue();
       var sRequestor = oView.byId("requestor").getValue();
+      // var sStartDate = oView.byId("startBusinessTrip").getValue();
+      // var sEndDate = oView.byId("endBusinessTrip").getValue();
+      // Get the user-entered date in the display format
       var sStartDate = oView.byId("startBusinessTrip").getValue();
       var sEndDate = oView.byId("endBusinessTrip").getValue();
+      
+      // Convert the dates to backend format
+      var sBackendStartDate = this.convertDateToBackendFormat(sStartDate);
+      var sBackendEndDate = this.convertDateToBackendFormat(sEndDate);
       var sExpensesId = oDetailsModel.EXPENSESID;
-      var sAccepted = oDetailsModel.ACCEPTED;
+      // var sAccepted = oDetailsModel.ACCEPTED;
   
       if (!sEmpId || !sEmpId) {
           sap.m.MessageToast.show("Missing trip details. Cannot proceed with the update.");
@@ -113,9 +125,9 @@ sap.ui.define(
           TRIPID: sTripId,
           EXPENSESID: sExpensesId,
           REQUESTER: sRequestor,
-          START_DATE: sStartDate,
-          END_DATE: sEndDate,
-          ACCEPTED: sAccepted,
+          START_DATE: sBackendStartDate,
+          END_DATE: sBackendEndDate,
+          ACCEPTED: 'in process',
           REASON: sReasonForTravel,
       };
   
