@@ -116,7 +116,7 @@ sap.ui.define(
           return;
       }
   
-      var oModel = this.getOwnerComponent().getModel("mainServiceModel");
+      var oModel = this.getOwnerComponent().getModel();
   
       var sPath = `/Emp_TripSet(PERSONAL_NUMBER='${sEmpId}',TRIPID='${sEmpId}')`;
   

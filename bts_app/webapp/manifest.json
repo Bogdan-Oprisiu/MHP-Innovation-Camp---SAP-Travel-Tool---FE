@@ -76,7 +76,7 @@
         "type": "sap.ui.model.json.JSONModel",
         "uri": "model/MockBTs.json"
       },
-      "mainServiceModel": {
+      "": {
         "type": "sap.ui.model.odata.v2.ODataModel",
         "dataSource": "mainService",
         "settings": {

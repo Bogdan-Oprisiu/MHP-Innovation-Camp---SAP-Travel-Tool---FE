@@ -49,7 +49,7 @@ sap.ui.define(
       },
 
       _fetchData: function () {
-        var oModel = this.getOwnerComponent().getModel("mainServiceModel");
+        var oModel = this.getOwnerComponent().getModel();
         var oSessionModel = this.getOwnerComponent().getModel("session");
         var oSessionData = oSessionModel.getData();
 
@@ -342,7 +342,7 @@ sap.ui.define(
         var oFileUploader = this.getView().byId("fileUploader");
     
         // Retrieve the CSRF token
-        this.csrfToken = this.getView().getModel("mainServiceModel").getSecurityToken();
+        this.csrfToken = this.getView().getModel().getSecurityToken();
         oFileUploader.setSendXHR(true);
     
         // Add CSRF Token header
