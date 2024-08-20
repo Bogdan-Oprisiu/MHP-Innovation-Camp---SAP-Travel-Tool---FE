@@ -3,13 +3,15 @@
 specVersion: "3.1"
 metadata:
   name: bts.btsapp
+
 type: application
+
 server:
   customMiddleware:
     - name: fiori-tools-proxy
       afterMiddleware: compression
       configuration:
-        ignoreCertError: true # If set to true, certificate errors will be ignored. E.g. self-signed certificates will be accepted
+        ignoreCertError: true
         ui5:
           path:
             - /resources
@@ -30,6 +32,7 @@ server:
       configuration:
         component: bts.btsapp
         ui5Theme: sap_horizon
+
 framework:
   name: OpenUI5
   version: "1.125.0"
@@ -37,3 +40,13 @@ framework:
     - name: sap.m
     - name: sap.ui.core
     - name: themelib_sap_horizon
+
+builder:
+  customTasks:
+    - name: ui5-tooling-modules/task/bundler
+      afterTask: replaceVersion
+      configuration:
+        paths:
+          - "/resources"
+          - "/test-resources"
+        excludes: []

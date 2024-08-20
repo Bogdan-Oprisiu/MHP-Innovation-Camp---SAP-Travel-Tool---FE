@@ -76,6 +76,15 @@
         "type": "sap.ui.model.json.JSONModel",
         "uri": "model/MockBTs.json"
       },
+      "mainServiceModel": {
+        "type": "sap.ui.model.odata.v2.ODataModel",
+        "dataSource": "mainService",
+        "settings": {
+          "defaultBindingMode": "TwoWay",
+          "defaultCountMode": "Inline",
+          "useBatch": true
+        }
+      },
       "": {
         "type": "sap.ui.model.odata.v2.ODataModel",
         "dataSource": "mainService",
@@ -93,6 +102,12 @@
         "type": "sap.ui.model.json.JSONModel"
       },
       "allTrips": {
+        "type": "sap.ui.model.json.JSONModel"
+      },
+      "oDetails": {
+        "type": "sap.ui.model.json.JSONModel"
+      },
+      "detail": {
         "type": "sap.ui.model.json.JSONModel"
       }
     },
