@@ -342,7 +342,7 @@ sap.ui.define(
         var oFileUploader = this.getView().byId("fileUploader");
     
         // Retrieve the CSRF token
-        this.csrfToken = this.getView().getModel().getSecurityToken();
+        this.csrfToken = this.getView().getModel("mainServiceModel").getSecurityToken();
         oFileUploader.setSendXHR(true);
     
         // Add CSRF Token header
