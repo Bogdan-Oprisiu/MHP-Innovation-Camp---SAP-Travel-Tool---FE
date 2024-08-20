@@ -21,6 +21,9 @@ sap.ui.define(
       onInit: function () {
         this._clearUserModel();
 
+        var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+        oRouter.getRoute("RouteManager").attachPatternMatched(this._onRouteMatched, this);
+
         //
         var oModel = this.getOwnerComponent().getModel();
         var oSessionModel = this.getOwnerComponent().getModel("session");

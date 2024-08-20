@@ -5,6 +5,7 @@ sap.ui.define(
 
     return Controller.extend("bts.btsapp.controller.Details", {
       onInit: function () {
+        // window.location.reload(true);
         var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
         oRouter
           .getRoute("RouteDetails")
@@ -19,24 +20,18 @@ sap.ui.define(
         var sBtId = oEvent.getParameter("arguments").btId;
 
         var oDetails = new JSONModel();
-        oDetails.setData({sEmployeeId: sEmpId,  sTripId: sBtId });
-        
+        oDetails.setData({ sEmployeeId: sEmpId, sTripId: sBtId });
 
         this.getView().setModel(oDetails, "oDetails");
-        // console.log(oDetails);
 
         // Determine if we should use the 'myTrips' or 'allTrips' model
         var oMyTripsModel = this.getOwnerComponent().getModel("myTrips");
         var oAllTripsModel = this.getOwnerComponent().getModel("allTrips");
-        
 
         var oModel =
           oMyTripsModel.getData() && oMyTripsModel.getData().combinedData
             ? oMyTripsModel
             : oAllTripsModel;
-
-        // console.log(oModel.getData());
-        // console.log(oAllTripsModel.getData());
 
         if (!oModel) {
           console.error("Neither myTrips nor allTrips model is available");
@@ -58,9 +53,8 @@ sap.ui.define(
           return;
         }
 
-        var oDetailModel = new sap.ui.model.json.JSONModel(oSelectedTrip);
+        var oDetailModel = new JSONModel(oSelectedTrip);
         this.getView().setModel(oDetailModel, "detail");
-        // console.log("Detail model set with data: ", oDetailModel.getData());
       },
 
       onNavBack: function () {
@@ -69,6 +63,10 @@ sap.ui.define(
 
         var sRoute = bIsManager ? "RouteManager" : "RouteUser";
         this.getOwnerComponent().getRouter().navTo(sRoute);
+     
+        oRouter.navTo("RouteWelcome");
+        window.location.reload(true);
+        ////
       },
 
       formatDate: function (sDate) {
@@ -82,134 +80,121 @@ sap.ui.define(
         return oDisplayFormat.format(oFormattedDate);
       },
 
-    convertDateToBackendFormat: function(sDate) {
+      convertDateToBackendFormat: function (sDate) {
         var oDisplayFormat = DateFormat.getDateInstance({ style: "medium" }); // Match the format used in the DatePicker
         var oDate = oDisplayFormat.parse(sDate);
         var oBackendFormat = DateFormat.getDateInstance({ pattern: "yyyyMMdd" });
         return oBackendFormat.format(oDate);
-    },
-      
+      },
+
       handleApprovePress: function () {
         this._updateTripStatus("approved");
-    },
+      },
 
-    handleDeclinePress: function () {
+      handleDeclinePress: function () {
         this._updateTripStatus("denied");
-    },
+      },
 
-     _updateTripStatus: function (status) {
-      var oView = this.getView();
+      _updateTripStatus: function (status) {
+        var oView = this.getView();
 
-      var sEmpId = this.getView().getModel("oDetails").getProperty("/sEmployeeId");
-      var sTripId = this.getView().getModel("oDetails").getProperty("/sTripId");
-      var oDetailsModel = this.getOwnerComponent().getModel("detail");
+        var sEmpId = this.getView().getModel("oDetails").getProperty("/sEmployeeId");
+        var sTripId = this.getView().getModel("oDetails").getProperty("/sTripId");
+        var oDetailsModel = this.getOwnerComponent().getModel("detail");
 
-      console.log(oDetailsModel);
+        console.log(oDetailsModel);
 
-      var sReasonForTravel = oView.byId("reasonForTravel").getValue();
-      var sRequestor = oView.byId("requestor").getValue();
-      var sStartDate = oView.byId("startBusinessTrip").getValue();
-      var sEndDate = oView.byId("endBusinessTrip").getValue();
-      var sExpensesId = oView.byId("expensesID").getValue();
+        var sReasonForTravel = oView.byId("reasonForTravel").getValue();
+        var sRequestor = oView.byId("requestor").getValue();
+        var sStartDate = oView.byId("startBusinessTrip").getValue();
+        var sEndDate = oView.byId("endBusinessTrip").getValue();
+        var sExpensesId = oView.byId("expensesID").getValue();
 
+        var sBackendStartDate = this.convertDateToBackendFormat(sStartDate);
+        var sBackendEndDate = this.convertDateToBackendFormat(sEndDate);
 
-     // var sPersonalNumber = oContext.getProperty("PERSONAL_NUMBER");
-      //var sTripId = oContext.getProperty("TRIPID");
-
-
-      if (!sEmpId || !sEmpId) {
-        sap.m.MessageToast.show("Missing trip details. Cannot proceed with the update.");
-        return;
-    }
-
-    var oModel = this.getOwnerComponent().getModel("mainServiceModel");
-    console.log(oModel);
-
-
-    var sPath = `/Emp_TripSet(PERSONAL_NUMBER='${sEmpId}',TRIPID='${sEmpId}')`;
-
-    var oUpdatedData = {
-        PERSONAL_NUMBER: sEmpId,
-        TRIPID: sTripId,
-        EXPENSESID: sExpensesId,
-        REQUESTER: sRequestor,
-        START_DATE: sStartDate,
-        END_DATE: sEndDate,
-        ACCEPTED: status,
-        REASON: sReasonForTravel,
-    };
-
-    oModel.update(sPath, oUpdatedData, {
-        success: function() {
-            sap.m.MessageToast.show("BT's status modifed!");
-            oModel.refresh(true);
-        },
-        error: function(oError) {
-            sap.m.MessageToast.show("Error");
-            console.error("Error updating trip details:", oError);
-        }
-    });
-  },
-    
-      handleModifyPress: function(oEvent) {
-      var oView = this.getView();
-
-      var sEmpId = this.getView().getModel("oDetails").getProperty("/sEmployeeId");
-      var sTripId = this.getView().getModel("oDetails").getProperty("/sTripId");
-      var oDetailsModel = this.getOwnerComponent().getModel("detail");
-  
-      var sReasonForTravel = oView.byId("reasonForTravel").getValue();
-      var sRequestor = oView.byId("requestor").getValue();
-      // var sStartDate = oView.byId("startBusinessTrip").getValue();
-      // var sEndDate = oView.byId("endBusinessTrip").getValue();
-      // Get the user-entered date in the display format
-      var sStartDate = oView.byId("startBusinessTrip").getValue();
-      var sEndDate = oView.byId("endBusinessTrip").getValue();
-      
-      // Convert the dates to backend format
-      var sBackendStartDate = this.convertDateToBackendFormat(sStartDate);
-      var sBackendEndDate = this.convertDateToBackendFormat(sEndDate);
-      var sExpensesId = oDetailsModel.EXPENSESID;
-      // var sAccepted = oDetailsModel.ACCEPTED;
-  
-      if (!sEmpId || !sEmpId) {
+        if (!sEmpId || !sEmpId) {
           sap.m.MessageToast.show("Missing trip details. Cannot proceed with the update.");
           return;
-      }
-  
-      var oModel = this.getOwnerComponent().getModel();
-  
-      var sPath = `/Emp_TripSet(PERSONAL_NUMBER='${sEmpId}',TRIPID='${sEmpId}')`;
-  
-      var oUpdatedData = {
+        }
+
+        var oModel = this.getOwnerComponent().getModel("mainServiceModel");
+        console.log(oModel);
+
+        var sPath = `/Emp_TripSet(PERSONAL_NUMBER='${sEmpId}',TRIPID='${sTripId}')`;
+
+        var oUpdatedData = {
           PERSONAL_NUMBER: sEmpId,
           TRIPID: sTripId,
           EXPENSESID: sExpensesId,
           REQUESTER: sRequestor,
           START_DATE: sBackendStartDate,
           END_DATE: sBackendEndDate,
-          ACCEPTED: 'in process',
+          ACCEPTED: status,
           REASON: sReasonForTravel,
-      };
-  
-      oModel.update(sPath, oUpdatedData, {
-          success: function() {
-              sap.m.MessageToast.show("Trip details updated successfully!");
-              oModel.refresh(true);
+        };
+
+        oModel.update(sPath, oUpdatedData, {
+          success: function () {
+            sap.m.MessageToast.show("BT's status modified!");
+            oModel.refresh(true);
           },
-          error: function(oError) {
-              sap.m.MessageToast.show("Failed to update trip details. Please try again.");
-              console.error("Error updating trip details:", oError);
-          }
-      });
+          error: function (oError) {
+            sap.m.MessageToast.show("Error");
+            console.error("Error updating trip details:", oError);
+          },
+        });
+      },
+
+      handleModifyPress: function (oEvent) {
+        var oView = this.getView();
+
+        var sEmpId = this.getView().getModel("oDetails").getProperty("/sEmployeeId");
+        var sTripId = this.getView().getModel("oDetails").getProperty("/sTripId");
+        var oDetailsModel = this.getOwnerComponent().getModel("detail");
+
+        var sReasonForTravel = oView.byId("reasonForTravel").getValue();
+        var sRequestor = oView.byId("requestor").getValue();
+        // Get the user-entered date in the display format
+        var sStartDate = oView.byId("startBusinessTrip").getValue();
+        var sEndDate = oView.byId("endBusinessTrip").getValue();
+
+        // Convert the dates to backend format
+        var sBackendStartDate = this.convertDateToBackendFormat(sStartDate);
+        var sBackendEndDate = this.convertDateToBackendFormat(sEndDate);
+        var sExpensesId = oDetailsModel.EXPENSESID;
+
+        if (!sEmpId || !sEmpId) {
+          sap.m.MessageToast.show("Missing trip details. Cannot proceed with the update.");
+          return;
+        }
+
+        var oModel = this.getOwnerComponent().getModel();
+
+        var sPath = `/Emp_TripSet(PERSONAL_NUMBER='${sEmpId}',TRIPID='${sTripId}')`;
+
+        var oUpdatedData = {
+          PERSONAL_NUMBER: sEmpId,
+          TRIPID: sTripId,
+          EXPENSESID: sExpensesId,
+          REQUESTER: sRequestor,
+          START_DATE: sBackendStartDate,
+          END_DATE: sBackendEndDate,
+          ACCEPTED: "in process",
+          REASON: sReasonForTravel,
+        };
+
+        oModel.update(sPath, oUpdatedData, {
+          success: function () {
+            sap.m.MessageToast.show("Trip details updated successfully!");
+            oModel.refresh(true);
+          },
+          error: function (oError) {
+            sap.m.MessageToast.show("Failed to update trip details. Please try again.");
+            console.error("Error updating trip details:", oError);
+          },
+        });
+      },
+    });
   }
-      
-
-      
-    });
-}
-
-
-});
-    });
-
+);

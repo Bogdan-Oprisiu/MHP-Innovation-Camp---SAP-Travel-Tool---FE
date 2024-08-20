@@ -18,7 +18,9 @@
         <IconTabBar
             id="idIconTabBar"
             select=".onFilterSelect"
-            class="sapUiResponsiveContentPadding">
+            class="sapUiResponsiveContentPadding"
+             expandable="true"
+            expanded="false">
             <items>
                 <IconTabFilter
                     text="All"
@@ -139,6 +141,8 @@
 
         <Table
             id="btTable"
+
+            
             headerText="All business trips are displayed below"
             items="{allTrips>/combinedData}">
             <columns>
