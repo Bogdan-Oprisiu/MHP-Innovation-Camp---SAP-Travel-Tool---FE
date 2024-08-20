@@ -14,6 +14,7 @@
             <ToolbarSpacer />
             <Button id="approve" text="Approve" type="Emphasized" visible="{session>/isManager}" press="handleApprovePress" />
             <Button id="decline" text="Decline" type="Emphasized" visible="{session>/isManager}" press="handleDeclinePress" />
+            <Button id="modifyBT" text="Modify Business Trip" type="Emphasized" visible="{= !${session>/isManager}}" press="handleModifyPress" />
         </Toolbar>
 
         <f:Form id="DetailForm" editable="true">
@@ -52,12 +53,12 @@
         
                         <f:FormElement label="Email">
                             <f:fields>
-                                <Input value="{detail>/EMAIL}" id="email"/>
+                                <Input value="{detail>/EMAIL}" id="email" editable="false"/>
                             </f:fields>
                         </f:FormElement>
                         <f:FormElement label="Supervisor">
                             <f:fields>
-                                <Input value="{detail>/SUPERVISOR}" id="supervisor"/>
+                                <Input value="{detail>/SUPERVISOR}" id="supervisor" editable="false"/>
                             </f:fields>
                         </f:FormElement>
                         <f:FormElement label="Phone Number">
@@ -99,7 +100,7 @@
                     <f:formElements>
                         <f:FormElement label="Total Cost">
                             <f:fields>
-                                <Input value="{detail>/TOTAL_PRICE}" id="totalCost"/>
+                                <Input value="{detail>/TOTAL_PRICE}" id="totalCost" editable="false"/>
                             </f:fields>
                         </f:FormElement>
                         <f:FormElement label="Start Business Trip">

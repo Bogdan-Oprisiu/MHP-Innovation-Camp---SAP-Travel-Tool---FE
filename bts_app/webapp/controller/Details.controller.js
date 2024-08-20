@@ -1,6 +1,6 @@
 sap.ui.define(
   ["sap/ui/core/mvc/Controller", "sap/ui/core/format/DateFormat", "sap/ui/model/json/JSONModel"],
-  function (Controller, DateFormat,JSONModel) {
+  function (Controller, DateFormat, JSONModel) {
     "use strict";
 
     return Controller.extend("bts.btsapp.controller.Details", {
@@ -23,10 +23,12 @@ sap.ui.define(
         
 
         this.getView().setModel(oDetails, "oDetails");
+        // console.log(oDetails);
 
-
+        // Determine if we should use the 'myTrips' or 'allTrips' model
         var oMyTripsModel = this.getOwnerComponent().getModel("myTrips");
         var oAllTripsModel = this.getOwnerComponent().getModel("allTrips");
+        
 
         var oModel =
           oMyTripsModel.getData() && oMyTripsModel.getData().combinedData
@@ -80,7 +82,13 @@ sap.ui.define(
         return oDisplayFormat.format(oFormattedDate);
       },
 
-
+    convertDateToBackendFormat: function(sDate) {
+        var oDisplayFormat = DateFormat.getDateInstance({ style: "medium" }); // Match the format used in the DatePicker
+        var oDate = oDisplayFormat.parse(sDate);
+        var oBackendFormat = DateFormat.getDateInstance({ pattern: "yyyyMMdd" });
+        return oBackendFormat.format(oDate);
+    },
+      
       handleApprovePress: function () {
         this._updateTripStatus("approved");
     },
@@ -89,13 +97,13 @@ sap.ui.define(
         this._updateTripStatus("denied");
     },
 
-    _updateTripStatus: function (status) {
+     _updateTripStatus: function (status) {
       var oView = this.getView();
 
       var sEmpId = this.getView().getModel("oDetails").getProperty("/sEmployeeId");
       var sTripId = this.getView().getModel("oDetails").getProperty("/sTripId");
       var oDetailsModel = this.getOwnerComponent().getModel("detail");
-      
+
       console.log(oDetailsModel);
 
       var sReasonForTravel = oView.byId("reasonForTravel").getValue();
@@ -116,10 +124,10 @@ sap.ui.define(
 
     var oModel = this.getOwnerComponent().getModel("mainServiceModel");
     console.log(oModel);
-  
+
 
     var sPath = `/Emp_TripSet(PERSONAL_NUMBER='${sEmpId}',TRIPID='${sEmpId}')`;
-  
+
     var oUpdatedData = {
         PERSONAL_NUMBER: sEmpId,
         TRIPID: sTripId,
@@ -140,6 +148,64 @@ sap.ui.define(
             sap.m.MessageToast.show("Error");
             console.error("Error updating trip details:", oError);
         }
+    });
+  },
+    
+      handleModifyPress: function(oEvent) {
+      var oView = this.getView();
+
+      var sEmpId = this.getView().getModel("oDetails").getProperty("/sEmployeeId");
+      var sTripId = this.getView().getModel("oDetails").getProperty("/sTripId");
+      var oDetailsModel = this.getOwnerComponent().getModel("detail");
+  
+      var sReasonForTravel = oView.byId("reasonForTravel").getValue();
+      var sRequestor = oView.byId("requestor").getValue();
+      // var sStartDate = oView.byId("startBusinessTrip").getValue();
+      // var sEndDate = oView.byId("endBusinessTrip").getValue();
+      // Get the user-entered date in the display format
+      var sStartDate = oView.byId("startBusinessTrip").getValue();
+      var sEndDate = oView.byId("endBusinessTrip").getValue();
+      
+      // Convert the dates to backend format
+      var sBackendStartDate = this.convertDateToBackendFormat(sStartDate);
+      var sBackendEndDate = this.convertDateToBackendFormat(sEndDate);
+      var sExpensesId = oDetailsModel.EXPENSESID;
+      // var sAccepted = oDetailsModel.ACCEPTED;
+  
+      if (!sEmpId || !sEmpId) {
+          sap.m.MessageToast.show("Missing trip details. Cannot proceed with the update.");
+          return;
+      }
+  
+      var oModel = this.getOwnerComponent().getModel();
+  
+      var sPath = `/Emp_TripSet(PERSONAL_NUMBER='${sEmpId}',TRIPID='${sEmpId}')`;
+  
+      var oUpdatedData = {
+          PERSONAL_NUMBER: sEmpId,
+          TRIPID: sTripId,
+          EXPENSESID: sExpensesId,
+          REQUESTER: sRequestor,
+          START_DATE: sBackendStartDate,
+          END_DATE: sBackendEndDate,
+          ACCEPTED: 'in process',
+          REASON: sReasonForTravel,
+      };
+  
+      oModel.update(sPath, oUpdatedData, {
+          success: function() {
+              sap.m.MessageToast.show("Trip details updated successfully!");
+              oModel.refresh(true);
+          },
+          error: function(oError) {
+              sap.m.MessageToast.show("Failed to update trip details. Please try again.");
+              console.error("Error updating trip details:", oError);
+          }
+      });
+  }
+      
+
+      
     });
 }
 

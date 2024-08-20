@@ -1,32 +1,31 @@
 <mvc:View controllerName="bts.btsapp.controller.User"
     xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
     xmlns="sap.m"
-    xmlns:l="sap.ui.layout"
-	xmlns:u="sap.ui.unified">
+    xmlns:h="sap.ui.layout"
+    xmlns:u="sap.ui.unified">
+
+    <!-- Existing Panel for My Business Trips -->
     <Panel 
         headerText="{i18n>MyBusinessTripsText}"
         class="sapUiResponsiveMargin"
         width="auto">
 
+        <headerToolbar>
+            <Toolbar>
+                <Title text="{i18n>MyBusinessTripsText}" />
+                <ToolbarSpacer />
+                
+                   
+                <Button text="Logout" press="onLogout" type="Emphasized" />
+            </Toolbar>
+        </headerToolbar>
 
-        
-                    <l:VerticalLayout>
-                    <u:FileUploader
-                        id="fileUploader"
-                        name="myFileUpload"
-                        uploadUrl="/sap/opu/odata/sap/ZMHP_BUSINESS_TRIPS_SRV/Upload_FileSet"
-                        tooltip="Upload your file to the local server"
-                        uploadComplete="handleUploadComplete"/>
-                    <Button
-                        text="Upload File"
-                        press="handleUploadPress"/>
-	                </l:VerticalLayout>
-
+        <!-- IconTabBar for Filter Selection -->
         <IconTabBar id="idIconTabBar"
                     select=".onFilterSelect"
-                    class="sapUiResponsiveContentPadding">
-
-
+                    class="sapUiResponsiveContentPadding"
+                    expandable="true"
+                    expanded="false">
             <items>
                 <IconTabFilter
                     text="All"
@@ -115,12 +114,31 @@
             </items>
         </IconTabBar>
 
-        <Button text="Logout" press="onLogout" type="Emphasized" />
-
+        <!-- Table for displaying Business Trips -->
         <Table
             id="btTable"
-            headerText="All of your business trips are displayed below"
             items="{myTrips>/combinedData}">
+            
+            <headerToolbar>
+			<OverflowToolbar>
+          
+            <Title text="All of your business trips are displayed below" level="H2"/>
+                 <ToolbarSpacer ></ToolbarSpacer>
+                  <HBox  alignContent="End">
+                    <u:FileUploader
+                        id="fileUploader"
+                        name="myFileUpload"
+                        uploadUrl="/sap/opu/odata/sap/ZMHP_BUSINESS_TRIPS_SRV/Upload_FileSet"
+                        tooltip="Upload your file to the local server"
+                        uploadComplete="handleUploadComplete"/>
+                    <Button
+                        text="Upload File"
+                        press="handleUploadPress"/>
+                    </HBox>
+               
+			</OverflowToolbar>
+		</headerToolbar>
+
             <columns>
                 <Column>
                     <header>

@@ -127,7 +127,7 @@ sap.ui.define(
         // Initialise router
         var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
 
-        var oModel = this.getOwnerComponent().getModel("mainServiceModel");
+        var oModel = this.getOwnerComponent().getModel();
         var sUsername = this.byId("usernameSignUp").getValue();
         var sPassword = this.byId("passwordSignUp").getValue();
         var sConfirmPassword = this.byId("passwordConfirmSignUp").getValue();
