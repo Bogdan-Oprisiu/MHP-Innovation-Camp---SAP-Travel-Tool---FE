@@ -199,13 +199,13 @@ sap.ui.define(
 
         var aFilters = [];
         if (sKey === "Ok") {
-          aFilters.push(new Filter("ACCEPTED", FilterOperator.EQ, "approved"));
-        } else if (sKey === "In process") {
+          aFilters.push(new Filter("ACCEPTED", FilterOperator.Contains, "approved"));
+        } else if (sKey === "Pending") {
           aFilters.push(
-            new Filter("ACCEPTED", FilterOperator.EQ, "in process")
+            new Filter("ACCEPTED", FilterOperator.Contains, "pending")
           );
         } else if (sKey === "Denied") {
-          aFilters.push(new Filter("ACCEPTED", FilterOperator.EQ, "denied"));
+          aFilters.push(new Filter("ACCEPTED", FilterOperator.Contains, "denied"));
         }
 
         oBinding.filter(aFilters);
@@ -271,7 +271,7 @@ sap.ui.define(
       
 
       onSearchInProcess: function (oEvent) {
-        var oFilterBar = this.byId("filterBarInProcess");
+        var oFilterBar = this.byId("filterBarPending");
         var aFilters = [];
 
         // Extract values from the FilterBar controls
@@ -280,7 +280,7 @@ sap.ui.define(
         var sDate = oFilterBar.getFilterGroupItems()[2].getControl().getDateValue();
 
         // Ensure status filter is applied
-        aFilters.push(new Filter("ACCEPTED", FilterOperator.EQ, "in process"));
+        aFilters.push(new Filter("ACCEPTED", FilterOperator.EQ, "pending"));
 
         if (sName) {
           aFilters.push(new Filter("FIRST_NAME", FilterOperator.Contains, sName));
@@ -367,6 +367,17 @@ sap.ui.define(
         var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
         oRouter.navTo("RouteUser");
       },
+
+      formatValueUpToFirstSpace: function (sValue) {
+        if (sValue) {
+          var iSpaceIndex = sValue.indexOf(' ');
+          if (iSpaceIndex !== -1) {
+            return sValue.substring(0, iSpaceIndex);
+          }
+          return sValue; // Return the full string if no space is found.
+        }
+        return ''; // Return an empty string if sValue is null or undefined.
+      }
     });
   }
 ); 

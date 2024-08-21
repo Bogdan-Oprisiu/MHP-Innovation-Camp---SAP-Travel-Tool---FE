@@ -1,7 +1,14 @@
 <mvc:View xmlns:mdc="sap.ui.mdc" controllerName="bts.btsapp.controller.Manager"
     xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
     xmlns="sap.m">
-    <Panel 
+
+    <ScrollContainer
+		height="100%"
+		width="100%"
+		vertical="true"
+		focusable="true">
+
+            <Panel 
         headerText="{i18n>managerPanel}"
         class="sapUiResponsiveMargin"
         width="auto">
@@ -80,25 +87,25 @@
                 <IconTabFilter
                     icon="sap-icon://in-progress"
                     iconColor="Critical"
-                    text="In process"
-                    key="In process" >
+                    text="Pending"
+                    key="Pending" >
                     
-                    <fb:FilterBar id="filterBarInProcess" xmlns:fb="sap.ui.comp.filterbar"
-                        reset="onResetInProcess" search="onSearchInProcess" showRestoreButton="true" showClearButton="true" useToolbar="false" showToolbar="false" showAdaptFiltersButton="false">
+                    <fb:FilterBar id="filterBarPending" xmlns:fb="sap.ui.comp.filterbar"
+                        reset="onResetPending" search="onSearchPending" showRestoreButton="true" showClearButton="true" useToolbar="false" showToolbar="false" showAdaptFiltersButton="false">
                         <fb:filterGroupItems>
-                            <fb:FilterGroupItem groupName="__ALL" name="nameInProcess" label="Name" visibleInFilterBar="true">
+                            <fb:FilterGroupItem groupName="__ALL" name="namePending" label="Name" visibleInFilterBar="true">
                                     <fb:control>
-                                        <Input id="nameFilterInProcess" width="15%" />
+                                        <Input id="nameFilterPending" width="15%" />
                                     </fb:control>
                                 </fb:FilterGroupItem>
-                            <fb:FilterGroupItem groupName="__ALL" name="locationInProcess" label="Location" visibleInFilterBar="true">
+                            <fb:FilterGroupItem groupName="__ALL" name="locationPending" label="Location" visibleInFilterBar="true">
                                 <fb:control>
-                                    <Input id="locationFilterInProcess" width="15%" />
+                                    <Input id="locationFilterPending" width="15%" />
                                 </fb:control>
                             </fb:FilterGroupItem>
-                            <fb:FilterGroupItem groupName="__ALL" name="dateInProcess" label="Date" visibleInFilterBar="true">
+                            <fb:FilterGroupItem groupName="__ALL" name="datePending" label="Date" visibleInFilterBar="true">
                                 <fb:control>
-                                    <DatePicker id="dateFilterInProcess" width="15%" />
+                                    <DatePicker id="dateFilterPending" width="15%" />
                                 </fb:control>
                             </fb:FilterGroupItem>
                         </fb:filterGroupItems>
@@ -182,10 +189,14 @@
                             formatter: '.formatDate'
                         }" />
                         <Text text="{allTrips>TOTAL_PRICE}" />
-                        <Text text="{allTrips>ACCEPTED}" />
+                        <Text text="{path: 'allTrips>ACCEPTED', formatter: '.formatValueUpToFirstSpace'}" />
+
                     </cells>
                 </ColumnListItem>
             </items>
         </Table>
-    </Panel>   
+    </Panel>
+
+    </ScrollContainer>
+   
 </mvc:View>

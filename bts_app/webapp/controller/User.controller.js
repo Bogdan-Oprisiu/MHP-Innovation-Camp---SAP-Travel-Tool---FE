@@ -226,12 +226,12 @@ sap.ui.define(
  
         if (sKey === "all") {
           oBinding.filter([]);
-        } else if (sKey === "in process") {
-          aFilters.push(new Filter("ACCEPTED", FilterOperator.EQ, "in process"));
+        } else if (sKey === "pending") {
+          aFilters.push(new Filter("ACCEPTED", FilterOperator.Contains, "pending"));
         } else if (sKey === "approved") {
-          aFilters.push(new Filter("ACCEPTED", FilterOperator.EQ, "approved"));
+          aFilters.push(new Filter("ACCEPTED", FilterOperator.Contains, "approved"));
         } else if (sKey === "denied") {
-          aFilters.push(new Filter("ACCEPTED", FilterOperator.EQ, "denied"));
+          aFilters.push(new Filter("ACCEPTED", FilterOperator.Contains, "denied"));
         }
 
         oBinding.filter(aFilters);
@@ -287,7 +287,7 @@ sap.ui.define(
       },
 
       onSearchInProcess: function (oEvent) {
-        var oFilterBar = this.byId("filterBarInProcess");
+        var oFilterBar = this.byId("filterBarPending");
         var aFilters = [];
 
         // Extract values from the FilterBar controls
@@ -295,7 +295,7 @@ sap.ui.define(
         var sDate = oFilterBar.getFilterGroupItems()[1].getControl().getDateValue();
 
         // Ensure status filter is applied
-        aFilters.push(new Filter("ACCEPTED", FilterOperator.EQ, "in process"));
+        aFilters.push(new Filter("ACCEPTED", FilterOperator.EQ, "pending"));
 
         if (sLocation) {
           aFilters.push(new Filter("CITY", FilterOperator.Contains, sLocation));
