@@ -69,7 +69,7 @@
                         </f:FormElement>
                         <f:FormElement label="Phone Number">
                             <f:fields>
-                                <Input value="{detail>/PHONE}" id="phoneNumber"/>
+                                <Input value="{detail>/PHONE}" id="phoneNumber" editable="false"/>
                             </f:fields>
                         </f:FormElement>
                     </f:formElements>
@@ -106,7 +106,7 @@
                     <f:formElements>
                         <f:FormElement label="Total Cost">
                             <f:fields>
-                                <Input value="{detail>/TOTAL_PRICE}" id="totalCost" editable="false"/>
+                                <Input value="{detail>/TOTAL_EXPENSES}" id="totalCost" editable="false"/>
                             </f:fields>
                         </f:FormElement>
                         <f:FormElement label="Start Business Trip">
@@ -126,7 +126,7 @@
                     </f:FormElement>
                         <f:FormElement label="Advance Payment Needed">
                             <f:fields>
-                                <Input value="{detail>/ADVANCED_PAYMENT}" id="advancePaymentNeeded"/>
+                               <Input value="{path: 'detail>/ADVANCED_PAYMENT', formatter: '.formatAdvancedPayment'}" id="advancePaymentNeeded" editable="false"/>
                             </f:fields>
                         </f:FormElement>
                     </f:formElements>

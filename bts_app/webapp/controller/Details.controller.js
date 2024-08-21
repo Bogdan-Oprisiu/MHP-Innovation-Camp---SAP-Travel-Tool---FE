@@ -13,52 +13,39 @@ sap.ui.define(
             (oEvent) => this._onObjectMatched(oEvent),
             this
           );
+          
       },
+      
+      formatAdvancedPayment: function (sValue) {
+        return sValue === "X";
+    },
 
+    
       _onObjectMatched: function (oEvent) {
-        var sEmpId = oEvent.getParameter("arguments").empId;
-        var sBtId = oEvent.getParameter("arguments").btId;
+        var sEmpId = oEvent.getParameter("arguments").empId.trim();
+        var sBtId = oEvent.getParameter("arguments").btId.trim();
 
-        var oDetails = new JSONModel();
-        oDetails.setData({ sEmployeeId: sEmpId, sTripId: sBtId });
+        console.log(sEmpId);
+        console.log(sBtId);
+    
+        var oModel = this.getOwnerComponent().getModel();
+        var oSessionModel = this.getOwnerComponent().getModel("session");
+        var oSessionData = oSessionModel.getData();
 
-        this.getView().setModel(oDetails, "oDetails");
-
-        // Determine if we should use the 'myTrips' or 'allTrips' model
-        var oMyTripsModel = this.getOwnerComponent().getModel("myTrips");
-        var oAllTripsModel = this.getOwnerComponent().getModel("allTrips");
-
-        var oModel =
-          oMyTripsModel.getData() && oMyTripsModel.getData().combinedData
-            ? oMyTripsModel
-            : oAllTripsModel;
-
-        if (!oModel) {
-          console.error("Neither myTrips nor allTrips model is available");
-          return;
-        }
-
-        var aCombinedData = oModel.getProperty("/combinedData");
-        if (!aCombinedData) {
-          console.error("combinedData is not available in the selected model");
-          console.log("Log");
-          var oSessionModel = this.getOwnerComponent().getModel("session");
-          this.getOwnerComponent().getRouter().navTo("RouteUser");
-          return;
-        }
-
-        var oSelectedTrip = aCombinedData.find((trip) => {
-          return trip.PERSONAL_NUMBER === sEmpId && trip.TRIPID === sBtId;
+        var sPath = "/TripDetailsSet(PERSONAL_NUMBER='" + sEmpId + "',TRIPID='" + sBtId + "')";
+    
+        // Read the specific trip data from the backend
+        oModel.read(sPath, {
+            success: (oData) => {
+              console.log("Retrieved Data:", oData);
+                var oDetailModel = new JSONModel(oData);
+                this.getView().setModel(oDetailModel, "detail");
+            },
+            error: (oError) => {
+                console.error("Error fetching trip data:", oError);
+            }
         });
-
-        if (!oSelectedTrip) {
-          console.error("Selected trip not found in combinedData");
-          return;
-        }
-
-        var oDetailModel = new JSONModel(oSelectedTrip);
-        this.getView().setModel(oDetailModel, "detail");
-      },
+    },
 
       onNavBack: function () {
         console.log("Log");
@@ -129,8 +116,9 @@ sap.ui.define(
       _updateTripStatus: function (status) {
         var oView = this.getView();
 
-        var sEmpId = this.getView().getModel("oDetails").getProperty("/sEmployeeId");
-        var sTripId = this.getView().getModel("oDetails").getProperty("/sTripId");
+
+        var sEmpId = this.getView().getModel("detail").getData().PERSONAL_NUMBER.trim();
+        var sTripId = this.getView().getModel("detail").getData().TRIPID.trim();
         var oDetailsModel = this.getOwnerComponent().getModel("detail");
 
         console.log(oDetailsModel);
@@ -144,7 +132,7 @@ sap.ui.define(
         var sBackendStartDate = this.convertDateToBackendFormat(sStartDate);
         var sBackendEndDate = this.convertDateToBackendFormat(sEndDate);
 
-        if (!sEmpId || !sEmpId) {
+        if (!sEmpId || !sTripId) {
           sap.m.MessageToast.show("Missing trip details. Cannot proceed with the update.");
           return;
         }

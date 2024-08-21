@@ -198,7 +198,7 @@
                             path: 'myTrips>START_DATE',
                             formatter: '.formatDate'
                         }" />
-                        <Text text="{myTrips>TOTAL_PRICE}" />
+                        <Text text="{myTrips>TOTAL_EXPENSES}" />
                         <Text text="{myTrips>ACCEPTED}" />
                         <Text text="{
                             path: 'myTrips>ACCEPTED',

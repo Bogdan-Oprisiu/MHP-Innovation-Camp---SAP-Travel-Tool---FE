@@ -18,6 +18,8 @@
                 <Title text="{i18n>MyBusinessTripsText}" />
                 <ToolbarSpacer />
                 <Button text="Logout" press="onLogout" type="Emphasized" />
+                <Button text="Switch to user's view" press="onSwitchRole" type="Emphasized" />
+
             </Toolbar>
         </headerToolbar>
 
@@ -190,7 +192,6 @@
                         }" />
                         <Text text="{allTrips>TOTAL_PRICE}" />
                         <Text text="{path: 'allTrips>ACCEPTED', formatter: '.formatValueUpToFirstSpace'}" />
-
                     </cells>
                 </ColumnListItem>
             </items>
