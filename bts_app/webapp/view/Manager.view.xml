@@ -190,7 +190,7 @@
                             path: 'allTrips>START_DATE',
                             formatter: '.formatDate'
                         }" />
-                        <Text text="{allTrips>TOTAL_PRICE}" />
+                        <Text text="{allTrips>TOTAL_EXPENSES}" />
                         <Text text="{path: 'allTrips>ACCEPTED', formatter: '.formatValueUpToFirstSpace'}" />
                     </cells>
                 </ColumnListItem>
