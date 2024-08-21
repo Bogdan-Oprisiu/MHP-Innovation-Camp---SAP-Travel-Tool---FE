@@ -23,7 +23,7 @@ sap.ui.define(
         // Attach pattern-matched event to the route
         var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
         oRouter
-          .getRoute("RouteManager")
+          .getRoute("RouteUser")
           .attachPatternMatched(
             (oEvent) => this._onObjectMatched(oEvent),
             this

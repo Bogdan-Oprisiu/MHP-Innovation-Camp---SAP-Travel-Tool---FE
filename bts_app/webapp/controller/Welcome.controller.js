@@ -98,7 +98,7 @@ sap.ui.define(
           },
           error: function (oError) {
             console.error("Login failed:", oError);
-            MessageToast.show("Failed to log in. Please try again later.");
+            MessageToast.show("Invalid credentials");
           },
         });
       },
@@ -117,7 +117,10 @@ sap.ui.define(
         // Initialise router
         var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
 
+        // Access the OData model
         var oModel = this.getOwnerComponent().getModel();
+        var oModel = this.getOwnerComponent().getModel("mainServiceModel");
+        var oSessionModel = this.getOwnerComponent().getModel("session");
         var sUsername = this.byId("usernameSignUp").getValue();
         var sPassword = this.byId("passwordSignUp").getValue();
         var sConfirmPassword = this.byId("passwordConfirmSignUp").getValue();
@@ -128,36 +131,63 @@ sap.ui.define(
           return;
         }
 
-        // Fetch from the OData service
+        // Use filter to check if the username already exists
+        var oFilter = new sap.ui.model.Filter(
+          "USERNAME",
+          sap.ui.model.FilterOperator.EQ,
+          sUsername
+        );
+
+        // Check if the username already exists
         oModel.read("/EmployeeSet", {
+          filters: [oFilter],
           success: (oData) => {
-            var iMaxPersonalNumber = 0;
-            oData.results.forEach(function (employee) {
-              var currentNumber = parseInt(employee.PERSONAL_NUMBER);
-              if (currentNumber > iMaxPersonalNumber) {
-                iMaxPersonalNumber = currentNumber;
-              }
-            });
+            if (oData.results.length > 0) {
+              // Username already exists
+              sap.m.MessageToast.show(
+                "Username already taken. Please choose another one."
+              );
+            } else {
+              // Generate a random personal number
+              var iRandomPersonalNumber = Math.floor(Math.random() * 100000);
 
-            var oNewUser = {
-              PERSONAL_NUMBER: String(iMaxPersonalNumber + 1),
-              USERNAME: sUsername,
-              PASSWORD: sPassword,
-              IS_MANAGER: false,
-            };
+              // The generated personal number is unique, proceed with user creation
+              var oNewUser = {
+                PERSONAL_NUMBER: String(iRandomPersonalNumber),
+                USERNAME: sUsername,
+                PASSWORD: sPassword,
+                IS_MANAGER: false,
+              };
 
-            // Create the new user
-            oModel.create("/EmployeeSet", oNewUser, {
-              success: function () {
-                sap.m.MessageToast.show("User registered successfully.");
-                oRouter.navTo("RouteUser");
-              },
-              error: function (oError) {
-                sap.m.MessageToast.show(
-                  "Registration failed. " + oError.message
-                );
-              },
-            });
+              // Create the new user
+              oModel.create("/EmployeeSet", oNewUser, {
+                success: function () {
+                  sap.m.MessageToast.show("User registered successfully.");
+                  oRouter.navTo("RouteUser");
+                  // Authentication successful, update session model and cookies
+                  oSessionModel.setData({
+                    authenticated: true,
+                    username: oData.USERNAME,
+                    personalNumber: oData.PERSONAL_NUMBER,
+                    isManager: oData.IS_MANAGER,
+                  });
+
+                  // Set cookies
+                  CookieUtils.setCookie("username", oData.USERNAME, 30);
+                  CookieUtils.setCookie(
+                    "personalNumber",
+                    oData.PERSONAL_NUMBER,
+                    30
+                  );
+                  CookieUtils.setCookie("isManager", oData.IS_MANAGER, 30);
+                },
+                error: function (oError) {
+                  sap.m.MessageToast.show(
+                    "Registration failed. " + oError.message
+                  );
+                },
+              });
+            }
           },
           error: (oError) => {
             sap.m.MessageToast.show(
