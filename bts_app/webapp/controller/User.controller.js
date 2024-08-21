@@ -20,8 +20,6 @@ sap.ui.define(
 
     return Controller.extend("bts.btsapp.controller.User", {
       onInit: function () {
-        this._clearManagerModel();
-
         var oSessionModel = this.getOwnerComponent().getModel("session");
         var oSessionData = oSessionModel.getData();
 
@@ -33,7 +31,7 @@ sap.ui.define(
       },
 
       _clearManagerModel: function () {
-        var oAllTripsModel = this.getOwnerComponent().getModel("allTrips");
+        var oAllTripsModel = this.getOwnerComponent().getModel("myTrips");
         if (oAllTripsModel) {
           oAllTripsModel.setData({});
         }
@@ -47,141 +45,33 @@ sap.ui.define(
           this._fetchData();
         }
       },
-
       _fetchData: function () {
         var oModel = this.getOwnerComponent().getModel();
         var oSessionModel = this.getOwnerComponent().getModel("session");
         var oSessionData = oSessionModel.getData();
 
-        var tripData = {
-          emp: [],
-          empTrips: [],
-          trips: [],
-          expenses: [],
-          combinedData: [],
-        };
-
-        var combineData = () => {
-          tripData.combinedData = tripData.empTrips.map((empTrip) => {
-            let trip = tripData.trips.find(
-              (trip) => trip.TRIPID === empTrip.TRIPID
-            );
-            let expense = tripData.expenses.find(
-              (expense) =>
-                expense.EXPENSESID.trim() === empTrip.EXPENSESID.trim()
-            );
-            let emp = tripData.emp.find(
-              (emp) => emp.PERSONAL_NUMBER === empTrip.PERSONAL_NUMBER
-            );
-
-            // Calculate the total price for expenses
-            let totalPrice = 0;
-            if (expense) {
-              totalPrice =
-                parseFloat(expense.DIEM_RATE) +
-                parseFloat(expense.HOTEL_COSTS) +
-                parseFloat(expense.TRAIN_TICKETS) +
-                parseFloat(expense.RENTAL_CAR) +
-                parseFloat(expense.GAS_COSTS) +
-                parseFloat(expense.BANK_CHARGES) +
-                parseFloat(expense.BUSINESS_MEALS) +
-                parseFloat(expense.FOOD_BEVERAGES) +
-                parseFloat(expense.IT_SUPPLIES) +
-                parseFloat(expense.OFFICE_SUPPLIES) +
-                parseFloat(expense.AIR_FARE);
+        
+    
+        // Filter based on PERSONAL_NUMBER
+        var sFilter = "PERSONAL_NUMBER eq '" + oSessionData.personalNumber + "'";
+        
+ 
+        oModel.read("/CombinedTripDataSet", {
+            filters: [new Filter("PERSONAL_NUMBER", FilterOperator.EQ, oSessionData.personalNumber)],
+            success: (oData) => {
+                var oViewModel = this.getView().getModel("myTrips");
+    
+              
+                oViewModel.setData({
+                    combinedData: oData.results
+                });
+            },
+            error: (oError) => {
+                console.error("Error fetching CombinedTripDataSet data:", oError);
             }
-
-            return {
-              ...empTrip,
-              ...trip,
-              ...expense,
-              ...emp,
-              TOTAL_PRICE: totalPrice,
-            };
-          });
-        };
-
-        // Function to update the view model
-        var updateViewModel = () => {
-          combineData();
-          var oViewModel = this.getView().getModel("myTrips");
-          oViewModel.setData({
-            empTrips: tripData.empTrips,
-            trips: tripData.trips,
-            expenses: tripData.expenses,
-            combinedData: tripData.combinedData,
-          });
-          // console.log(tripData);
-        };
-
-        // Fetch EmpTripSet data
-        oModel.read("/Emp_TripSet", {
-          success: (oData) => {
-            // console.log(oData.results);
-            // Filter the data based on PERSONAL_NUMBER matching with session data
-            tripData.empTrips = oData.results.filter((empTrip) => {
-              return empTrip.PERSONAL_NUMBER === oSessionData.personalNumber;
-            });
-
-            // Fetch TripSet data after Emp_TripSet is processed
-            oModel.read("/TripSet", {
-              success: (oData) => {
-                // console.log(oData.results);
-                tripData.trips = oData.results.filter((trip) => {
-                  // Check if the tripId is in the filtered empTrips data
-                  return tripData.empTrips.some(
-                    (empTrip) => empTrip.TRIPID === trip.TRIPID
-                  );
-                });
-
-                // Fetch ExpensesSet data after TripSet is processed
-                oModel.read("/ExpensesSet", {
-                  success: (oData) => {
-                    // console.log(oData.results);
-                    // Extract EXPENSESID values from empTrips
-                    var expenseIds = tripData.empTrips.map((empTrip) =>
-                      empTrip.EXPENSESID.trim()
-                    );
-
-                    // Filter ExpensesSet based on EXPENSESID in empTrips
-                    tripData.expenses = oData.results.filter((expense) => {
-                      return expenseIds.includes(expense.EXPENSESID.trim());
-                    });
-
-                    // Fetch EmployeeSet data after ExpensesSet is processed
-                    oModel.read("/EmployeeSet", {
-                      success: (oData) => {
-                        // console.log(oData.results);
-                        var employees = oData.results;
-                        // console.log(employees);
-                        tripData.emp = employees;
-
-                        // Update the view model after all data is fetched and processed
-                        updateViewModel();
-                      },
-                      error: (oError) => {
-                        console.error(
-                          "Error fetching EmployeeSet data:",
-                          oError
-                        );
-                      },
-                    });
-                  },
-                  error: (oError) => {
-                    console.error("Error fetching ExpensesSet data:", oError);
-                  },
-                });
-              },
-              error: (oError) => {
-                console.error("Error fetching TripSet data:", oError);
-              },
-            });
-          },
-          error: (oError) => {
-            console.error("Error fetching EmpTripSet data:", oError);
-          },
         });
-      },
+    },
+    
 
       onTableRowSelection: function (oEvent) {
         var oRouter = sap.ui.core.UIComponent.getRouterFor(this);

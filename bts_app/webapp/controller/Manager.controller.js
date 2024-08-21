@@ -28,154 +28,36 @@ sap.ui.define(
         var oModel = this.getOwnerComponent().getModel();
         var oSessionModel = this.getOwnerComponent().getModel("session");
 
-        var tripData = {
-          emp: [],
-          empTrips: [],
-          trips: [],
-          expenses: [],
-          teams: [],
-          combinedData: [],
-        };
 
-        var oAllTripsModel = this.getOwnerComponent().getModel("allTrips");
-        oAllTripsModel.setData(tripData);
+        var oSessionData = oSessionModel.getData();
+    
+        var sEmpId = oSessionData.personalNumber.trim();
+        
+        // Construct the path for the OData request with filter applied
+        var sPath = "/TripDetailsSet?$filter=PERSONAL_NUMBER eq '" + sEmpId + "'";
+        
+        // Log the constructed path for debugging
+        // console.log(sPath);
+      
+ 
+        oModel.read(sPath, {
+          success: (oData) => {
+            var oViewModel = this.getView().getModel("allTrips");
 
-        var combineData = () => {
-          // Find the team where the current manager is the supervisor
-          var managerTeam = tripData.teams.find((team) => {
-            return team.SUPERVISOR === oSessionModel.getData().username;
-          });
-
-          if (!managerTeam) {
-            console.error("No team found for the current manager.");
-            return;
-          }
-
-          // Filter the employees who are members of the manager's team
-          var subordinatePersonalNumbers = tripData.emp
-            .filter((emp) => emp.TEAMID === managerTeam.TEAMID)
-            .map((emp) => emp.PERSONAL_NUMBER);
-
-          // Filter the trips based on the subordinates' personal numbers
-          tripData.combinedData = tripData.empTrips
-            .filter((empTrip) => {
-              return subordinatePersonalNumbers.includes(
-                empTrip.PERSONAL_NUMBER.trim()
-              );
-            })
-            .map((empTrip) => {
-              let trip = tripData.trips.find(
-                (trip) => trip.TRIPID === empTrip.TRIPID
-              );
-              let expense = tripData.expenses.find(
-                (expense) =>
-                  expense.EXPENSESID.trim() === empTrip.EXPENSESID.trim()
-              );
-              let emp = tripData.emp.find(
-                (emp) =>
-                  emp.PERSONAL_NUMBER.trim() === empTrip.PERSONAL_NUMBER.trim()
-              );
-              let team = tripData.teams.find(
-                (team) => team.TEAMID === emp.TEAMID
-              );
-
-              let totalPrice = 0;
-              if (expense) {
-                totalPrice =
-                  parseFloat(expense.DIEM_RATE) +
-                  parseFloat(expense.HOTEL_COSTS) +
-                  parseFloat(expense.TRAIN_TICKETS) +
-                  parseFloat(expense.RENTAL_CAR) +
-                  parseFloat(expense.GAS_COSTS) +
-                  parseFloat(expense.BANK_CHARGES) +
-                  parseFloat(expense.BUSINESS_MEALS) +
-                  parseFloat(expense.FOOD_BEVERAGES) +
-                  parseFloat(expense.IT_SUPPLIES) +
-                  parseFloat(expense.OFFICE_SUPPLIES) +
-                  parseFloat(expense.AIR_FARE);
-              }
-
-              return {
-                ...emp,
-                ...empTrip,
-                ...trip,
-                ...expense,
-                team: team ? team.NAME : "No Team",
-                TOTAL_PRICE: totalPrice,
-              };
+            // Set the fetched data into the view model
+            oViewModel.setData({
+                combinedData: oData.results
             });
-
-          // Update the allTrips model with combined data
-          oAllTripsModel.setProperty("/combinedData", tripData.combinedData);
-          // console.log(oAllTripsModel.getData());
-        };
-
-        // Fetch EmpTripSet data
-        oModel.read("/Emp_TripSet", {
-          success: (oEmpTripData) => {
-            var empTrips = oEmpTripData.results;
-            tripData.empTrips = empTrips;
-
-            // Fetch TripSet data
-            oModel.read("/TripSet", {
-              success: (oTripData) => {
-                var trips = oTripData.results;
-                tripData.trips = trips;
-
-                // Fetch ExpensesSet data
-                oModel.read("/ExpensesSet", {
-                  success: (oExpensesData) => {
-                    var expenses = oExpensesData.results;
-                    tripData.expenses = expenses;
-
-                    // Fetch EmployeeSet data
-                    oModel.read("/EmployeeSet", {
-                      success: (oEmployeeData) => {
-                        var employees = oEmployeeData.results;
-                        tripData.emp = employees;
-
-                        oModel.read("/TeamSet", {
-                          success: (oTeamData) => {
-                            var teams = oTeamData.results;
-                            tripData.teams = teams;
-
-                            // Combine data after fetching all sets
-                            combineData();
-                          },
-                          error: (oError) => {
-                            console.error(
-                              "Error fetching TeamSet data:",
-                              oError
-                            );
-                          },
-                        });
-                      },
-                      error: (oError) => {
-                        console.error(
-                          "Error fetching EmployeeSet data:",
-                          oError
-                        );
-                      },
-                    });
-                  },
-                  error: (oError) => {
-                    console.error("Error fetching ExpensesSet data:", oError);
-                  },
-                });
-              },
-              error: (oError) => {
-                console.error("Error fetching TripSet data:", oError);
-              },
-            });
-          },
-          error: (oError) => {
-            console.error("Error fetching EmpTripSet data:", oError);
-          },
+            console.log(oViewModel)
+        },
+            error: (oError) => {
+                console.error("Error fetching CombinedManagerTripDataSet data:", oError);
+            }
         });
-      },
+},
 
       _clearUserModel: function () {
-        var oMyTripsModel = this.getOwnerComponent().getModel("myTrips");
+        var oMyTripsModel = this.getOwnerComponent().getModel("allTrips");
         if (oMyTripsModel) {
           oMyTripsModel.setData({});
         }
@@ -363,10 +245,11 @@ sap.ui.define(
         window.location.reload(true);
       },
 
-      onViewMyTrips: function () {
+
+      onSwitchRole: function (){
         var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
         oRouter.navTo("RouteUser");
-      },
+      }
     });
   }
 ); 
