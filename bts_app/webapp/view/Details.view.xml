@@ -7,7 +7,13 @@
     xmlns:core="sap.ui.core"
     displayBlock="true">
 
-    <VBox class="sapUiSmallMargin">
+    <ScrollContainer
+		height="100%"
+		width="100%"
+		vertical="true"
+		focusable="true">
+
+            <VBox class="sapUiSmallMargin">
 
         <Toolbar>
             <Title text="Business Trip Details" level="H2"></Title>
@@ -129,4 +135,19 @@
             </f:formContainers>
         </f:Form>
     </VBox> 
+
+    <Dialog id="declineDialog" title="Provide Reason for Decline">
+            <VBox class="sapUiSmallMargin">
+                <Input id="declineReasonInput" placeholder="Enter reason here" />
+            </VBox>
+            <endButton>
+                <Button text="Submit" press="handleSubmitDeclineReason" />
+            </endButton>
+            <beginButton>
+                <Button text="Cancel" press="handleDeclineDialogCancel" />
+            </beginButton>
+        </Dialog>
+
+    </ScrollContainer>    
+
 </mvc:View>

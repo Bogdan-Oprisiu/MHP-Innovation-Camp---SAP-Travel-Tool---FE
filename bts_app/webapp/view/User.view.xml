@@ -1,10 +1,17 @@
 <mvc:View controllerName="bts.btsapp.controller.User"
     xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
     xmlns="sap.m"
+    xmlns:core="sap.ui.core"
     xmlns:h="sap.ui.layout"
     xmlns:u="sap.ui.unified">
 
-    <!-- Existing Panel for My Business Trips -->
+    <ScrollContainer
+		height="100%"
+		width="100%"
+		vertical="true"
+		focusable="true">
+
+            <!-- Existing Panel for My Business Trips -->
     <Panel 
         headerText="{i18n>MyBusinessTripsText}"
         class="sapUiResponsiveMargin"
@@ -119,7 +126,7 @@
             id="btTable"
             items="{myTrips>/combinedData}">
             
-            <headerToolbar>
+            <!-- <headerToolbar>
 			<OverflowToolbar>
           
             <Title text="All of your business trips are displayed below" level="H2"/>
@@ -137,7 +144,27 @@
                     </HBox>
                
 			</OverflowToolbar>
-		</headerToolbar>
+		</headerToolbar> -->
+
+            <headerToolbar>
+                <OverflowToolbar>
+                    <Title text="All of your business trips are displayed below" level="H2"/>
+                    <ToolbarSpacer></ToolbarSpacer>
+                    <Toolbar>
+                        <core:Icon src="sap-icon://attachment" />
+                        <u:FileUploader
+                            id="fileUploader"
+                            name="myFileUpload"
+                            uploadUrl="/sap/opu/odata/sap/ZMHP_BUSINESS_TRIPS_SRV/Upload_FileSet"
+                            tooltip="Upload your file to the local server"
+                            uploadComplete="handleUploadComplete"/>
+                        <Button
+                            text="Upload File"
+                            press="handleUploadPress"
+                            type="Emphasized"/>
+                    </Toolbar>
+                </OverflowToolbar>
+            </headerToolbar>
 
             <columns>
                 <Column>
@@ -181,5 +208,7 @@
                 </ColumnListItem>
             </items>
         </Table>
-    </Panel>   
+    </Panel> 
+
+    </ScrollContainer>  
 </mvc:View>
