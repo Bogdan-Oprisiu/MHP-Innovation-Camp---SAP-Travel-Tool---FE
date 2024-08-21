@@ -41,6 +41,9 @@ sap.ui.define(
         var aCombinedData = oModel.getProperty("/combinedData");
         if (!aCombinedData) {
           console.error("combinedData is not available in the selected model");
+          console.log("Log");
+          var oSessionModel = this.getOwnerComponent().getModel("session");
+          this.getOwnerComponent().getRouter().navTo("RouteUser");
           return;
         }
 
@@ -58,15 +61,13 @@ sap.ui.define(
       },
 
       onNavBack: function () {
+        console.log("Log");
         var oSessionModel = this.getOwnerComponent().getModel("session");
         var bIsManager = oSessionModel.getProperty("/isManager");
 
         var sRoute = bIsManager ? "RouteManager" : "RouteUser";
-        this.getOwnerComponent().getRouter().navTo(sRoute);
-     
-        oRouter.navTo("RouteWelcome");
         window.location.reload(true);
-        ////
+        this.getOwnerComponent().getRouter().navTo(sRoute);
       },
 
       formatDate: function (sDate) {
@@ -89,10 +90,40 @@ sap.ui.define(
 
       handleApprovePress: function () {
         this._updateTripStatus("approved");
+        this.getOwnerComponent().getRouter().navTo("RouteManager");
       },
 
       handleDeclinePress: function () {
-        this._updateTripStatus("denied");
+        var oView = this.getView();
+        var oDialog = oView.byId("declineDialog");
+        
+        if (!oDialog) {
+          // Create the dialog if it doesn't exist
+          oDialog = sap.ui.xmlfragment("bts.btsapp.view.DeclineDialog", this);
+          oView.addDependent(oDialog);
+        }
+        
+        oDialog.open();
+      },
+
+      handleSubmitDeclineReason: function () {
+        var oView = this.getView();
+        var sReasonForDecline = oView.byId("declineReasonInput").getValue();
+        
+        if (!sReasonForDecline) {
+          MessageToast.show("Please enter a reason for decline.");
+          return;
+        }
+        
+        this._updateTripStatus("denied - " + sReasonForDecline);
+        
+        // Close the dialog and navigate back after processing
+        oView.byId("declineDialog").close();
+        this.getOwnerComponent().getRouter().navTo("RouteManager");
+      },
+
+      handleDeclineDialogCancel: function () {
+        this.getView().byId("declineDialog").close();
       },
 
       _updateTripStatus: function (status) {
@@ -138,10 +169,12 @@ sap.ui.define(
           success: function () {
             sap.m.MessageToast.show("BT's status modified!");
             oModel.refresh(true);
+            navBack();
           },
           error: function (oError) {
             sap.m.MessageToast.show("Error");
             console.error("Error updating trip details:", oError);
+            navBack();
           },
         });
       },
@@ -155,7 +188,7 @@ sap.ui.define(
 
         var sReasonForTravel = oView.byId("reasonForTravel").getValue();
         var sRequestor = oView.byId("requestor").getValue();
-        // Get the user-entered date in the display format
+        
         var sStartDate = oView.byId("startBusinessTrip").getValue();
         var sEndDate = oView.byId("endBusinessTrip").getValue();
 
