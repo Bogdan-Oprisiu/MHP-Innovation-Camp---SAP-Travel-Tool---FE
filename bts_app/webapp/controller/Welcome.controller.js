@@ -48,52 +48,44 @@ sap.ui.define(
         var oModel = this.getOwnerComponent().getModel("mainServiceModel");
         var oSessionModel = this.getOwnerComponent().getModel("session");
 
-        // Acces the user input
+        // Access the user input
         var sUsername = this.byId("usernameLogIn").getValue();
         var sPassword = this.byId("passwordLogIn").getValue();
 
-        // Read all employees from the OData service
-        oModel.read("/EmployeeSet", {
+        // Check if username and password are not empty
+        if (!sUsername || !sPassword) {
+          MessageToast.show("Please enter both username and password.");
+          return;
+        }
+
+        // Call the function import for login
+        oModel.callFunction("/UserLogin", {
+          method: "GET",
+          urlParameters: {
+            USERNAME: sUsername,
+            PASSWORD: sPassword,
+          },
           success: function (oData) {
-            var oEmployeeData = oData.results;
-            var bAuthenticated = false;
-            var bIsManager = false;
+            if (oData && oData.PERSONAL_NUMBER) {
+              // Authentication successful, update session model and cookies
+              oSessionModel.setData({
+                authenticated: true,
+                username: oData.USERNAME,
+                personalNumber: oData.PERSONAL_NUMBER,
+                isManager: oData.IS_MANAGER,
+              });
 
-            // Search for matching credentials
-            for (var i = 0; i < oEmployeeData.length; i++) {
-              if (
-                oEmployeeData[i].USERNAME === sUsername &&
-                oEmployeeData[i].PASSWORD === sPassword
-              ) {
-                bAuthenticated = true;
-                bIsManager = oEmployeeData[i].IS_MANAGER;
+              // Set cookies
+              CookieUtils.setCookie("username", oData.USERNAME, 30);
+              CookieUtils.setCookie(
+                "personalNumber",
+                oData.PERSONAL_NUMBER,
+                30
+              );
+              CookieUtils.setCookie("isManager", oData.IS_MANAGER, 30);
 
-                oSessionModel.setData({
-                  authenticated: true,
-                  username: oEmployeeData[i].USERNAME,
-                  personalNumber: oEmployeeData[i].PERSONAL_NUMBER,
-                  isManager: oEmployeeData[i].IS_MANAGER,
-                });
-
-                // Set cookies
-                CookieUtils.setCookie("username", oEmployeeData[i].USERNAME, 7);
-                CookieUtils.setCookie(
-                  "personalNumber",
-                  oEmployeeData[i].PERSONAL_NUMBER,
-                  7
-                );
-                CookieUtils.setCookie(
-                  "isManager",
-                  oEmployeeData[i].IS_MANAGER,
-                  7
-                );
-
-                break;
-              }
-            }
-
-            if (bAuthenticated) {
-              if (bIsManager) {
+              // Navigate based on role
+              if (oData.IS_MANAGER) {
                 oRouter.navTo("RouteManager");
               } else {
                 oRouter.navTo("RouteUser");
@@ -105,10 +97,8 @@ sap.ui.define(
             }
           },
           error: function (oError) {
-            console.error("Error fetching employees data:", oError);
-            MessageToast.show(
-              "Failed to fetch data from server. Please try again later."
-            );
+            console.error("Login failed:", oError);
+            MessageToast.show("Failed to log in. Please try again later.");
           },
         });
       },
