@@ -1,5 +1,9 @@
 sap.ui.define(
-  ["sap/ui/core/mvc/Controller", "sap/ui/core/format/DateFormat", "sap/ui/model/json/JSONModel"],
+  [
+    "sap/ui/core/mvc/Controller",
+    "sap/ui/core/format/DateFormat",
+    "sap/ui/model/json/JSONModel",
+  ],
   function (Controller, DateFormat, JSONModel) {
     "use strict";
 
@@ -13,39 +17,36 @@ sap.ui.define(
             (oEvent) => this._onObjectMatched(oEvent),
             this
           );
-          
       },
-      
+
       formatAdvancedPayment: function (sValue) {
         return sValue === "X";
-    },
+      },
 
-    
       _onObjectMatched: function (oEvent) {
         var sEmpId = oEvent.getParameter("arguments").empId.trim();
         var sBtId = oEvent.getParameter("arguments").btId.trim();
 
-        console.log(sEmpId);
-        console.log(sBtId);
-    
         var oModel = this.getOwnerComponent().getModel();
-        var oSessionModel = this.getOwnerComponent().getModel("session");
-        var oSessionData = oSessionModel.getData();
+        var sPath =
+          "/TripDetailsSet(PERSONAL_NUMBER='" +
+          sEmpId +
+          "',TRIPID='" +
+          sBtId +
+          "')";
 
-        var sPath = "/TripDetailsSet(PERSONAL_NUMBER='" + sEmpId + "',TRIPID='" + sBtId + "')";
-    
         // Read the specific trip data from the backend
         oModel.read(sPath, {
-            success: (oData) => {
-              console.log("Retrieved Data:", oData);
-                var oDetailModel = new JSONModel(oData);
-                this.getView().setModel(oDetailModel, "detail");
-            },
-            error: (oError) => {
-                console.error("Error fetching trip data:", oError);
-            }
+          success: (oData) => {
+            // console.log("Retrieved Data:", oData);
+            var oDetailModel = new JSONModel(oData);
+            this.getView().setModel(oDetailModel, "detail");
+          },
+          error: (oError) => {
+            console.error("Error fetching trip data:", oError);
+          },
         });
-    },
+      },
 
       onNavBack: function () {
         console.log("Log");
@@ -71,7 +72,9 @@ sap.ui.define(
       convertDateToBackendFormat: function (sDate) {
         var oDisplayFormat = DateFormat.getDateInstance({ style: "medium" }); // Match the format used in the DatePicker
         var oDate = oDisplayFormat.parse(sDate);
-        var oBackendFormat = DateFormat.getDateInstance({ pattern: "yyyyMMdd" });
+        var oBackendFormat = DateFormat.getDateInstance({
+          pattern: "yyyyMMdd",
+        });
         return oBackendFormat.format(oDate);
       },
 
@@ -83,27 +86,27 @@ sap.ui.define(
       handleDeclinePress: function () {
         var oView = this.getView();
         var oDialog = oView.byId("declineDialog");
-        
+
         if (!oDialog) {
           // Create the dialog if it doesn't exist
           oDialog = sap.ui.xmlfragment("bts.btsapp.view.DeclineDialog", this);
           oView.addDependent(oDialog);
         }
-        
+
         oDialog.open();
       },
 
       handleSubmitDeclineReason: function () {
         var oView = this.getView();
         var sReasonForDecline = oView.byId("declineReasonInput").getValue();
-        
+
         if (!sReasonForDecline) {
           MessageToast.show("Please enter a reason for decline.");
           return;
         }
-        
+
         this._updateTripStatus("denied - " + sReasonForDecline);
-        
+
         // Close the dialog and navigate back after processing
         oView.byId("declineDialog").close();
         this.getOwnerComponent().getRouter().navTo("RouteManager");
@@ -116,8 +119,10 @@ sap.ui.define(
       _updateTripStatus: function (status) {
         var oView = this.getView();
 
-
-        var sEmpId = this.getView().getModel("detail").getData().PERSONAL_NUMBER.trim();
+        var sEmpId = this.getView()
+          .getModel("detail")
+          .getData()
+          .PERSONAL_NUMBER.trim();
         var sTripId = this.getView().getModel("detail").getData().TRIPID.trim();
         var oDetailsModel = this.getOwnerComponent().getModel("detail");
 
@@ -133,7 +138,9 @@ sap.ui.define(
         var sBackendEndDate = this.convertDateToBackendFormat(sEndDate);
 
         if (!sEmpId || !sTripId) {
-          sap.m.MessageToast.show("Missing trip details. Cannot proceed with the update.");
+          sap.m.MessageToast.show(
+            "Missing trip details. Cannot proceed with the update."
+          );
           return;
         }
 
@@ -170,13 +177,17 @@ sap.ui.define(
       handleModifyPress: function (oEvent) {
         var oView = this.getView();
 
-        var sEmpId = this.getView().getModel("oDetails").getProperty("/sEmployeeId");
-        var sTripId = this.getView().getModel("oDetails").getProperty("/sTripId");
+        var sEmpId = this.getView()
+          .getModel("oDetails")
+          .getProperty("/sEmployeeId");
+        var sTripId = this.getView()
+          .getModel("oDetails")
+          .getProperty("/sTripId");
         var oDetailsModel = this.getOwnerComponent().getModel("detail");
 
         var sReasonForTravel = oView.byId("reasonForTravel").getValue();
         var sRequestor = oView.byId("requestor").getValue();
-        
+
         var sStartDate = oView.byId("startBusinessTrip").getValue();
         var sEndDate = oView.byId("endBusinessTrip").getValue();
 
@@ -186,7 +197,9 @@ sap.ui.define(
         var sExpensesId = oDetailsModel.EXPENSESID;
 
         if (!sEmpId || !sEmpId) {
-          sap.m.MessageToast.show("Missing trip details. Cannot proceed with the update.");
+          sap.m.MessageToast.show(
+            "Missing trip details. Cannot proceed with the update."
+          );
           return;
         }
 
@@ -211,7 +224,9 @@ sap.ui.define(
             oModel.refresh(true);
           },
           error: function (oError) {
-            sap.m.MessageToast.show("Failed to update trip details. Please try again.");
+            sap.m.MessageToast.show(
+              "Failed to update trip details. Please try again."
+            );
             console.error("Error updating trip details:", oError);
           },
         });

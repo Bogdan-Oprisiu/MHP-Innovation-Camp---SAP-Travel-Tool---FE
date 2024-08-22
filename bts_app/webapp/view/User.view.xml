@@ -124,28 +124,10 @@
         <!-- Table for displaying Business Trips -->
         <Table
             id="btTable"
-            items="{myTrips>/combinedData}">
-            
-            <!-- <headerToolbar>
-			<OverflowToolbar>
-          
-            <Title text="All of your business trips are displayed below" level="H2"/>
-                 <ToolbarSpacer ></ToolbarSpacer>
-                  <HBox  alignContent="End">
-                    <u:FileUploader
-                        id="fileUploader"
-                        name="myFileUpload"
-                        uploadUrl="/sap/opu/odata/sap/ZMHP_BUSINESS_TRIPS_SRV/Upload_FileSet"
-                        tooltip="Upload your file to the local server"
-                        uploadComplete="handleUploadComplete"/>
-                    <Button
-                        text="Upload File"
-                        press="handleUploadPress"/>
-                    </HBox>
-               
-			</OverflowToolbar>
-		</headerToolbar> -->
-
+            items="{
+                    path:'/CombinedTripDataSet'
+                }"
+            >
             <headerToolbar>
                 <OverflowToolbar>
                     <Title text="All of your business trips are displayed below" level="H2"/>
@@ -191,18 +173,18 @@
             <items>
                 <ColumnListItem
                  type="Navigation"
-                 press="onTableRowSelection">
+                 press="onTableRowSelection"
+                 >
                     <cells>
-                        <Text text="{myTrips>CITY}" />
+                        <Text text="{CITY}" />
                         <Text text="{
-                            path: 'myTrips>START_DATE',
+                            path: 'START_DATE',
                             formatter: '.formatDate'
                         }" />
-                        <Text text="{myTrips>TOTAL_EXPENSES}" />
-                        <Text text="{myTrips>ACCEPTED}" />
+                        <Text text="{TOTAL_EXPENSES}" />
                         <Text text="{
-                            path: 'myTrips>ACCEPTED',
-                            formatter: '.formatStatus'
+                            path: 'ACCEPTED',
+                            formatter: '.formatValueUpToFirstSpace'
                         }" />
                     </cells>
                 </ColumnListItem>
