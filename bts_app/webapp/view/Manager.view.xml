@@ -150,10 +150,11 @@
 
         <Table
             id="btTable"
-
-            
             headerText="All business trips are displayed below"
-            items="{allTrips>/combinedData}">
+            items="{
+                path:'/TripDetailsSet'
+            }"
+            >
             <columns>
                  <Column>
                     <header>
@@ -184,20 +185,20 @@
             <items>
                 <ColumnListItem type="Navigation" press="onTableRowSelection">
                     <cells>
-                         <Text text="{allTrips>CITY}" />
-                        <Text text="{allTrips>FIRST_NAME}" />
+                         <Text text="{CITY}" />
+                        <Text text="{FIRST_NAME}" />
                         <Text text="{
-                            path: 'allTrips>START_DATE',
+                            path: 'START_DATE',
                             formatter: '.formatDate'
                         }" />
-                        <Text text="{allTrips>TOTAL_EXPENSES}" />
-                        <Text text="{path: 'allTrips>ACCEPTED', formatter: '.formatValueUpToFirstSpace'}" />
+
+                        <Text text="{TOTAL_EXPENSES}" />
+                        <Text text="{path: 'ACCEPTED', formatter: '.formatValueUpToFirstSpace'}" />
+
                     </cells>
                 </ColumnListItem>
             </items>
         </Table>
     </Panel>
-
     </ScrollContainer>
-   
 </mvc:View>

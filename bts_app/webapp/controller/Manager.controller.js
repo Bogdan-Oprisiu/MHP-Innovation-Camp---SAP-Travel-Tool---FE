@@ -19,48 +19,55 @@ sap.ui.define(
 
     return Controller.extend("bts.btsapp.controller.Manager", {
       onInit: function () {
-        this._clearUserModel();
-
+        // Attach pattern-matched event to the route
         var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
-        oRouter.getRoute("RouteManager").attachPatternMatched(this._onRouteMatched, this);
+        oRouter
+          .getRoute("RouteManager")
+          .attachPatternMatched(
+            (oEvent) => this._onObjectMatched(oEvent),
+            this
+          );
+      },
 
-        //
-        var oModel = this.getOwnerComponent().getModel();
+      _onObjectMatched: function (oEvent) {
+        // Retrieve session model to get the manager's personal number or other relevant details
         var oSessionModel = this.getOwnerComponent().getModel("session");
-
-
         var oSessionData = oSessionModel.getData();
-    
         var sEmpId = oSessionData.personalNumber.trim();
-        
-        // Construct the path for the OData request with filter applied
-        var sPath = "/TripDetailsSet?$filter=PERSONAL_NUMBER eq '" + sEmpId + "'";
-        
-        // Log the constructed path for debugging
-        // console.log(sPath);
-      
- 
-        oModel.read(sPath, {
-          success: (oData) => {
-            var oViewModel = this.getView().getModel("allTrips");
+        var oTable = this.byId("btTable");
 
-            // Set the fetched data into the view model
-            oViewModel.setData({
-                combinedData: oData.results
-            });
-            console.log(oViewModel)
-        },
-            error: (oError) => {
-                console.error("Error fetching CombinedManagerTripDataSet data:", oError);
-            }
+        // Force refresh of the OData model to ensure latest data is retrieved
+        this.getOwnerComponent().getModel().refresh(true);
+
+        // Example dynamic filter based on the manager's personal number
+        var oFilter = new Filter("PERSONAL_NUMBER", FilterOperator.EQ, sEmpId);
+
+        // Bind the items aggregation programmatically with a template and event handlers
+        oTable.bindItems({
+          path: "/TripDetailsSet",
+          filters: [oFilter],
+          template: new sap.m.ColumnListItem({
+            type: "Navigation",
+            press: this.onTableRowSelection.bind(this),
+            cells: [
+              new sap.m.Text({ text: "{CITY}" }),
+              new sap.m.Text({ text: "{FIRST_NAME}" }),
+              new sap.m.Text({
+                text: {
+                  path: "START_DATE",
+                  formatter: this.formatDate.bind(this),
+                },
+              }),
+              new sap.m.Text({ text: "{TOTAL_EXPENSES}" }),
+              new sap.m.Text({
+                text: {
+                  path: "ACCEPTED",
+                  formatter: this.formatValueUpToFirstSpace.bind(this),
+                },
+              }),
+            ],
+          }),
         });
-},
-
-      _clearUserModel: function () {
-        var oMyTripsModel = this.getOwnerComponent().getModel("allTrips");
-        if (oMyTripsModel) {
-          oMyTripsModel.setData({});
-        }
       },
 
       formatDate: function (sDate) {
@@ -81,18 +88,21 @@ sap.ui.define(
 
         var aFilters = [];
         if (sKey === "Ok") {
-          aFilters.push(new Filter("ACCEPTED", FilterOperator.Contains, "approved"));
+          aFilters.push(
+            new Filter("ACCEPTED", FilterOperator.Contains, "approved")
+          );
         } else if (sKey === "Pending") {
           aFilters.push(
             new Filter("ACCEPTED", FilterOperator.Contains, "pending")
           );
         } else if (sKey === "Denied") {
-          aFilters.push(new Filter("ACCEPTED", FilterOperator.Contains, "denied"));
+          aFilters.push(
+            new Filter("ACCEPTED", FilterOperator.Contains, "denied")
+          );
         }
 
         oBinding.filter(aFilters);
       },
-
 
       onSearchAll: function (oEvent) {
         var oFilterBar = this.byId("filterBarAll");
@@ -100,19 +110,31 @@ sap.ui.define(
 
         // Extract values from the FilterBar controls
         var sName = oFilterBar.getFilterGroupItems()[0].getControl().getValue();
-        var sLocation = oFilterBar.getFilterGroupItems()[1].getControl().getValue();
-        var sDate = oFilterBar.getFilterGroupItems()[2].getControl().getDateValue();
+        var sLocation = oFilterBar
+          .getFilterGroupItems()[1]
+          .getControl()
+          .getValue();
+        var sDate = oFilterBar
+          .getFilterGroupItems()[2]
+          .getControl()
+          .getDateValue();
 
         if (sName) {
-          aFilters.push(new Filter("FIRST_NAME", FilterOperator.Contains, sName));
+          aFilters.push(
+            new Filter("FIRST_NAME", FilterOperator.Contains, sName)
+          );
         }
         if (sLocation) {
           aFilters.push(new Filter("CITY", FilterOperator.Contains, sLocation));
         }
         if (sDate) {
           // Format date for comparison
-          var sFormattedDate = DateFormat.getDateInstance({ pattern: "yyyyMMdd" }).format(sDate);
-          aFilters.push(new Filter("START_DATE", FilterOperator.EQ, sFormattedDate));
+          var sFormattedDate = DateFormat.getDateInstance({
+            pattern: "yyyyMMdd",
+          }).format(sDate);
+          aFilters.push(
+            new Filter("START_DATE", FilterOperator.EQ, sFormattedDate)
+          );
         }
 
         // Apply filters to the table binding
@@ -124,33 +146,44 @@ sap.ui.define(
       onSearchApproved: function (oEvent) {
         var oFilterBar = this.byId("filterBarApproved");
         var aFilters = [];
-      
+
         // Extract values from the FilterBar controls
         var sName = oFilterBar.getFilterGroupItems()[0].getControl().getValue();
-        var sLocation = oFilterBar.getFilterGroupItems()[1].getControl().getValue();
-        var sDate = oFilterBar.getFilterGroupItems()[2].getControl().getDateValue();
-      
+        var sLocation = oFilterBar
+          .getFilterGroupItems()[1]
+          .getControl()
+          .getValue();
+        var sDate = oFilterBar
+          .getFilterGroupItems()[2]
+          .getControl()
+          .getDateValue();
+
         // Ensure status filter is applied
         aFilters.push(new Filter("ACCEPTED", FilterOperator.EQ, "approved"));
-      
+
         // Apply additional filters
         if (sName) {
-          aFilters.push(new Filter("FIRST_NAME", FilterOperator.Contains, sName));
+          aFilters.push(
+            new Filter("FIRST_NAME", FilterOperator.Contains, sName)
+          );
         }
         if (sLocation) {
           aFilters.push(new Filter("CITY", FilterOperator.Contains, sLocation));
         }
         if (sDate) {
-          var sFormattedDate = DateFormat.getDateInstance({ pattern: "yyyyMMdd" }).format(sDate);
-          aFilters.push(new Filter("START_DATE", FilterOperator.EQ, sFormattedDate));
+          var sFormattedDate = DateFormat.getDateInstance({
+            pattern: "yyyyMMdd",
+          }).format(sDate);
+          aFilters.push(
+            new Filter("START_DATE", FilterOperator.EQ, sFormattedDate)
+          );
         }
-      
+
         // Apply filters to the table binding
         var oTable = this.byId("btTable");
         var oBinding = oTable.getBinding("items");
         oBinding.filter(aFilters);
       },
-      
 
       onSearchInProcess: function (oEvent) {
         var oFilterBar = this.byId("filterBarPending");
@@ -158,22 +191,34 @@ sap.ui.define(
 
         // Extract values from the FilterBar controls
         var sName = oFilterBar.getFilterGroupItems()[0].getControl().getValue();
-        var sLocation = oFilterBar.getFilterGroupItems()[1].getControl().getValue();
-        var sDate = oFilterBar.getFilterGroupItems()[2].getControl().getDateValue();
+        var sLocation = oFilterBar
+          .getFilterGroupItems()[1]
+          .getControl()
+          .getValue();
+        var sDate = oFilterBar
+          .getFilterGroupItems()[2]
+          .getControl()
+          .getDateValue();
 
         // Ensure status filter is applied
         aFilters.push(new Filter("ACCEPTED", FilterOperator.EQ, "pending"));
 
         if (sName) {
-          aFilters.push(new Filter("FIRST_NAME", FilterOperator.Contains, sName));
+          aFilters.push(
+            new Filter("FIRST_NAME", FilterOperator.Contains, sName)
+          );
         }
         if (sLocation) {
           aFilters.push(new Filter("CITY", FilterOperator.Contains, sLocation));
         }
         if (sDate) {
           // Format date for comparison
-          var sFormattedDate = DateFormat.getDateInstance({ pattern: "yyyyMMdd" }).format(sDate);
-          aFilters.push(new Filter("START_DATE", FilterOperator.EQ, sFormattedDate));
+          var sFormattedDate = DateFormat.getDateInstance({
+            pattern: "yyyyMMdd",
+          }).format(sDate);
+          aFilters.push(
+            new Filter("START_DATE", FilterOperator.EQ, sFormattedDate)
+          );
         }
 
         // Apply filters to the table binding
@@ -191,19 +236,31 @@ sap.ui.define(
 
         // Extract values from the FilterBar controls
         var sName = oFilterBar.getFilterGroupItems()[0].getControl().getValue();
-        var sLocation = oFilterBar.getFilterGroupItems()[1].getControl().getValue();
-        var sDate = oFilterBar.getFilterGroupItems()[2].getControl().getDateValue();
+        var sLocation = oFilterBar
+          .getFilterGroupItems()[1]
+          .getControl()
+          .getValue();
+        var sDate = oFilterBar
+          .getFilterGroupItems()[2]
+          .getControl()
+          .getDateValue();
 
         if (sName) {
-          aFilters.push(new Filter("FIRST_NAME", FilterOperator.Contains, sName));
+          aFilters.push(
+            new Filter("FIRST_NAME", FilterOperator.Contains, sName)
+          );
         }
         if (sLocation) {
           aFilters.push(new Filter("CITY", FilterOperator.Contains, sLocation));
         }
         if (sDate) {
           // Format date for comparison
-          var sFormattedDate = DateFormat.getDateInstance({ pattern: "yyyyMMdd" }).format(sDate);
-          aFilters.push(new Filter("START_DATE", FilterOperator.EQ, sFormattedDate));
+          var sFormattedDate = DateFormat.getDateInstance({
+            pattern: "yyyyMMdd",
+          }).format(sDate);
+          aFilters.push(
+            new Filter("START_DATE", FilterOperator.EQ, sFormattedDate)
+          );
         }
 
         // Apply filters to the table binding
@@ -216,7 +273,7 @@ sap.ui.define(
         var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
         var oSelectedItem =
           oEvent.getParameter("listItem") || oEvent.getSource();
-        var oContext = oSelectedItem.getBindingContext("allTrips");
+        var oContext = oSelectedItem.getBindingContext();
         var sEmpId = oContext.getProperty("PERSONAL_NUMBER");
         var sBtId = oContext.getProperty("TRIPID");
 
@@ -245,22 +302,21 @@ sap.ui.define(
         window.location.reload(true);
       },
 
-
-      onSwitchRole: function (){
+      onSwitchRole: function () {
         var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
         oRouter.navTo("RouteUser");
       },
 
       formatValueUpToFirstSpace: function (sValue) {
         if (sValue) {
-          var iSpaceIndex = sValue.indexOf(' ');
+          var iSpaceIndex = sValue.indexOf(" ");
           if (iSpaceIndex !== -1) {
             return sValue.substring(0, iSpaceIndex);
           }
-          return sValue; // Return the full string if no space is found.
+          return sValue;
         }
-        return ''; // Return an empty string if sValue is null or undefined
-      }
+        return "";
+      },
     });
   }
-); 
+);
