@@ -202,7 +202,7 @@
                         <Text text="{myTrips>ACCEPTED}" />
                         <Text text="{
                             path: 'myTrips>ACCEPTED',
-                            formatter: '.formatStatus'
+                            formatter: '.formatValueUpToFirstSpace'
                         }" />
                     </cells>
                 </ColumnListItem>

@@ -294,6 +294,17 @@ sap.ui.define(
         var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
         oRouter.navTo("RouteWelcome")
         window.location.reload(true);
+      },
+
+      formatValueUpToFirstSpace: function (sValue) {
+        if (sValue) {
+          var iSpaceIndex = sValue.indexOf(' ');
+          if (iSpaceIndex !== -1) {
+            return sValue.substring(0, iSpaceIndex);
+          }
+          return sValue; // Return the full string if no space is found.
+        }
+        return ''; // Return an empty string if sValue is null or undefined
       }
     });
   }
