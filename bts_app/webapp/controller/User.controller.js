@@ -281,7 +281,7 @@ sap.ui.define(
 
         // Retrieve the CSRF token
         this.csrfToken = this.getView().getModel().getSecurityToken();
-        oFileUploader.setSendXHR(true);
+        oFileUploader.setSendXHR(true); // Ensure XHR is used
 
         // Add CSRF Token header
         var oCsrfTokenHeader = new sap.ui.unified.FileUploaderParameter({
@@ -290,12 +290,21 @@ sap.ui.define(
         });
         oFileUploader.addHeaderParameter(oCsrfTokenHeader);
 
-        // Add Slug header (if needed)
+        // Add Slug header (for filename)
+        var sFileName = oFileUploader.getValue(); // This retrieves the selected file name
         var oSlugHeader = new sap.ui.unified.FileUploaderParameter({
           name: "slug",
-          value: oFileUploader.getValue(),
+          value: sFileName,
         });
         oFileUploader.addHeaderParameter(oSlugHeader);
+
+        // Add MIME type header (if needed)
+        var oContentTypeHeader = new sap.ui.unified.FileUploaderParameter({
+          name: "Content-Type",
+          value:
+            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        });
+        oFileUploader.addHeaderParameter(oContentTypeHeader);
 
         // Add X-Requested-With header
         var oXRequestedWithHeader = new sap.ui.unified.FileUploaderParameter({
@@ -309,16 +318,18 @@ sap.ui.define(
           .checkFileReadable()
           .then(
             function () {
+              // Proceed with the upload
               oFileUploader.upload();
-              oFileUploader.destroyHeaderParameters();
             },
             function (error) {
+              // Handle any issues with file reading
               sap.m.MessageToast.show(
                 "The file cannot be read. It may have changed."
               );
             }
           )
           .then(function () {
+            // Clear the file uploader after upload
             oFileUploader.clear();
           });
       },
@@ -351,18 +362,16 @@ sap.ui.define(
         window.location.reload(true);
       },
 
-
       formatValueUpToFirstSpace: function (sValue) {
         if (sValue) {
-          var iSpaceIndex = sValue.indexOf(' ');
+          var iSpaceIndex = sValue.indexOf(" ");
           if (iSpaceIndex !== -1) {
             return sValue.substring(0, iSpaceIndex);
           }
           return sValue; // Return the full string if no space is found.
         }
-        return ''; // Return an empty string if sValue is null or undefined
-      }
-
+        return ""; // Return an empty string if sValue is null or undefined
+      },
     });
   }
 );

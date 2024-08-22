@@ -21,8 +21,6 @@
             <Toolbar>
                 <Title text="{i18n>MyBusinessTripsText}" />
                 <ToolbarSpacer />
-                
-                   
                 <Button text="Logout" press="onLogout" type="Emphasized" />
             </Toolbar>
         </headerToolbar>
@@ -137,7 +135,7 @@
                         <u:FileUploader
                             id="fileUploader"
                             name="myFileUpload"
-                            uploadUrl="/sap/opu/odata/sap/ZMHP_BUSINESS_TRIPS_SRV/Upload_FileSet"
+                            uploadUrl="/sap/opu/odata/sap/ZMHP_BUSINESS_TRIPS_SRV/Upload_ExcelSet"
                             tooltip="Upload your file to the local server"
                             uploadComplete="handleUploadComplete"/>
                         <Button
