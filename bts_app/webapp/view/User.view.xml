@@ -183,7 +183,9 @@
                         }" />
                         <Text text="{TOTAL_EXPENSES}" />
                         <Text text="{
+
                             path: 'ACCEPTED',
+
                             formatter: '.formatValueUpToFirstSpace'
                         }" />
                     </cells>

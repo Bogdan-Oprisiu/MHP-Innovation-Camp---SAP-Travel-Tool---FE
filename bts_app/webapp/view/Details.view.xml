@@ -129,6 +129,11 @@
                                <Input value="{path: 'detail>/ADVANCED_PAYMENT', formatter: '.formatAdvancedPayment'}" id="advancePaymentNeeded" editable="false"/>
                             </f:fields>
                         </f:FormElement>
+                        <f:FormElement label="Accepted">
+                            <f:fields>
+                                <Input value="{detail>/ACCEPTED}" id="accepted" editable="false"/>
+                            </f:fields>
+                        </f:FormElement>
                     </f:formElements>
                 </f:FormContainer>
 

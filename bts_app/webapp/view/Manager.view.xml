@@ -191,8 +191,10 @@
                             path: 'START_DATE',
                             formatter: '.formatDate'
                         }" />
+
                         <Text text="{TOTAL_EXPENSES}" />
                         <Text text="{path: 'ACCEPTED', formatter: '.formatValueUpToFirstSpace'}" />
+
                     </cells>
                 </ColumnListItem>
             </items>

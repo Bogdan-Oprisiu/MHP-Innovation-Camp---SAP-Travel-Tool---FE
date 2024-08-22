@@ -137,6 +137,9 @@ sap.ui.define(
         var sBackendStartDate = this.convertDateToBackendFormat(sStartDate);
         var sBackendEndDate = this.convertDateToBackendFormat(sEndDate);
 
+        console.log(sEmpId);
+        console.log(sTripId);
+
         if (!sEmpId || !sTripId) {
           sap.m.MessageToast.show(
             "Missing trip details. Cannot proceed with the update."
@@ -177,12 +180,9 @@ sap.ui.define(
       handleModifyPress: function (oEvent) {
         var oView = this.getView();
 
-        var sEmpId = this.getView()
-          .getModel("oDetails")
-          .getProperty("/sEmployeeId");
-        var sTripId = this.getView()
-          .getModel("oDetails")
-          .getProperty("/sTripId");
+        var sEmpId = this.getView().getModel("detail").getData().PERSONAL_NUMBER.trim();
+        var sTripId = this.getView().getModel("detail").getData().TRIPID.trim();
+
         var oDetailsModel = this.getOwnerComponent().getModel("detail");
 
         var sReasonForTravel = oView.byId("reasonForTravel").getValue();
