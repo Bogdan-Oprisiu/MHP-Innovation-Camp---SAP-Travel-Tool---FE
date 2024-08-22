@@ -76,13 +76,13 @@ sap.ui.define(
               });
 
               // Set cookies
-              CookieUtils.setCookie("username", oData.USERNAME, 30);
+              CookieUtils.setCookie("username", oData.USERNAME, 32);
               CookieUtils.setCookie(
                 "personalNumber",
                 oData.PERSONAL_NUMBER,
-                30
+                32
               );
-              CookieUtils.setCookie("isManager", oData.IS_MANAGER, 30);
+              CookieUtils.setCookie("isManager", oData.IS_MANAGER, 32);
 
               // Navigate based on role
               if (oData.IS_MANAGER) {
@@ -113,6 +113,116 @@ sap.ui.define(
         }
       },
 
+      _validateUsername: function (username) {
+        // Check for maximum length
+        if (username.length > 20) {
+          return {
+            result: false,
+            message: "The username can have a maximum length of 20 characters.",
+          };
+        }
+
+        // Check for minimum length
+        if (username.length < 5) {
+          return {
+            result: false,
+            message: "The username must be at least 5 characters long.",
+          };
+        }
+
+        // Check for at least one lowercase and one uppercase character
+        if (!/[a-z]/.test(username) || !/[A-Z]/.test(username)) {
+          return {
+            result: false,
+            message:
+              "The username must contain at least one lowercase and one uppercase character.",
+          };
+        }
+
+        // Check for non-ASCII characters
+        if (!/^[\x00-\x7F]+$/.test(username)) {
+          return {
+            result: false,
+            message:
+              "The username contains non-ASCII characters, which are not allowed.",
+          };
+        }
+
+        // Check for characters that cannot be displayed in URLs
+        if (/[^a-zA-Z0-9]/.test(username)) {
+          return {
+            result: false,
+            message:
+              "The username contains invalid characters. Only letters and numbers are allowed.",
+          };
+        }
+
+        // If all checks pass, return true
+        return { result: true, message: "" };
+      },
+
+      _validatePassword: function (password) {
+        // Check for minimum length
+        if (password.length < 8) {
+          return {
+            result: false,
+            message: "The password must be at least 8 characters long.",
+          };
+        }
+
+        // Check for maximum length
+        if (password.length > 64) {
+          return {
+            result: false,
+            message: "The password must be at most 64 characters long.",
+          };
+        }
+
+        // Check for at least one lowercase letter
+        if (!/[a-z]/.test(password)) {
+          return {
+            result: false,
+            message: "The password must contain at least one lowercase letter.",
+          };
+        }
+
+        // Check for at least one uppercase letter
+        if (!/[A-Z]/.test(password)) {
+          return {
+            result: false,
+            message: "The password must contain at least one uppercase letter.",
+          };
+        }
+
+        // Check for at least one digit
+        if (!/[0-9]/.test(password)) {
+          return {
+            result: false,
+            message: "The password must contain at least one digit.",
+          };
+        }
+
+        // Check for at least one special character
+        if (!/[!@#%^*(),.?":{}|<>]/.test(password)) {
+          return {
+            result: false,
+            message:
+              "The password must contain at least one special character (e.g., @, #, etc.).",
+          };
+        }
+
+        // Check for spaces (no spaces allowed)
+        if (/\s/.test(password)) {
+          return {
+            result: false,
+            message: "The password must not contain spaces.",
+          };
+        }
+
+        // If all checks pass, return true
+        return { result: true, message: "" };
+      },
+
       onPressSignup: function () {
         // Initialise router
         var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
@@ -126,8 +236,25 @@ sap.ui.define(
         var sConfirmPassword = this.byId("passwordConfirmSignUp").getValue();
 
         // Validate inputs
-        if (!sUsername || !sPassword || sPassword !== sConfirmPassword) {
-          sap.m.MessageToast.show("Please check your input fields.");
+        if (!sUsername || !sPassword || !sConfirmPassword) {
+          sap.m.MessageToast.show("All input fields are mandatory");
+          return;
+        }
+
+        var validationObject = this._validateUsername(sUsername);
+        if (!validationObject.result) {
+          sap.m.MessageToast.show(validationObject.message);
+          return;
+        }
+
+        validationObject = this._validatePassword(sPassword);
+        if (!validationObject.result) {
+          sap.m.MessageToast.show(validationObject.message);
+          return;
+        }
+
+        if (sPassword !== sConfirmPassword) {
+          sap.m.MessageToast.show("Please confirm your password");
           return;
         }
 
@@ -167,19 +294,19 @@ sap.ui.define(
                   // Authentication successful, update session model and cookies
                   oSessionModel.setData({
                     authenticated: true,
-                    username: oData.USERNAME,
-                    personalNumber: oData.PERSONAL_NUMBER,
-                    isManager: oData.IS_MANAGER,
+                    username: oNewUser.USERNAME,
+                    personalNumber: oNewUser.PERSONAL_NUMBER,
+                    isManager: oNewUser.IS_MANAGER,
                   });
 
                   // Set cookies
-                  CookieUtils.setCookie("username", oData.USERNAME, 30);
+                  CookieUtils.setCookie("username", oNewUser.USERNAME, 32);
                   CookieUtils.setCookie(
                     "personalNumber",
-                    oData.PERSONAL_NUMBER,
-                    30
+                    oNewUser.PERSONAL_NUMBER,
+                    32
                   );
-                  CookieUtils.setCookie("isManager", oData.IS_MANAGER, 30);
+                  CookieUtils.setCookie("isManager", oNewUser.IS_MANAGER, 32);
                 },
                 error: function (oError) {
                   sap.m.MessageToast.show(
