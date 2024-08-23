@@ -7,7 +7,7 @@ sap.ui.define(
     "sap/ui/core/format/DateFormat",
     "../utils/CookieUtils",
     "sap/ui/unified/FileUploader",
-    "sap/ui/model/json/JSONModel"
+    "sap/ui/model/json/JSONModel",
   ],
   function (
     Controller,
@@ -30,7 +30,7 @@ sap.ui.define(
             (oEvent) => this._onObjectMatched(oEvent),
             this
           );
-          this._checkUrlAndSetUserViewFlag();
+        this._checkUrlAndSetUserViewFlag();
       },
 
       _checkUrlAndSetUserViewFlag: function () {
@@ -47,7 +47,7 @@ sap.ui.define(
       handleSwitchToManagerViewPress: function () {
         // console.log(this.getOwnerComponent().getModel("session"));
         this.getOwnerComponent().getRouter().navTo("RouteManager");
-    },
+      },
 
       _onObjectMatched: function (oEvent) {
         var oSessionModel = this.getOwnerComponent().getModel("session");
@@ -136,22 +136,32 @@ sap.ui.define(
         // console.log(sKey);
         var oTable = this.byId("btTable");
         var oBinding = oTable.getBinding("items");
-    
+
         var oSessionModel = this.getOwnerComponent().getModel("session");
         var sEmpId = oSessionModel.getProperty("/personalNumber").trim(); // Get employee ID from the session model
-    
         // Initialize the status filter
         var oStatusFilter;
-    
+
         // Add the appropriate status filter based on the selected tab
         if (sKey === "pending") {
-            oStatusFilter = new Filter("ACCEPTED", FilterOperator.Contains, "pending");
+          oStatusFilter = new Filter(
+            "ACCEPTED",
+            FilterOperator.Contains,
+            "pending"
+          );
         } else if (sKey === "approved") {
-            oStatusFilter = new Filter("ACCEPTED", FilterOperator.Contains, "approved");
+          oStatusFilter = new Filter(
+            "ACCEPTED",
+            FilterOperator.Contains,
+            "approved"
+          );
         } else if (sKey === "denied") {
-            oStatusFilter = new Filter("ACCEPTED", FilterOperator.Contains, "denied");
-        }
-    
+          oStatusFilter = new Filter(
+            "ACCEPTED",
+            FilterOperator.Contains,
+            "denied"
+          );
+        }    
         // Combine both filters using the AND operator
         var aFilters = [];
         if (oStatusFilter) {
@@ -248,19 +258,12 @@ sap.ui.define(
     // Log the filters for debugging
     console.log("Filters applied:", oCombinedFilter);
   },
-
-     
-
-     
-
-     
-
       handleUploadPress: function (oEvent) {
         var oFileUploader = this.getView().byId("fileUploader");
 
         // Retrieve the CSRF token
         this.csrfToken = this.getView().getModel().getSecurityToken();
-        oFileUploader.setSendXHR(true);
+        oFileUploader.setSendXHR(true); // Ensure XHR is used
 
         // Add CSRF Token header
         var oCsrfTokenHeader = new sap.ui.unified.FileUploaderParameter({
@@ -269,12 +272,21 @@ sap.ui.define(
         });
         oFileUploader.addHeaderParameter(oCsrfTokenHeader);
 
-        // Add Slug header (if needed)
+        // Add Slug header (for filename)
+        var sFileName = oFileUploader.getValue().trim(); // This retrieves the selected file name
         var oSlugHeader = new sap.ui.unified.FileUploaderParameter({
           name: "slug",
-          value: oFileUploader.getValue(),
+          value: sFileName,
         });
         oFileUploader.addHeaderParameter(oSlugHeader);
+
+        // Add MIME type header (if needed)
+        var oContentTypeHeader = new sap.ui.unified.FileUploaderParameter({
+          name: "Content-Type",
+          value:
+            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        });
+        oFileUploader.addHeaderParameter(oContentTypeHeader);
 
         // Add X-Requested-With header
         var oXRequestedWithHeader = new sap.ui.unified.FileUploaderParameter({
@@ -288,16 +300,19 @@ sap.ui.define(
           .checkFileReadable()
           .then(
             function () {
+              // Proceed with the upload
               oFileUploader.upload();
-              oFileUploader.destroyHeaderParameters();
+              window.location.reload(true);
             },
             function (error) {
+              // Handle any issues with file reading
               sap.m.MessageToast.show(
                 "The file cannot be read. It may have changed."
               );
             }
           )
           .then(function () {
+            // Clear the file uploader after upload
             oFileUploader.clear();
           });
       },
@@ -330,18 +345,16 @@ sap.ui.define(
         window.location.reload(true);
       },
 
-
       formatValueUpToFirstSpace: function (sValue) {
         if (sValue) {
-          var iSpaceIndex = sValue.indexOf(' ');
+          var iSpaceIndex = sValue.indexOf(" ");
           if (iSpaceIndex !== -1) {
             return sValue.substring(0, iSpaceIndex);
           }
           return sValue; // Return the full string if no space is found.
         }
-        return ''; // Return an empty string if sValue is null or undefined
-      }
-
+        return ""; // Return an empty string if sValue is null or undefined
+      },
     });
   }
 );
