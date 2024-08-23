@@ -2,5 +2,6 @@
   "authenticated": false,
   "username": null,
   "personalNumber": null,
-  "isManager": false
+  "isManager": false,
+  "isUserView": false
 }
