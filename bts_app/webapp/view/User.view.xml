@@ -11,7 +11,7 @@
 		vertical="true"
 		focusable="true">
 
-            <!-- Existing Panel for My Business Trips -->
+    <!-- Existing Panel for My Business Trips -->
     <Panel 
         headerText="{i18n>MyBusinessTripsText}"
         class="sapUiResponsiveMargin"
@@ -136,9 +136,11 @@
                         <u:FileUploader
                             id="fileUploader"
                             name="myFileUpload"
-                            uploadUrl="/sap/opu/odata/sap/ZMHP_BUSINESS_TRIPS_SRV/Upload_FileSet"
+                            uploadUrl="/sap/opu/odata/sap/ZMHP_BUSINESS_TRIPS_SRV/Upload_ExcelSet"
                             tooltip="Upload your file to the local server"
-                            uploadComplete="handleUploadComplete"/>
+                            uploadComplete="handleUploadComplete"
+                            useMultipart="false"
+                            />
                         <Button
                             text="Upload File"
                             press="handleUploadPress"
@@ -182,9 +184,7 @@
                         }" />
                         <Text text="{TOTAL_EXPENSES}" />
                         <Text text="{
-
                             path: 'ACCEPTED',
-
                             formatter: '.formatValueUpToFirstSpace'
                         }" />
                     </cells>
