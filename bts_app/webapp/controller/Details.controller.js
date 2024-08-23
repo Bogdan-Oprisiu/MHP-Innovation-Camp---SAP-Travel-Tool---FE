@@ -19,6 +19,20 @@ sap.ui.define(
           );
       },
 
+      onBeforeRendering: function () {
+        var oSessionModel = this.getOwnerComponent().getModel("session");
+        var bIsManager = oSessionModel.getProperty("/isManager");
+        var bIsUserView = oSessionModel.getProperty("/isUserView");
+
+        if (bIsUserView && bIsManager) {
+            this.getView().byId("approve").setVisible(false);
+            this.getView().byId("decline").setVisible(false);
+        } else {
+            this.getView().byId("approve").setVisible(true);
+            this.getView().byId("decline").setVisible(true);
+        }
+    },
+
       formatAdvancedPayment: function (sValue) {
         return sValue === "X";
       },
@@ -214,7 +228,7 @@ sap.ui.define(
           REQUESTER: sRequestor,
           START_DATE: sBackendStartDate,
           END_DATE: sBackendEndDate,
-          ACCEPTED: "in process",
+          ACCEPTED: "pending",
           REASON: sReasonForTravel,
         };
 
@@ -230,6 +244,7 @@ sap.ui.define(
             console.error("Error updating trip details:", oError);
           },
         });
+        this.getOwnerComponent().getRouter().navTo("RouteManager");
       },
     });
   }

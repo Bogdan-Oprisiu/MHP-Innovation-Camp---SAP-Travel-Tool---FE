@@ -6,6 +6,7 @@ sap.ui.define(
     "sap/ui/model/FilterOperator",
     "sap/ui/core/format/DateFormat",
     "../utils/CookieUtils",
+    "sap/ui/model/json/JSONModel"
   ],
   function (
     Controller,
@@ -13,7 +14,8 @@ sap.ui.define(
     Filter,
     FilterOperator,
     DateFormat,
-    CookieUtils
+    CookieUtils,
+    JSONModel
   ) {
     "use strict";
 

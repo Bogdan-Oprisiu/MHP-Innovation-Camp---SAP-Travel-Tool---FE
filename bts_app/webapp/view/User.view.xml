@@ -21,8 +21,7 @@
             <Toolbar>
                 <Title text="{i18n>MyBusinessTripsText}" />
                 <ToolbarSpacer />
-                
-                   
+                <Button id="switchToMnagerView" text="Switch to Manager View" type="Emphasized" visible="{session>/isManager}" press="handleSwitchToManagerViewPress" />
                 <Button text="Logout" press="onLogout" type="Emphasized" />
             </Toolbar>
         </headerToolbar>

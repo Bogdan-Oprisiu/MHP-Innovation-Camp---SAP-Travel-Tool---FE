@@ -7,6 +7,7 @@ sap.ui.define(
     "sap/ui/core/format/DateFormat",
     "../utils/CookieUtils",
     "sap/ui/unified/FileUploader",
+    "sap/ui/model/json/JSONModel"
   ],
   function (
     Controller,
@@ -14,7 +15,8 @@ sap.ui.define(
     Filter,
     FilterOperator,
     DateFormat,
-    CookieUtils
+    CookieUtils,
+    JSONModel
   ) {
     "use strict";
 
@@ -28,11 +30,29 @@ sap.ui.define(
             (oEvent) => this._onObjectMatched(oEvent),
             this
           );
+          this._checkUrlAndSetUserViewFlag();
       },
+
+      _checkUrlAndSetUserViewFlag: function () {
+        var sUrl = window.location.href;
+        var oSessionModel = this.getOwnerComponent().getModel("session");
+
+        if (sUrl.includes("user")) {
+          oSessionModel.setProperty("/isUserView", true);
+        } else {
+          oSessionModel.setProperty("/isUserView", false);
+        }
+      },
+
+      handleSwitchToManagerViewPress: function () {
+        // console.log(this.getOwnerComponent().getModel("session"));
+        this.getOwnerComponent().getRouter().navTo("RouteManager");
+    },
 
       _onObjectMatched: function (oEvent) {
         var oSessionModel = this.getOwnerComponent().getModel("session");
         var oSessionData = oSessionModel.getData();
+        // console.log(oSessionData);
         var sEmpId = oSessionData.personalNumber.trim();
         var oTable = this.byId("btTable");
 
@@ -110,31 +130,77 @@ sap.ui.define(
       },
 
       // Method to handle filter changes based on IconTabBar selection
+      // onFilterSelect: function (oEvent) {
+      //   console.log("functieeee");
+      //   var sKey = oEvent.getParameter("key");
+      //   var oTable = this.byId("btTable");
+      //   var oBinding = oTable.getBinding("items");
+
+      //   var aFilters = [];
+
+      //   if (sKey === "all") {
+      //     oBinding.filter([]);
+      //   } else if (sKey === "pending") {
+      //     aFilters.push(
+      //       new Filter("ACCEPTED", FilterOperator.Contains, "pending")
+      //     );
+      //   } else if (sKey === "approved") {
+      //     aFilters.push(
+      //       new Filter("ACCEPTED", FilterOperator.Contains, "approved")
+      //     );
+      //   } else if (sKey === "denied") {
+      //     aFilters.push(
+      //       new Filter("ACCEPTED", FilterOperator.Contains, "denied")
+      //     );
+      //     console.log("RANDOM");
+      //   }
+
+      //   oBinding.filter(aFilters);
+      // },
+
       onFilterSelect: function (oEvent) {
         var sKey = oEvent.getParameter("key");
         var oTable = this.byId("btTable");
         var oBinding = oTable.getBinding("items");
-
-        var aFilters = [];
-
-        if (sKey === "all") {
-          oBinding.filter([]);
-        } else if (sKey === "pending") {
-          aFilters.push(
-            new Filter("ACCEPTED", FilterOperator.Contains, "pending")
-          );
+    
+        var oSessionModel = this.getOwnerComponent().getModel("session");
+        var sEmpId = oSessionModel.getProperty("/personalNumber").trim(); // Get employee ID from the session model
+    
+        // Create the mandatory filter for PERSONAL_NUMBER
+        var oPersonalNumberFilter = new Filter("PERSONAL_NUMBER", FilterOperator.EQ, sEmpId);
+    
+        // Initialize the status filter
+        var oStatusFilter;
+    
+        // Add the appropriate status filter based on the selected tab
+        if (sKey === "pending") {
+            oStatusFilter = new Filter("ACCEPTED", FilterOperator.Contains, "pending");
         } else if (sKey === "approved") {
-          aFilters.push(
-            new Filter("ACCEPTED", FilterOperator.Contains, "approved")
-          );
+            oStatusFilter = new Filter("ACCEPTED", FilterOperator.Contains, "approved");
         } else if (sKey === "denied") {
-          aFilters.push(
-            new Filter("ACCEPTED", FilterOperator.Contains, "denied")
-          );
+            oStatusFilter = new Filter("ACCEPTED", FilterOperator.Contains, "denied");
         }
 
+        // console.log(oStatusFilter);
+    
+        // Combine both filters using the AND operator
+        var aFilters = [];
+        if (oStatusFilter) {
+            // Combine filters with AND condition
+            aFilters.push(new Filter({
+                filters: [oPersonalNumberFilter, oStatusFilter],
+                and: true
+            }));
+        } else {
+            // If no status filter is applied, just use the PERSONAL_NUMBER filter
+            aFilters.push(oPersonalNumberFilter);
+        }
+    
+        // Apply the combined filters to the table binding
         oBinding.filter(aFilters);
-      },
+    
+        console.log(aFilters);
+    },
 
       onSearchAll: function (oEvent) {
         var oFilterBar = this.byId("filterBarAll");

@@ -17,9 +17,8 @@
             <Toolbar>
                 <Title text="{i18n>MyBusinessTripsText}" />
                 <ToolbarSpacer />
-                <Button text="Logout" press="onLogout" type="Emphasized" />
                 <Button text="Switch to user's view" press="onSwitchRole" type="Emphasized" />
-
+                <Button text="Logout" press="onLogout" type="Emphasized" />
             </Toolbar>
         </headerToolbar>
 
