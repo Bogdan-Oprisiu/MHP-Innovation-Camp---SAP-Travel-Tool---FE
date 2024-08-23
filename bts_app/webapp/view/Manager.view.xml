@@ -36,7 +36,7 @@
                     icon="sap-icon://expand-all">
 
                     <fb:FilterBar id="filterBarAll" xmlns:fb="sap.ui.comp.filterbar"
-                        reset="onResetAll" search="onSearchAll" showRestoreButton="true" showClearButton="true" useToolbar="false" showToolbar="false" showAdaptFiltersButton="false">
+                        reset="onResetAll" search="onSearch" showRestoreButton="true" showClearButton="true" useToolbar="false" showToolbar="false" showAdaptFiltersButton="false">
                         <fb:filterGroupItems>
                             <fb:FilterGroupItem groupName="__ALL" name="nameAll" label="Name" visibleInFilterBar="true">
                                 <fb:control>
@@ -61,10 +61,10 @@
                     icon="sap-icon://accept"
                     iconColor="Positive"
                     text="Approved"
-                    key="Ok" >
+                    key="approved" >
 
                     <fb:FilterBar id="filterBarApproved" xmlns:fb="sap.ui.comp.filterbar"
-                        reset="onResetApproved" search="onSearchApproved" showRestoreButton="true" showClearButton="true" useToolbar="false" showToolbar="false" showAdaptFiltersButton="false">
+                        reset="onResetApproved" search="onSearch" showRestoreButton="true" showClearButton="true" useToolbar="false" showToolbar="false" showAdaptFiltersButton="false">
                         <fb:filterGroupItems>
                         <fb:FilterGroupItem groupName="__ALL" name="nameApproved" label="Name" visibleInFilterBar="true">
                                 <fb:control>
@@ -89,10 +89,10 @@
                     icon="sap-icon://in-progress"
                     iconColor="Critical"
                     text="Pending"
-                    key="Pending" >
+                    key="pending" >
                     
                     <fb:FilterBar id="filterBarPending" xmlns:fb="sap.ui.comp.filterbar"
-                        reset="onResetPending" search="onSearchPending" showRestoreButton="true" showClearButton="true" useToolbar="false" showToolbar="false" showAdaptFiltersButton="false">
+                        reset="onResetPending" search="onSearch" showRestoreButton="true" showClearButton="true" useToolbar="false" showToolbar="false" showAdaptFiltersButton="false">
                         <fb:filterGroupItems>
                             <fb:FilterGroupItem groupName="__ALL" name="namePending" label="Name" visibleInFilterBar="true">
                                     <fb:control>
@@ -120,10 +120,10 @@
                     icon="sap-icon://status-critical"
                     iconColor="Negative"
                     text="Denied"
-                    key="Denied" >
+                    key="denied" >
                     
                     <fb:FilterBar id="filterBarDenied" xmlns:fb="sap.ui.comp.filterbar"
-                        reset="onResetDenied" search="onSearchDenied" showRestoreButton="true" showClearButton="true" useToolbar="false" showToolbar="false" showAdaptFiltersButton="false">
+                        reset="onResetDenied" search="onSearch" showRestoreButton="true" showClearButton="true" useToolbar="false" showToolbar="false" showAdaptFiltersButton="false">
                         <fb:filterGroupItems>
                             <fb:FilterGroupItem groupName="__ALL" name="nameDenied" label="Name" visibleInFilterBar="true">
                                 <fb:control>
