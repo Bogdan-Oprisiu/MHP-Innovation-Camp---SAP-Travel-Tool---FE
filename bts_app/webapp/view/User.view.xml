@@ -137,7 +137,9 @@
                             name="myFileUpload"
                             uploadUrl="/sap/opu/odata/sap/ZMHP_BUSINESS_TRIPS_SRV/Upload_ExcelSet"
                             tooltip="Upload your file to the local server"
-                            uploadComplete="handleUploadComplete"/>
+                            uploadComplete="handleUploadComplete"
+                            useMultipart="false"
+                            />
                         <Button
                             text="Upload File"
                             press="handleUploadPress"

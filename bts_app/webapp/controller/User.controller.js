@@ -291,7 +291,7 @@ sap.ui.define(
         oFileUploader.addHeaderParameter(oCsrfTokenHeader);
 
         // Add Slug header (for filename)
-        var sFileName = oFileUploader.getValue(); // This retrieves the selected file name
+        var sFileName = oFileUploader.getValue().trim(); // This retrieves the selected file name
         var oSlugHeader = new sap.ui.unified.FileUploaderParameter({
           name: "slug",
           value: sFileName,
