@@ -60,7 +60,7 @@
                     text="Approved"
                     key="approved">     
                     <fb:FilterBar id="filterBarApproved" xmlns:fb="sap.ui.comp.filterbar"
-                        reset="onResetApproved" search="onSearchApproved" showRestoreButton="true" showClearButton="true" useToolbar="false" showToolbar="false" showAdaptFiltersButton="false">
+                        reset="onResetApproved" search="onSearch" showRestoreButton="true" showClearButton="true" useToolbar="false" showToolbar="false" showAdaptFiltersButton="false">
                         <fb:filterGroupItems>
                             <fb:FilterGroupItem groupName="__ALL" name="locationApproved" label="Location" visibleInFilterBar="true">
                                 <fb:control>
@@ -78,10 +78,10 @@
                 <IconTabFilter
                     icon="sap-icon://in-progress"
                     iconColor="Critical"
-                    text="In process"
-                    key="in process">  
+                    text="Pending"
+                    key="pending">  
                     <fb:FilterBar id="filterBarInProcess" xmlns:fb="sap.ui.comp.filterbar"
-                        reset="onResetInProcess" search="onSearchInProcess" showRestoreButton="true" showClearButton="true" useToolbar="false" showToolbar="false" showAdaptFiltersButton="false">
+                        reset="onResetInProcess" search="onSearch" showRestoreButton="true" showClearButton="true" useToolbar="false" showToolbar="false" showAdaptFiltersButton="false">
                         <fb:filterGroupItems>
                             <fb:FilterGroupItem groupName="__ALL" name="locationInProcess" label="Location" visibleInFilterBar="true">
                                 <fb:control>
@@ -102,7 +102,7 @@
                     text="Denied"
                     key="denied">                    
                     <fb:FilterBar id="filterBarDenied" xmlns:fb="sap.ui.comp.filterbar"
-                        reset="onResetDenied" search="onSearchDenied" showRestoreButton="true" showClearButton="true" useToolbar="false" showToolbar="false" showAdaptFiltersButton="false">
+                        reset="onResetDenied" search="onSearch" showRestoreButton="true" showClearButton="true" useToolbar="false" showToolbar="false" showAdaptFiltersButton="false">
                         <fb:filterGroupItems>
                             <fb:FilterGroupItem groupName="__ALL" name="locationDenied" label="Location" visibleInFilterBar="true">
                                 <fb:control>
@@ -157,12 +157,12 @@
                 </Column>
                 <Column>
                     <header>
-                        <Label text="Date" />
+                        <Label text="Total Price" />
                     </header>
                 </Column>
                 <Column>
                     <header>
-                        <Label text="Total Price" />
+                        <Label text="Date" />
                     </header>
                 </Column>
                 <Column>
