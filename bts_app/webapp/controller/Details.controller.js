@@ -25,13 +25,13 @@ sap.ui.define(
         var bIsUserView = oSessionModel.getProperty("/isUserView");
 
         if (bIsUserView && bIsManager) {
-            this.getView().byId("approve").setVisible(false);
-            this.getView().byId("decline").setVisible(false);
+          this.getView().byId("approve").setVisible(false);
+          this.getView().byId("decline").setVisible(false);
         } else {
-            this.getView().byId("approve").setVisible(true);
-            this.getView().byId("decline").setVisible(true);
+          this.getView().byId("approve").setVisible(true);
+          this.getView().byId("decline").setVisible(true);
         }
-    },
+      },
 
       formatAdvancedPayment: function (sValue) {
         return sValue === "X";
@@ -194,7 +194,10 @@ sap.ui.define(
       handleModifyPress: function (oEvent) {
         var oView = this.getView();
 
-        var sEmpId = this.getView().getModel("detail").getData().PERSONAL_NUMBER.trim();
+        var sEmpId = this.getView()
+          .getModel("detail")
+          .getData()
+          .PERSONAL_NUMBER.trim();
         var sTripId = this.getView().getModel("detail").getData().TRIPID.trim();
 
         var oDetailsModel = this.getOwnerComponent().getModel("detail");

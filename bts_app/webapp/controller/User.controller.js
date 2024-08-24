@@ -161,103 +161,129 @@ sap.ui.define(
             FilterOperator.Contains,
             "denied"
           );
-        }    
+        }
         // Combine both filters using the AND operator
         var aFilters = [];
         if (oStatusFilter) {
-            // Combine filters with AND condition
-            aFilters.push( oStatusFilter);
-        } 
-    
+          // Combine filters with AND condition
+          aFilters.push(oStatusFilter);
+        }
+
         // Apply the combined filters to the table binding
         oBinding.filter(aFilters);
       },
 
-    onSearch: function(oEvent) {
-      // console.log(oEvent);
+      onSearch: function (oEvent) {
+        // console.log(oEvent);
 
-      if(oEvent.mParameters.id.includes('filterBarInProces')){
-        var sKey = "pending";
-              // Get the user inputs for location and date from the filter bar
-          var sLocation = this.byId("locationFilterInProcess").getValue().trim();
+        if (oEvent.mParameters.id.includes("filterBarInProces")) {
+          var sKey = "pending";
+          // Get the user inputs for location and date from the filter bar
+          var sLocation = this.byId("locationFilterInProcess")
+            .getValue()
+            .trim();
           var sDate = this.byId("dateFilterInProcess").getDateValue();
-      } else if(oEvent.mParameters.id.includes('filterBarApproved')){
-        var sKey = "approved";
-                      // Get the user inputs for location and date from the filter bar
-                      var sLocation = this.byId("locationFilterApproved").getValue().trim();
-                      var sDate = this.byId("dateFilterApproved").getDateValue();
-      } else if(oEvent.mParameters.id.includes('filterBarDenied')){
-        var sKey = "denied";
-                      // Get the user inputs for location and date from the filter bar
-                      var sLocation = this.byId("locationFilterDenied").getValue().trim();
-                      var sDate = this.byId("dateFilterDenied").getDateValue();
-      }
+        } else if (oEvent.mParameters.id.includes("filterBarApproved")) {
+          var sKey = "approved";
+          // Get the user inputs for location and date from the filter bar
+          var sLocation = this.byId("locationFilterApproved").getValue().trim();
+          var sDate = this.byId("dateFilterApproved").getDateValue();
+        } else if (oEvent.mParameters.id.includes("filterBarDenied")) {
+          var sKey = "denied";
+          // Get the user inputs for location and date from the filter bar
+          var sLocation = this.byId("locationFilterDenied").getValue().trim();
+          var sDate = this.byId("dateFilterDenied").getDateValue();
+        }
 
-      // var sKey = oEvent.getParameter("key");
-      var oTable = this.byId("btTable");
-      var oBinding = oTable.getBinding("items");
-  
-      var oSessionModel = this.getOwnerComponent().getModel("session");
-      var sEmpId = oSessionModel.getProperty("/personalNumber").trim(); // Get employee ID from the session model
-  
-      // Initialize an array to hold all the filters
-      var aFilters = [];
-      var oStatusFilter;
-      console.log(sKey);
-  
-      // Create the mandatory filter for PERSONAL_NUMBER
-      //var oPersonalNumberFilter = new sap.ui.model.Filter("PERSONAL_NUMBER", sap.ui.model.FilterOperator.EQ, sEmpId);
-      //aFilters.push(oPersonalNumberFilter);
-  
-              // Add the appropriate status filter based on the selected tab
-              if (sKey === "pending") {
-                oStatusFilter = new Filter("ACCEPTED", FilterOperator.Contains, "pending");
-                aFilters.push(oStatusFilter)
-            } else if (sKey === "approved") {
-                oStatusFilter = new Filter("ACCEPTED", FilterOperator.Contains, "approved");
-                aFilters.push(oStatusFilter)
-            } else if (sKey === "denied") {
-                oStatusFilter = new Filter("ACCEPTED", FilterOperator.Contains, "denied");
-                aFilters.push(oStatusFilter)
-            }
+        // var sKey = oEvent.getParameter("key");
+        var oTable = this.byId("btTable");
+        var oBinding = oTable.getBinding("items");
 
-      // Create the location filter if a location was entered
-      if (sLocation) {
-          var oLocationFilter = new sap.ui.model.Filter("CITY", sap.ui.model.FilterOperator.Contains, sLocation);
+        var oSessionModel = this.getOwnerComponent().getModel("session");
+        var sEmpId = oSessionModel.getProperty("/personalNumber").trim(); // Get employee ID from the session model
+
+        // Initialize an array to hold all the filters
+        var aFilters = [];
+        var oStatusFilter;
+        console.log(sKey);
+
+        // Create the mandatory filter for PERSONAL_NUMBER
+        //var oPersonalNumberFilter = new sap.ui.model.Filter("PERSONAL_NUMBER", sap.ui.model.FilterOperator.EQ, sEmpId);
+        //aFilters.push(oPersonalNumberFilter);
+
+        // Add the appropriate status filter based on the selected tab
+        if (sKey === "pending") {
+          oStatusFilter = new Filter(
+            "ACCEPTED",
+            FilterOperator.Contains,
+            "pending"
+          );
+          aFilters.push(oStatusFilter);
+        } else if (sKey === "approved") {
+          oStatusFilter = new Filter(
+            "ACCEPTED",
+            FilterOperator.Contains,
+            "approved"
+          );
+          aFilters.push(oStatusFilter);
+        } else if (sKey === "denied") {
+          oStatusFilter = new Filter(
+            "ACCEPTED",
+            FilterOperator.Contains,
+            "denied"
+          );
+          aFilters.push(oStatusFilter);
+        }
+
+        // Create the location filter if a location was entered
+        if (sLocation) {
+          var oLocationFilter = new sap.ui.model.Filter(
+            "CITY",
+            sap.ui.model.FilterOperator.Contains,
+            sLocation
+          );
           aFilters.push(oLocationFilter);
-      }
-  
-      // Create the date filter if a date was selected
-      if (sDate) {
-          var sFormattedDate = sDate.toISOString().substring(0, 7).replace("-", ""); // Format date as YYYYMM
-          var oDateFilter = new sap.ui.model.Filter("START_DATE", sap.ui.model.FilterOperator.EQ, sFormattedDate);
+        }
+
+        // Create the date filter if a date was selected
+        if (sDate) {
+          var sFormattedDate = sDate
+            .toISOString()
+            .substring(0, 7)
+            .replace("-", ""); // Format date as YYYYMM
+          var oDateFilter = new sap.ui.model.Filter(
+            "START_DATE",
+            sap.ui.model.FilterOperator.EQ,
+            sFormattedDate
+          );
           aFilters.push(oDateFilter);
-      }
-  
-      console.log(oStatusFilter);
-      console.log(aFilters);
+        }
 
-      if (aFilters.length > 1) {
-        oCombinedFilter = new sap.ui.model.Filter({
+        // console.log(oStatusFilter);
+        // console.log(aFilters);
+
+        if (aFilters.length > 1) {
+          oCombinedFilter = new sap.ui.model.Filter({
             filters: aFilters,
-            and: true
-        });
-    } else if (aFilters.length === 1) {
-        oCombinedFilter = aFilters[0];
-    }
-     // Combine all filters using the AND operator
-     var oCombinedFilter;
+            and: true,
+          });
+        } else if (aFilters.length === 1) {
+          oCombinedFilter = aFilters[0];
+        }
+        // Combine all filters using the AND operator
+        var oCombinedFilter;
 
-    // Apply the combined filter to the table binding
-    if (oCombinedFilter) {
-        oBinding.filter(oCombinedFilter);
-    } else {
-        oBinding.filter([]);
-    }
+        // Apply the combined filter to the table binding
+        if (oCombinedFilter) {
+          oBinding.filter(oCombinedFilter);
+        } else {
+          oBinding.filter([]);
+        }
 
-    // Log the filters for debugging
-    console.log("Filters applied:", oCombinedFilter);
-  },
+        // Log the filters for debugging
+        console.log("Filters applied:", oCombinedFilter);
+      },
+
       handleUploadPress: function (oEvent) {
         var oFileUploader = this.getView().byId("fileUploader");
 

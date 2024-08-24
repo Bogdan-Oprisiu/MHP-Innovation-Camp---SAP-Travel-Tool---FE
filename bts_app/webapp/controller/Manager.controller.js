@@ -6,7 +6,7 @@ sap.ui.define(
     "sap/ui/model/FilterOperator",
     "sap/ui/core/format/DateFormat",
     "../utils/CookieUtils",
-    "sap/ui/model/json/JSONModel"
+    "sap/ui/model/json/JSONModel",
   ],
   function (
     Controller,
@@ -88,128 +88,167 @@ sap.ui.define(
         // console.log(sKey);
         var oTable = this.byId("btTable");
         var oBinding = oTable.getBinding("items");
-    
+
         var oSessionModel = this.getOwnerComponent().getModel("session");
         var sEmpId = oSessionModel.getProperty("/personalNumber").trim(); // Get employee ID from the session model
-    
+
         // Initialize the status filter
         var oStatusFilter;
-    
+
         // Add the appropriate status filter based on the selected tab
         if (sKey === "pending") {
-            oStatusFilter = new Filter("ACCEPTED", FilterOperator.Contains, "pending");
+          oStatusFilter = new Filter(
+            "ACCEPTED",
+            FilterOperator.Contains,
+            "pending"
+          );
         } else if (sKey === "approved") {
-            oStatusFilter = new Filter("ACCEPTED", FilterOperator.Contains, "approved");
+          oStatusFilter = new Filter(
+            "ACCEPTED",
+            FilterOperator.Contains,
+            "approved"
+          );
         } else if (sKey === "denied") {
-            oStatusFilter = new Filter("ACCEPTED", FilterOperator.Contains, "denied");
+          oStatusFilter = new Filter(
+            "ACCEPTED",
+            FilterOperator.Contains,
+            "denied"
+          );
         }
-    
+
         // Combine both filters using the AND operator
         var aFilters = [];
         if (oStatusFilter) {
-            // Combine filters with AND condition
-            aFilters.push( oStatusFilter);
-        } 
-    
+          // Combine filters with AND condition
+          aFilters.push(oStatusFilter);
+        }
+
         // Apply the combined filters to the table binding
         oBinding.filter(aFilters);
       },
 
-      onSearch: function(oEvent) {
+      onSearch: function (oEvent) {
         // console.log(oEvent.mParameters);
-  
+
         // console.log(this);
-        if(oEvent.mParameters.id.includes('filterBarPending')){
+        if (oEvent.mParameters.id.includes("filterBarPending")) {
           var sKey = "pending";
-                // Get the user inputs for location and date from the filter bar
-            var sLocation = this.byId("locationFilterPending").getValue().trim();
-            var sDate = this.byId("dateFilterPending").getDateValue();
-            var sName = this.byId("nameFilterPending").getValue().trim();
-        } else if(oEvent.mParameters.id.includes('filterBarApproved')){
+          // Get the user inputs for location and date from the filter bar
+          var sLocation = this.byId("locationFilterPending").getValue().trim();
+          var sDate = this.byId("dateFilterPending").getDateValue();
+          var sName = this.byId("nameFilterPending").getValue().trim();
+        } else if (oEvent.mParameters.id.includes("filterBarApproved")) {
           var sKey = "approved";
-                        // Get the user inputs for location and date from the filter bar
-                        var sLocation = this.byId("locationFilterApproved").getValue().trim();
-                        var sDate = this.byId("dateFilterApproved").getDateValue();
-                        var sName = this.byId("nameFilterApproved").getValue().trim();
-        } else if(oEvent.mParameters.id.includes('filterBarDenied')){
+          // Get the user inputs for location and date from the filter bar
+          var sLocation = this.byId("locationFilterApproved").getValue().trim();
+          var sDate = this.byId("dateFilterApproved").getDateValue();
+          var sName = this.byId("nameFilterApproved").getValue().trim();
+        } else if (oEvent.mParameters.id.includes("filterBarDenied")) {
           var sKey = "denied";
-                        // Get the user inputs for location and date from the filter bar
-                        var sLocation = this.byId("locationFilterDenied").getValue().trim();
-                        var sDate = this.byId("dateFilterDenied").getDateValue();
-                        var sName = this.byId("nameFilterDenied").getValue().trim();
+          // Get the user inputs for location and date from the filter bar
+          var sLocation = this.byId("locationFilterDenied").getValue().trim();
+          var sDate = this.byId("dateFilterDenied").getDateValue();
+          var sName = this.byId("nameFilterDenied").getValue().trim();
         }
-  
+
         // var sKey = oEvent.getParameter("key");
         var oTable = this.byId("btTable");
         var oBinding = oTable.getBinding("items");
-    
+
         var oSessionModel = this.getOwnerComponent().getModel("session");
         var sEmpId = oSessionModel.getProperty("/personalNumber").trim(); // Get employee ID from the session model
-    
+
         // Initialize an array to hold all the filters
         var aFilters = [];
         var oStatusFilter;
         // console.log(sKey);
-    
+
         // Create the mandatory filter for PERSONAL_NUMBER
         //var oPersonalNumberFilter = new sap.ui.model.Filter("PERSONAL_NUMBER", sap.ui.model.FilterOperator.EQ, sEmpId);
         //aFilters.push(oPersonalNumberFilter);
-    
-                // Add the appropriate status filter based on the selected tab
-                if (sKey === "pending") {
-                  oStatusFilter = new Filter("ACCEPTED", FilterOperator.Contains, "pending");
-                  aFilters.push(oStatusFilter)
-              } else if (sKey === "approved") {
-                  oStatusFilter = new Filter("ACCEPTED", FilterOperator.Contains, "approved");
-                  aFilters.push(oStatusFilter)
-              } else if (sKey === "denied") {
-                  oStatusFilter = new Filter("ACCEPTED", FilterOperator.Contains, "denied");
-                  aFilters.push(oStatusFilter)
-              }
-  
-        // Create the location filter if a location was entered
-        if (sLocation) {
-            var oLocationFilter = new sap.ui.model.Filter("CITY", sap.ui.model.FilterOperator.Contains, sLocation);
-            aFilters.push(oLocationFilter);
-        }
-    
-        // Create the date filter if a date was selected
-        if (sDate) {
-            var sFormattedDate = sDate.toISOString().substring(0, 10).replace(/-/g, ""); // Format date as YYYYMMDD
-            var oDateFilter = new sap.ui.model.Filter("START_DATE", sap.ui.model.FilterOperator.EQ, sFormattedDate);
-            aFilters.push(oDateFilter);
+
+        // Add the appropriate status filter based on the selected tab
+        if (sKey === "pending") {
+          oStatusFilter = new Filter(
+            "ACCEPTED",
+            FilterOperator.Contains,
+            "pending"
+          );
+          aFilters.push(oStatusFilter);
+        } else if (sKey === "approved") {
+          oStatusFilter = new Filter(
+            "ACCEPTED",
+            FilterOperator.Contains,
+            "approved"
+          );
+          aFilters.push(oStatusFilter);
+        } else if (sKey === "denied") {
+          oStatusFilter = new Filter(
+            "ACCEPTED",
+            FilterOperator.Contains,
+            "denied"
+          );
+          aFilters.push(oStatusFilter);
         }
 
-        if(sName) {
-          var oNameFilter = new sap.ui.model.Filter("FIRST_NAME", sap.ui.model.FilterOperator.Contains, sName);
+        // Create the location filter if a location was entered
+        if (sLocation) {
+          var oLocationFilter = new sap.ui.model.Filter(
+            "CITY",
+            sap.ui.model.FilterOperator.Contains,
+            sLocation
+          );
+          aFilters.push(oLocationFilter);
+        }
+
+        // Create the date filter if a date was selected
+        if (sDate) {
+          var sFormattedDate = sDate
+            .toISOString()
+            .substring(0, 10)
+            .replace(/-/g, ""); // Format date as YYYYMMDD
+          var oDateFilter = new sap.ui.model.Filter(
+            "START_DATE",
+            sap.ui.model.FilterOperator.EQ,
+            sFormattedDate
+          );
+          aFilters.push(oDateFilter);
+        }
+
+        if (sName) {
+          var oNameFilter = new sap.ui.model.Filter(
+            "FIRST_NAME",
+            sap.ui.model.FilterOperator.Contains,
+            sName
+          );
           aFilters.push(oNameFilter);
         }
-    
+
         // console.log(oStatusFilter);
         console.log(aFilters);
-  
+
         if (aFilters.length > 1) {
           oCombinedFilter = new sap.ui.model.Filter({
-              filters: aFilters,
-              and: true
+            filters: aFilters,
+            and: true,
           });
-      } else if (aFilters.length === 1) {
+        } else if (aFilters.length === 1) {
           oCombinedFilter = aFilters[0];
-      }
-       // Combine all filters using the AND operator
-       var oCombinedFilter;
-  
-      // Apply the combined filter to the table binding
-      if (oCombinedFilter) {
+        }
+        // Combine all filters using the AND operator
+        var oCombinedFilter;
+
+        // Apply the combined filter to the table binding
+        if (oCombinedFilter) {
           oBinding.filter(oCombinedFilter);
-      } else {
+        } else {
           oBinding.filter([]);
-      }
-  
-      // Log the filters for debugging
-      // console.log("Filters applied:", oCombinedFilter);
-    },
-  
+        }
+
+        // Log the filters for debugging
+        // console.log("Filters applied:", oCombinedFilter);
+      },
+
       onTableRowSelection: function (oEvent) {
         var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
         var oSelectedItem =
