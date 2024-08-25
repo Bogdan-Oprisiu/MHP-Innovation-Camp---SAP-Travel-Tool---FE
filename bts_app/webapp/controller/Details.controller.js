@@ -19,20 +19,6 @@ sap.ui.define(
           );
       },
 
-      onBeforeRendering: function () {
-        var oSessionModel = this.getOwnerComponent().getModel("session");
-        var bIsManager = oSessionModel.getProperty("/isManager");
-        var bIsUserView = oSessionModel.getProperty("/isUserView");
-
-        if (bIsUserView && bIsManager) {
-          this.getView().byId("approve").setVisible(false);
-          this.getView().byId("decline").setVisible(false);
-        } else {
-          this.getView().byId("approve").setVisible(true);
-          this.getView().byId("decline").setVisible(true);
-        }
-      },
-
       formatAdvancedPayment: function (sValue) {
         return sValue === "X";
       },
@@ -52,7 +38,13 @@ sap.ui.define(
         // Read the specific trip data from the backend
         oModel.read(sPath, {
           success: (oData) => {
-            // console.log("Retrieved Data:", oData);
+            var oSessionModel = this.getOwnerComponent().getModel("session");
+            var oSessionData = oSessionModel.getData();
+            var sId = oSessionData.personalNumber.trim();
+
+            oData.showUserControls =
+              oData.PERSONAL_NUMBER.trim() === sId.trim();
+            console.log("Retrieved Data:", oData);
             var oDetailModel = new JSONModel(oData);
             this.getView().setModel(oDetailModel, "detail");
           },
@@ -248,6 +240,13 @@ sap.ui.define(
           },
         });
         this.getOwnerComponent().getRouter().navTo("RouteManager");
+      },
+
+      onInputFieldFocus: function (oEvent) {
+        // Get the input field instance
+        var oInput = oEvent.getSource();
+        // Do something when the input field is focused
+        sap.m.MessageToast.show("Input field was clicked!");
       },
     });
   }

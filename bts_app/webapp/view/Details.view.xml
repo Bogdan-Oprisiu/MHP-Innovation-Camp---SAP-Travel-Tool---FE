@@ -18,12 +18,10 @@
         <Toolbar>
             <Title text="Business Trip Details" level="H2"></Title>
             <ToolbarSpacer />
-            <Button id="approve" text="Approve" type="Emphasized" visible="{session>/isManager}" press="handleApprovePress" />
-            <Button id="decline" text="Decline" type="Emphasized" visible="{session>/isManager}" press="handleDeclinePress" />
-            <!-- <Button id="approve" text="Approve" type="Emphasized" visible="{detail>/showApproveButtons}" press="handleApprovePress" />
-            <Button id="decline" text="Decline" type="Emphasized" visible="{detail>/showApproveButtons}" press="handleDeclinePress" /> -->
+            <Button id="approve" text="Approve" type="Emphasized" visible="{= !${detail>/showUserControls}}" press="handleApprovePress" />
+            <Button id="decline" text="Decline" type="Emphasized" visible="{= !${detail>/showUserControls}}" press="handleDeclinePress" />
 
-            <Button id="modifyBT" text="Modify Business Trip" type="Emphasized" visible="{= !${session>/isManager}}" press="handleModifyPress" />
+            <Button id="modifyBT" text="Modify Business Trip" type="Emphasized" visible="{detail>/showUserControls}" press="handleModifyPress" />
         </Toolbar>
 
         <f:Form id="DetailForm" editable="true">
@@ -83,22 +81,22 @@
                     <f:formElements>
                         <f:FormElement label="Reason for Travel">
                             <f:fields>
-                                <Input value="{detail>/REASON}" id="reasonForTravel"/>
+                                <Input value="{detail>/REASON}" id="reasonForTravel" editable="{detail>/showUserControls}"/>
                             </f:fields>
                         </f:FormElement>
                         <f:FormElement label="Requestor">
                             <f:fields>
-                                <Input value="{detail>/REQUESTER}" id="requestor"/>
+                                <Input value="{detail>/REQUESTER}" id="requestor" editable="{detail>/showUserControls}"/>
                             </f:fields>
                         </f:FormElement>
                         <f:FormElement label="Country">
                             <f:fields>
-                                <Input value="{detail>/COUNTRY}" id="country"/>
+                                <Input value="{detail>/COUNTRY}" id="country" editable="{detail>/showUserControls}"/>
                             </f:fields>
                         </f:FormElement>
                         <f:FormElement label="City">
                             <f:fields>
-                                <Input value="{detail>/CITY}" id="city"/>
+                                <Input value="{detail>/CITY}" id="city" editable="{detail>/showUserControls}"/>
                             </f:fields>
                         </f:FormElement>
                     </f:formElements>
@@ -110,16 +108,17 @@
                         <f:FormElement label="Total Cost">
                             <f:fields>
                                 <Input value="{detail>/TOTAL_EXPENSES}" id="totalCost" editable="false"/>
+                                <!-- <Button id="editExpenses" visible="false"/> -->
                             </f:fields>
                         </f:FormElement>
                         <f:FormElement label="Start Business Trip">
                             <f:fields>
-                                <Input value="{parts: [{path: 'detail>/START_DATE'}], formatter: '.formatDate'}" id="startBusinessTrip"/>
+                                <Input value="{parts: [{path: 'detail>/START_DATE'}], formatter: '.formatDate'}" id="startBusinessTrip" editable="{detail>/showUserControls}"/>
                             </f:fields>
                         </f:FormElement>
                         <f:FormElement label="End Business Trip">
                             <f:fields>
-                                <Input value="{parts: [{path: 'detail>/END_DATE'}], formatter: '.formatDate'}" id="endBusinessTrip"/>
+                                <Input value="{parts: [{path: 'detail>/END_DATE'}], formatter: '.formatDate'}" id="endBusinessTrip" editable="{detail>/showUserControls}"/>
                             </f:fields>
                         </f:FormElement>
                         <f:FormElement visible="false">
@@ -134,7 +133,7 @@
                         </f:FormElement>
                         <f:FormElement label="Accepted">
                             <f:fields>
-                                <Input value="{detail>/ACCEPTED}" id="accepted" editable="false"/>
+                                <Input value="{detail>/ACCEPTED} " id="accepted" editable="false"/>
                             </f:fields>
                         </f:FormElement>
                     </f:formElements>
