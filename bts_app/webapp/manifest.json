@@ -158,6 +158,11 @@
           "name": "RouteTripExpenses",
           "pattern": "expenses/{expId}/{empId}/{btId}",
           "target": ["TargetExpenses"]
+        },
+        {
+          "name": "RouteEdit",
+          "pattern": "edit",
+          "target": ["TargetEdit"]
         }
       ],
       "targets": {
@@ -167,6 +172,13 @@
           "clearControlAggregation": false,
           "viewId": "Welcome",
           "viewName": "Welcome"
+        },
+        "TargetEdit": {
+          "viewType": "XML",
+          "transition": "slide",
+          "clearControlAggregation": false,
+          "viewId": "Edit",
+          "viewName": "Edit"
         },
         "TargetExpenses": {
           "viewType": "XML",
