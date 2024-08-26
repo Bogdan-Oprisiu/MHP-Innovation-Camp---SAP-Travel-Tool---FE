@@ -19,7 +19,7 @@
             <Title text="User Information" level="H2"></Title>
             <ToolbarSpacer />
             <Button id="save" text="Save" type="Emphasized" visible="true" press="handleSaveEdit" />
-            <Button id="cancel" text="Cancel" type="Emphasized" visible="true" press="handleCancelPress" />
+           
  
         </Toolbar>
  
@@ -43,12 +43,38 @@
             <f:formContainers>
                
                 <!-- General Information -->
-                <f:FormContainer title="User Information">
+                <f:FormContainer title="Details">
                     <f:formElements>
  
                     <f:FormElement visible="false">
                         <f:fields>
                             <Input value="{empInfo>/PERSONAL_NUMBER}" id="personalNumber"/>
+                        </f:fields>
+                    </f:FormElement>
+                    <f:FormElement visible="false">
+                        <f:fields>
+                            <Input value="{empInfo>/PASSWORD}" id="pass"/>
+                        </f:fields>
+                    </f:FormElement>
+                    <f:FormElement visible="false">
+                        <f:fields>
+                            <Input value="{empInfo>/IS_MANAGER}" id="role"/>
+                        </f:fields>
+                    </f:FormElement>
+                      <f:FormElement visible="false">
+                        <f:fields>
+                            <Input value="{empInfo>/TEAMID}" id="teamid"/>
+                        </f:fields>
+                        
+                    </f:FormElement>
+                      <f:FormElement visible="false">
+                        <f:fields>
+                            <Input value="{empInfo>/ADDRESSID}" id="addressid"/>
+                        </f:fields>
+                    </f:FormElement>
+                      <f:FormElement visible="false">
+                        <f:fields>
+                            <Input value="{empInfo>/COST_CENTER}" id="costCenter"/>
                         </f:fields>
                     </f:FormElement>
                         <f:FormElement label="First name">
@@ -76,7 +102,16 @@
                                 <Input value="{empInfo>/PHONE}" id="phoneNumber" editable="true"/>
                             </f:fields>
                         </f:FormElement>
-                         
+                          <f:FormElement label="Job type" visible="true">
+                        <f:fields>
+                            <Input value="{empInfo>/JOB_TYPE}" id="jobType" editable="false"/>
+                        </f:fields>
+                    </f:FormElement>
+                      <f:FormElement label="Job number" visible="true">
+                        <f:fields>
+                            <Input value="{empInfo>/JOB_NUMBER}" id="jobNumber" editable="false"/>
+                        </f:fields>
+                    </f:FormElement>
                     </f:formElements>
                 </f:FormContainer>
  
