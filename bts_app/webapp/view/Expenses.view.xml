@@ -1,0 +1,59 @@
+<mvc:View
+    controllerName="bts.btsapp.controller.Expenses"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:l="sap.ui.layout"
+    xmlns:f="sap.ui.layout.form"
+    xmlns:core="sap.ui.core"
+    displayBlock="true">
+
+    <ScrollContainer
+		height="100%"
+		width="100%"
+		vertical="true"
+		focusable="true">
+
+        <VBox class="sapUiSmallMargin">
+
+        <Toolbar>
+            <Title text="Business Trip Expenses" level="H2"></Title>
+            <ToolbarSpacer />
+        </Toolbar>
+
+        <f:Form id="ExpensesForm" editable="true">
+            <f:layout>
+                <f:ResponsiveGridLayout
+                    labelSpanXL="3"
+                    labelSpanL="3"
+                    labelSpanM="3"
+                    labelSpanS="12"
+                    adjustLabelSpan="false"
+                    emptySpanXL="4"
+                    emptySpanL="4"
+                    emptySpanM="4"
+                    emptySpanS="0"
+                    columnsXL="1"
+                    columnsL="1"
+                    columnsM="1"
+                    singleContainerFullSize="false" />
+            </f:layout>
+            <f:formContainers>
+                
+                <!-- General Information -->
+                <f:FormContainer title="General Information">
+                    <f:formElements>
+
+                    <f:FormElement visible="false">
+                        <f:fields>
+                            <Input value="Input" id="personalNumber"/>
+                        </f:fields>
+                    </f:FormElement>
+                    </f:formElements>
+                </f:FormContainer>
+
+            </f:formContainers>
+        </f:Form>
+    </VBox> 
+    </ScrollContainer>    
+
+</mvc:View>

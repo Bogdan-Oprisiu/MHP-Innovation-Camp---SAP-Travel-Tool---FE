@@ -153,6 +153,11 @@
           "name": "RouteDetails",
           "pattern": "details/{empId}/{btId}",
           "target": ["TargetDetails"]
+        },
+        {
+          "name": "RouteTripExpenses",
+          "pattern": "expenses/{expId}/{empId}/{btId}",
+          "target": ["TargetExpenses"]
         }
       ],
       "targets": {
@@ -162,6 +167,13 @@
           "clearControlAggregation": false,
           "viewId": "Welcome",
           "viewName": "Welcome"
+        },
+        "TargetExpenses": {
+          "viewType": "XML",
+          "transition": "slide",
+          "clearControlAggregation": false,
+          "viewId": "Expenses",
+          "viewName": "Expenses"
         },
         "TargetDetails": {
           "viewType": "XML",

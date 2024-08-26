@@ -41,12 +41,24 @@ sap.ui.define(
             var oSessionModel = this.getOwnerComponent().getModel("session");
             var oSessionData = oSessionModel.getData();
             var sId = oSessionData.personalNumber.trim();
+            var sShowUserControls = oData.PERSONAL_NUMBER.trim() === sId.trim();
 
-            oData.showUserControls =
-              oData.PERSONAL_NUMBER.trim() === sId.trim();
-            console.log("Retrieved Data:", oData);
+            oData.showUserControls = sShowUserControls;
+            // console.log("Retrieved Data:", oData);
             var oDetailModel = new JSONModel(oData);
             this.getView().setModel(oDetailModel, "detail");
+
+            if (!sShowUserControls) {
+              var oButton = this.byId("editExpenses");
+
+              // Find the parent FormElement containing the button
+              var oFormElement = oButton.getParent();
+
+              // Remove the button from the FormElement's aggregation
+              if (oFormElement) {
+                oFormElement.removeField(oButton);
+              }
+            }
           },
           error: (oError) => {
             console.error("Error fetching trip data:", oError);
@@ -242,11 +254,26 @@ sap.ui.define(
         this.getOwnerComponent().getRouter().navTo("RouteManager");
       },
 
-      onInputFieldFocus: function (oEvent) {
-        // Get the input field instance
-        var oInput = oEvent.getSource();
-        // Do something when the input field is focused
-        sap.m.MessageToast.show("Input field was clicked!");
+      handleEditExpenses: function () {
+        var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+        var oDetailModel = this.getView().getModel("detail");
+        var oDetailData = oDetailModel.getData();
+        var sExpId = oDetailData.EXPENSESID.trim();
+        var sEmpId = oDetailData.PERSONAL_NUMBER.trim();
+        var sBtId = oDetailData.TRIPID.trim();
+        // console.log(oDetailData);
+
+        console.log("Navigating to expenses with:", {
+          expId: sExpId,
+          empId: sEmpId,
+          btId: sBtId,
+        });
+
+        oRouter.navTo("RouteTripExpenses", {
+          expId: sExpId,
+          empId: sEmpId,
+          btId: sBtId,
+        });
       },
     });
   }

@@ -108,7 +108,7 @@
                         <f:FormElement label="Total Cost">
                             <f:fields>
                                 <Input value="{detail>/TOTAL_EXPENSES}" id="totalCost" editable="false"/>
-                                <!-- <Button id="editExpenses" visible="false"/> -->
+                                <Button id="editExpenses" text="Edit Expenses" type="Emphasized" press="handleEditExpenses"/>
                             </f:fields>
                         </f:FormElement>
                         <f:FormElement label="Start Business Trip">
