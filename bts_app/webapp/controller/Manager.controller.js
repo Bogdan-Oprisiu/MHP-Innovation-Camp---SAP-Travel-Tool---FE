@@ -114,7 +114,12 @@ sap.ui.define(
             FilterOperator.Contains,
             "denied"
           );
-        }
+        }else if (sKey === "all") {
+          oStatusFilter = new Filter(
+            "ACCEPTED",
+            FilterOperator.Contains,
+            ""
+          );}
 
         // Combine both filters using the AND operator
         var aFilters = [];
@@ -149,7 +154,14 @@ sap.ui.define(
           var sLocation = this.byId("locationFilterDenied").getValue().trim();
           var sDate = this.byId("dateFilterDenied").getDateValue();
           var sName = this.byId("nameFilterDenied").getValue().trim();
+        } else if (oEvent.mParameters.id.includes("filterBarAll")) {
+          var sKey = "all";
+          // Get the user inputs for location and date from the filter bar
+          var sLocation = this.byId("locationFilterAll").getValue().trim();
+          var sDate = this.byId("dateFilterAll").getDateValue();
+          var sName = this.byId("nameFilterAll").getValue().trim();
         }
+
 
         // var sKey = oEvent.getParameter("key");
         var oTable = this.byId("btTable");
@@ -187,6 +199,13 @@ sap.ui.define(
             "ACCEPTED",
             FilterOperator.Contains,
             "denied"
+          );
+          aFilters.push(oStatusFilter);
+        } else if (sKey === "all") {
+          oStatusFilter = new Filter(
+            "ACCEPTED",
+            FilterOperator.Contains,
+            ""
           );
           aFilters.push(oStatusFilter);
         }

@@ -161,7 +161,12 @@ sap.ui.define(
             FilterOperator.Contains,
             "denied"
           );
-        }
+        }else if (sKey === "all") {
+          oStatusFilter = new Filter(
+            "ACCEPTED",
+            FilterOperator.Contains,
+            ""
+          );}
         // Combine both filters using the AND operator
         var aFilters = [];
         if (oStatusFilter) {
@@ -193,6 +198,12 @@ sap.ui.define(
           // Get the user inputs for location and date from the filter bar
           var sLocation = this.byId("locationFilterDenied").getValue().trim();
           var sDate = this.byId("dateFilterDenied").getDateValue();
+        }
+        else if (oEvent.mParameters.id.includes("filterBarAll")) {
+          var sKey = "all";
+          // Get the user inputs for location and date from the filter bar
+          var sLocation = this.byId("locationFilterAll").getValue().trim();
+          var sDate = this.byId("dateFilterAll").getDateValue();
         }
 
         // var sKey = oEvent.getParameter("key");
@@ -233,6 +244,13 @@ sap.ui.define(
             "denied"
           );
           aFilters.push(oStatusFilter);
+        }else if (sKey === "all") {
+          oStatusFilter = new Filter(
+            "ACCEPTED",
+            FilterOperator.Contains,
+            ""
+          );
+          aFilters.push(oStatusFilter);
         }
 
         // Create the location filter if a location was entered
@@ -249,8 +267,8 @@ sap.ui.define(
         if (sDate) {
           var sFormattedDate = sDate
             .toISOString()
-            .substring(0, 7)
-            .replace("-", ""); // Format date as YYYYMM
+            .substring(0, 10)
+            .replaceAll("-", ""); // Format date as YYYYMM
           var oDateFilter = new sap.ui.model.Filter(
             "START_DATE",
             sap.ui.model.FilterOperator.EQ,
@@ -369,6 +387,14 @@ sap.ui.define(
         var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
         oRouter.navTo("RouteWelcome");
         window.location.reload(true);
+      },
+      onEdit: function(){
+        var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+    
+      // Navigate to the 'RouteEdit' route
+        
+        oRouter.navTo("RouteEdit");
+        // console.log("Navigatin to Route Edit");
       },
 
       formatValueUpToFirstSpace: function (sValue) {

@@ -22,6 +22,7 @@
                 <Title text="{i18n>MyBusinessTripsText}" />
                 <ToolbarSpacer />
                 <Button id="switchToMnagerView" text="Switch to Manager View" type="Emphasized" visible="{session>/isManager}" press="handleSwitchToManagerViewPress" />
+               <Button id="editUser" text="Edit User" type="Emphasized" visible="true" press="onEdit" />
                 <Button text="Logout" press="onLogout" type="Emphasized" />
             </Toolbar>
         </headerToolbar>
@@ -39,7 +40,7 @@
                     icon="sap-icon://expand-all">
 
                     <fb:FilterBar id="filterBarAll" xmlns:fb="sap.ui.comp.filterbar"
-                        reset="onResetAll" search="onSearchAll" showRestoreButton="true" showClearButton="true" useToolbar="false" showToolbar="false" showAdaptFiltersButton="false">
+                        reset="onResetAll" search="onSearch" showRestoreButton="true" showClearButton="true" useToolbar="false" showToolbar="false" showAdaptFiltersButton="false">
                         <fb:filterGroupItems>
                             <fb:FilterGroupItem groupName="__ALL" name="locationAll" label="Location" visibleInFilterBar="true">
                                 <fb:control>
