@@ -19,7 +19,7 @@
             <Title text="User Information" level="H2"></Title>
             <ToolbarSpacer />
             <Button id="save" text="Save" type="Emphasized" visible="true" press="handleSaveEdit" />
-            <Button id="cancel" text="Cancel" type="Emphasized" visible="true" press="onNavBack" />
+            <Button id="cancel" text="Back" type="Transparent" visible="true" press="onNavBack" />
  
         </Toolbar>
  

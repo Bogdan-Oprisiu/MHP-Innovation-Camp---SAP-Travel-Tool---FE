@@ -22,7 +22,7 @@
             <Button id="decline" text="Decline" type="Reject" visible="{= !${detail>/showUserControls}}" press="handleDeclinePress" />
 
             <Button id="modifyBT" text="Modify Business Trip" type="Emphasized" visible="{detail>/showUserControls}" press="handleModifyPress" />
-            <Button id="cancelModify" text="Back" type="Emphasized" visible="{detail>/showUserControls}" press="handleModifyCancel" />
+            <Button id="cancelModify" text="Back" type="Transparent" visible="{detail>/showUserControls}" press="handleModifyCancel" />
         </Toolbar>
 
         <f:Form id="DetailForm" editable="true">
