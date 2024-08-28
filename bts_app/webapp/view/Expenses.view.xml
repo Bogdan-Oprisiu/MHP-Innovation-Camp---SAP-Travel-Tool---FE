@@ -15,45 +15,108 @@
 
         <VBox class="sapUiSmallMargin">
 
-        <Toolbar>
-            <Title text="Business Trip Expenses" level="H2"></Title>
-            <ToolbarSpacer />
-        </Toolbar>
+            <Toolbar>
+                <Title text="Business Trip Expenses" level="H2"></Title>
+                <ToolbarSpacer />
+                <Button id="save" text="Save" type="Emphasized" visible="true" press="handleSaveExpenses" />
+                <Button id="cancel" text="Cancel" type="Emphasized" visible="true" press="handleCancelExpenses" />
+            </Toolbar>
 
-        <f:Form id="ExpensesForm" editable="true">
-            <f:layout>
-                <f:ResponsiveGridLayout
-                    labelSpanXL="3"
-                    labelSpanL="3"
-                    labelSpanM="3"
-                    labelSpanS="12"
-                    adjustLabelSpan="false"
-                    emptySpanXL="4"
-                    emptySpanL="4"
-                    emptySpanM="4"
-                    emptySpanS="0"
-                    columnsXL="1"
-                    columnsL="1"
-                    columnsM="1"
-                    singleContainerFullSize="false" />
-            </f:layout>
-            <f:formContainers>
-                
-                <!-- General Information -->
-                <f:FormContainer title="General Information">
-                    <f:formElements>
-
-                    <f:FormElement visible="false">
-                        <f:fields>
-                            <Input value="Input" id="personalNumber"/>
-                        </f:fields>
-                    </f:FormElement>
-                    </f:formElements>
-                </f:FormContainer>
-
-            </f:formContainers>
-        </f:Form>
-    </VBox> 
+            <f:Form id="ExpensesForm" editable="true">
+                <f:layout>
+                    <f:ResponsiveGridLayout
+                        labelSpanXL="3"
+                        labelSpanL="3"
+                        labelSpanM="3"
+                        labelSpanS="12"
+                        adjustLabelSpan="false"
+                        emptySpanXL="4"
+                        emptySpanL="4"
+                        emptySpanM="4"
+                        emptySpanS="0"
+                        columnsXL="1"
+                        columnsL="1"
+                        columnsM="1"
+                        singleContainerFullSize="false" />
+                </f:layout>
+                <f:formContainers>
+                    <f:FormContainer title="Expenses details">
+                        <f:formElements>
+                            <f:FormElement label="Expense ID" visible="false">
+                                <f:fields>
+                                    <Input value="{expInfo>/EXPENSESID}" id="expenseId" editable="true"/>
+                                </f:fields>
+                            </f:FormElement>
+                            <f:FormElement label="Currency" visible="true">
+                                <f:fields>
+                                    <Input value="{expInfo>/CURRENCY}" id="currency" editable="true"/>
+                                </f:fields>
+                            </f:FormElement>
+                            <f:FormElement label="Advanced Payment" visible="true">
+                                <f:fields>
+                                    <Input value="{expInfo>/ADVANCED_PAYMENT}" id="advancedPayment" editable="true"/>
+                                </f:fields>
+                            </f:FormElement>
+                            <f:FormElement label="Diem Rate" visible="true">
+                                <f:fields>
+                                    <Input value="{expInfo>/DIEM_RATE}" id="diemRate" editable="true"/>
+                                </f:fields>
+                            </f:FormElement>
+                            <f:FormElement label="Hotel Costs" visible="true">
+                                <f:fields>
+                                    <Input value="{expInfo>/HOTEL_COSTS}" id="hotelCosts" editable="true"/>
+                                </f:fields>
+                            </f:FormElement>
+                            <f:FormElement label="Train Tickets" visible="true">
+                                <f:fields>
+                                    <Input value="{expInfo>/TRAIN_TICKETS}" id="trainTickets" editable="true"/>
+                                </f:fields>
+                            </f:FormElement>
+                            <f:FormElement label="Rental Car" visible="true">
+                                <f:fields>
+                                    <Input value="{expInfo>/RENTAL_CAR}" id="rentalCar" editable="true"/>
+                                </f:fields>
+                            </f:FormElement>
+                            <f:FormElement label="Gas Costs" visible="true">
+                                <f:fields>
+                                    <Input value="{expInfo>/GAS_COSTS}" id="gasCosts" editable="true"/>
+                                </f:fields>
+                            </f:FormElement>
+                            <f:FormElement label="Bank Charges" visible="true">
+                                <f:fields>
+                                    <Input value="{expInfo>/BANK_CHARGES}" id="bankCharges" editable="true"/>
+                                </f:fields>
+                            </f:FormElement>
+                            <f:FormElement label="Business Meals" visible="true">
+                                <f:fields>
+                                    <Input value="{expInfo>/BUSINESS_MEALS}" id="businessMeals" editable="true"/>
+                                </f:fields>
+                            </f:FormElement>
+                            <f:FormElement label="Food nd Beverages" visible="true">
+                                <f:fields>
+                                    <Input value="{expInfo>/FOOD_BEVERAGES}" id="foodBeverages" editable="true"/>
+                                </f:fields>
+                            </f:FormElement>
+                            <f:FormElement label="IT Supplies" visible="true">
+                                <f:fields>
+                                    <Input value="{expInfo>/IT_SUPPLIES}" id="itSupplies" editable="true"/>
+                                </f:fields>
+                            </f:FormElement>
+                            <f:FormElement label="Office Supplies" visible="true">
+                                <f:fields>
+                                    <Input value="{expInfo>/OFFICE_SUPPLIES}" id="officeSupplies" editable="true"/>
+                                </f:fields>
+                            </f:FormElement>
+                            <f:FormElement label="Air Fare" visible="true">
+                                <f:fields>
+                                    <Input value="{expInfo>/AIR_FARE}" id="airFare" editable="true"/>
+                                </f:fields>
+                            </f:FormElement>
+                        </f:formElements>
+                    </f:FormContainer>
+                </f:formContainers>
+            </f:Form>
+        </VBox> 
     </ScrollContainer>    
 
 </mvc:View>

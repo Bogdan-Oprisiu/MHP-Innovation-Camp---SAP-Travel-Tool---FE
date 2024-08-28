@@ -19,15 +19,33 @@ sap.ui.define([
       var sEmpId = oSessionData.personalNumber.trim();
 
       var oModel = this.getOwnerComponent().getModel();
-      var sPath = "/EmployeeSet(PERSONAL_NUMBER='" + sEmpId + "')";
+      var sEmployeePath = "/EmployeeSet(PERSONAL_NUMBER='" + sEmpId + "')";
+      
+      
+  
 
       // Read the specific data from the backend
-      oModel.read(sPath, {
+      oModel.read(sEmployeePath, {
         success: (oData) => {
           var oSessionModel = this.getOwnerComponent().getModel("session");
           var oSessionData = oSessionModel.getData();
           var sId = oSessionData.personalNumber.trim();
           var sShowUserControls = oData.PERSONAL_NUMBER.trim() === sId.trim();
+          var sAddressId = typeof oData.ADDRESSID === 'string' ? oData.ADDRESSID.trim() : '';
+          // console.log(oData);
+
+          oModel.read("/AddressSet(ADDRESS_ID='" + sAddressId + "')",{
+           success: (oAddressData) => {
+          console.log("Retrieved address Data:", oAddressData);
+
+          var oAddressModel = new JSONModel(oAddressData);
+          this.getView().setModel(oAddressModel, "adInfo");
+        },
+        error: (oError) => {
+          console.error("Error fetching address data:", oError);
+        }
+      });
+          
 
           oData.showUserControls = sShowUserControls;
           console.log("Retrieved Data:", oData);
@@ -39,6 +57,7 @@ sap.ui.define([
           console.error("Error fetching data:", oError);
         }
       });
+    
     },
   
 
@@ -92,12 +111,14 @@ sap.ui.define([
           }
       });
   },
+
+
   
 
     onNavBack: function () {
       var oSessionModel = this.getOwnerComponent().getModel("session");
       
-      this.getOwnerComponent().getRouter().navTo(RouteUser);
+      this.getOwnerComponent().getRouter().navTo("RouteUser");
     }
   });
 });
