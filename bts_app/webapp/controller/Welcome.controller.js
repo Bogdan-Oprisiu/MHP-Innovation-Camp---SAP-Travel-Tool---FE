@@ -5,8 +5,16 @@ sap.ui.define(
     "sap/ui/core/Fragment",
     "sap/m/MessageToast",
     "../utils/CookieUtils",
+    "../utils/HashingUtils",
   ],
-  function (Controller, JSONModel, Fragment, MessageToast, CookieUtils) {
+  function (
+    Controller,
+    JSONModel,
+    Fragment,
+    MessageToast,
+    CookieUtils,
+    HashingUtils
+  ) {
     "use strict";
 
     return Controller.extend("bts.btsapp.controller.Welcome", {
@@ -40,7 +48,7 @@ sap.ui.define(
           });
       },
 
-      onPressLogin: function () {
+      onPressLogin: async function () {
         // Initialise router
         var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
 
@@ -57,6 +65,9 @@ sap.ui.define(
           MessageToast.show("Please enter both username and password.");
           return;
         }
+
+        // Hash the password
+        sPassword = await HashingUtils.hashPassword(sPassword);
 
         // Call the function import for login
         oModel.callFunction("/UserLogin", {
@@ -223,7 +234,7 @@ sap.ui.define(
         return { result: true, message: "" };
       },
 
-      onPressSignup: function () {
+      onPressSignup: async function () {
         // Initialise router
         var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
 
@@ -257,6 +268,9 @@ sap.ui.define(
           sap.m.MessageToast.show("Please confirm your password");
           return;
         }
+
+        // Hash the password
+        sPassword = await HashingUtils.hashPassword(sPassword);
 
         // Use filter to check if the username already exists
         var oFilter = new sap.ui.model.Filter(
