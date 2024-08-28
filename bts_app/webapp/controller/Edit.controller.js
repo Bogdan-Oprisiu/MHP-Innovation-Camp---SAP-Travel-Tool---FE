@@ -19,16 +19,19 @@ sap.ui.define([
       var sEmpId = oSessionData.personalNumber.trim();
 
       var oModel = this.getOwnerComponent().getModel();
-      var sPath = "/EmployeeSet(PERSONAL_NUMBER='" + sEmpId + "')";
+      var sEmployeePath = "/Employee_with_AddressSet(PERSONAL_NUMBER='" + sEmpId + "')";
+      
+      
+  
 
       // Read the specific data from the backend
-      oModel.read(sPath, {
+      oModel.read(sEmployeePath, {
         success: (oData) => {
           var oSessionModel = this.getOwnerComponent().getModel("session");
           var oSessionData = oSessionModel.getData();
           var sId = oSessionData.personalNumber.trim();
           var sShowUserControls = oData.PERSONAL_NUMBER.trim() === sId.trim();
-
+          
           oData.showUserControls = sShowUserControls;
           console.log("Retrieved Data:", oData);
           
@@ -39,6 +42,7 @@ sap.ui.define([
           console.error("Error fetching data:", oError);
         }
       });
+    
     },
   
 
@@ -60,14 +64,11 @@ sap.ui.define([
       }
   
       
-      var sPath = `/EmployeeSet(PERSONAL_NUMBER='${sEmpId}')`; 
+      var sPath = `/Employee_with_AddressSet(PERSONAL_NUMBER='${sEmpId}')`; 
   
      
       var oUpdatedData = {
           PERSONAL_NUMBER: oFormData.PERSONAL_NUMBER,
-          PASSWORD: oFormData.PASSWORD,
-          IS_MANAGER: oFormData.IS_MANAGER,
-          TEAMID: oFormData.TEAMID,
           ADDRESSID: oFormData.ADDRESSID,
           COST_CENTER: oFormData.COST_CENTER,
           FIRST_NAME: oFormData.FIRST_NAME,
@@ -76,7 +77,10 @@ sap.ui.define([
           USERNAME: oFormData.USERNAME,
           PHONE: oFormData.PHONE,
           JOB_TYPE: oFormData.JOB_TYPE,
-          JOB_NUMBER: oFormData.JOB_NUMBER
+          JOB_NUMBER: oFormData.JOB_NUMBER,
+          City: oFormData.City,
+          ZIP_CODE: oFormData.ZIP_CODE,
+          HOME_ADDRESS: oFormData.HOME_ADDRESS
       };
   
    
@@ -92,12 +96,14 @@ sap.ui.define([
           }
       });
   },
+
+
   
 
     onNavBack: function () {
       var oSessionModel = this.getOwnerComponent().getModel("session");
       
-      this.getOwnerComponent().getRouter().navTo(RouteUser);
+      this.getOwnerComponent().getRouter().navTo("RouteUser");
     }
   });
 });

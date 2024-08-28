@@ -183,7 +183,7 @@ sap.ui.define(
 
         if (oEvent.mParameters.id.includes("filterBarInProces")) {
           var sKey = "pending";
-          // Get the user inputs for location and date from the filter bar
+      
           var sLocation = this.byId("locationFilterInProcess")
             .getValue()
             .trim();

@@ -18,10 +18,11 @@
         <Toolbar>
             <Title text="Business Trip Details" level="H2"></Title>
             <ToolbarSpacer />
-            <Button id="approve" text="Approve" type="Emphasized" visible="{= !${detail>/showUserControls}}" press="handleApprovePress" />
-            <Button id="decline" text="Decline" type="Emphasized" visible="{= !${detail>/showUserControls}}" press="handleDeclinePress" />
+            <Button id="approve" text="Approve" type="Accept" visible="{= !${detail>/showUserControls}}" press="handleApprovePress" />
+            <Button id="decline" text="Decline" type="Reject" visible="{= !${detail>/showUserControls}}" press="handleDeclinePress" />
 
             <Button id="modifyBT" text="Modify Business Trip" type="Emphasized" visible="{detail>/showUserControls}" press="handleModifyPress" />
+            <Button id="cancelModify" text="Back" type="Transparent" visible="{detail>/showUserControls}" press="handleModifyCancel" />
         </Toolbar>
 
         <f:Form id="DetailForm" editable="true">

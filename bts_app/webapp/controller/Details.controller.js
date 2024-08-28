@@ -253,6 +253,11 @@ sap.ui.define(
         });
         this.getOwnerComponent().getRouter().navTo("RouteManager");
       },
+      handleModifyCancel: function(){
+        var oSessionModel = this.getOwnerComponent().getModel("session");
+      
+        this.getOwnerComponent().getRouter().navTo("RouteUser");
+      },
 
       handleEditExpenses: function () {
         var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
