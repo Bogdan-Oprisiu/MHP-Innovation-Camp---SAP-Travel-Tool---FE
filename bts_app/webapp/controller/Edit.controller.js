@@ -19,7 +19,7 @@ sap.ui.define([
       var sEmpId = oSessionData.personalNumber.trim();
 
       var oModel = this.getOwnerComponent().getModel();
-      var sEmployeePath = "/EmployeeSet(PERSONAL_NUMBER='" + sEmpId + "')";
+      var sEmployeePath = "/Employee_with_AddressSet(PERSONAL_NUMBER='" + sEmpId + "')";
       
       
   
@@ -31,22 +31,7 @@ sap.ui.define([
           var oSessionData = oSessionModel.getData();
           var sId = oSessionData.personalNumber.trim();
           var sShowUserControls = oData.PERSONAL_NUMBER.trim() === sId.trim();
-          var sAddressId = typeof oData.ADDRESSID === 'string' ? oData.ADDRESSID.trim() : '';
-          // console.log(oData);
-
-          oModel.read("/AddressSet(ADDRESS_ID='" + sAddressId + "')",{
-           success: (oAddressData) => {
-          console.log("Retrieved address Data:", oAddressData);
-
-          var oAddressModel = new JSONModel(oAddressData);
-          this.getView().setModel(oAddressModel, "adInfo");
-        },
-        error: (oError) => {
-          console.error("Error fetching address data:", oError);
-        }
-      });
           
-
           oData.showUserControls = sShowUserControls;
           console.log("Retrieved Data:", oData);
           
@@ -79,14 +64,11 @@ sap.ui.define([
       }
   
       
-      var sPath = `/EmployeeSet(PERSONAL_NUMBER='${sEmpId}')`; 
+      var sPath = `/Employee_with_AddressSet(PERSONAL_NUMBER='${sEmpId}')`; 
   
      
       var oUpdatedData = {
           PERSONAL_NUMBER: oFormData.PERSONAL_NUMBER,
-          PASSWORD: oFormData.PASSWORD,
-          IS_MANAGER: oFormData.IS_MANAGER,
-          TEAMID: oFormData.TEAMID,
           ADDRESSID: oFormData.ADDRESSID,
           COST_CENTER: oFormData.COST_CENTER,
           FIRST_NAME: oFormData.FIRST_NAME,
@@ -95,7 +77,10 @@ sap.ui.define([
           USERNAME: oFormData.USERNAME,
           PHONE: oFormData.PHONE,
           JOB_TYPE: oFormData.JOB_TYPE,
-          JOB_NUMBER: oFormData.JOB_NUMBER
+          JOB_NUMBER: oFormData.JOB_NUMBER,
+          City: oFormData.City,
+          ZIP_CODE: oFormData.ZIP_CODE,
+          HOME_ADDRESS: oFormData.HOME_ADDRESS
       };
   
    

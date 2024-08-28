@@ -53,20 +53,10 @@
                     </f:FormElement>
                     <f:FormElement visible="false">
                         <f:fields>
-                            <Input value="{empInfo>/PASSWORD}" id="pass"/>
+                            <Input value="{empInfo>/ADDRESSID}" id="adID"/>
                         </f:fields>
                     </f:FormElement>
-                    <f:FormElement visible="false">
-                        <f:fields>
-                            <Input value="{empInfo>/IS_MANAGER}" id="role"/>
-                        </f:fields>
-                    </f:FormElement>
-                      <f:FormElement visible="false">
-                        <f:fields>
-                            <Input value="{empInfo>/TEAMID}" id="teamid"/>
-                        </f:fields>
-                        
-                    </f:FormElement>
+            
                       <f:FormElement visible="false">
                         <f:fields>
                             <Input value="{empInfo>/ADDRESSID}" id="addressid"/>
@@ -107,12 +97,24 @@
                             <Input value="{empInfo>/JOB_TYPE}" id="jobType" editable="false"/>
                         </f:fields>
                     </f:FormElement>
-                      <f:FormElement label="Job number" visible="true">
+                     <f:FormElement label="City" visible="true">
                         <f:fields>
-                            <Input value="{empInfo>/JOB_NUMBER}" id="jobNumber" editable="false"/>
+                            <Input value="{empInfo>/City}" id="city" editable="true"/>
                         </f:fields>
                     </f:FormElement>
+                      <f:FormElement label="Home address" visible="true">
+                        <f:fields>
+                            <Input value="{empInfo>/HOME_ADDRESS}" id="homeAd" editable="true"/>
+                        </f:fields>
+                    </f:FormElement>
+                    <f:FormElement label="Zip Code" visible="true">
+                        <f:fields>
+                            <Input value="{empInfo>/ZIP_CODE}" id="zipCode" editable="true"/>
+                        </f:fields>
+                    </f:FormElement>
+                    
                     </f:formElements>
+                    
                 </f:FormContainer>
  
                

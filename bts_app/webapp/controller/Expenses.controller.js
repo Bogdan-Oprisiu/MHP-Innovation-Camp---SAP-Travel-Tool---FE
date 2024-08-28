@@ -69,12 +69,12 @@ sap.ui.define(["sap/ui/core/mvc/Controller",  "sap/ui/model/json/JSONModel"], fu
   
      
       var oUpdatedData = {
-          EXPENSESID: oFormData.EXPENSESID,
+          EXPENSESID: oFormData.EXPENSESID.trim(),
           CURRENCY: oFormData.CURRENCY,
           ADVANCED_PAYMENT: oFormData.ADVANCED_PAYMENT,
           DIEM_RATE: oFormData.DIEM_RATE,
           HOTEL_COSTS: oFormData.HOTEL_COSTS,
-          TRAIN_TICKESTS: oFormData.TRAIN_TICKESTS,
+          TRAIN_TICKETS: oFormData.TRAIN_TICKETS,
           RENTAL_CAR: oFormData.RENTAL_CAR,
           GAS_COSTS: oFormData.GAS_COSTS,
           BANK_CHARGES: oFormData.BANK_CHARGES,
@@ -94,6 +94,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller",  "sap/ui/model/json/JSONModel"], fu
               var sEmpId = oStateModel.getProperty("/empId");
               var sBtId = oStateModel.getProperty("/btId");
   
+              
               this.getOwnerComponent().getRouter().navTo("RouteDetails", {
                   empId: sEmpId,
                   btId: sBtId
