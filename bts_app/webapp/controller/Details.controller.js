@@ -265,7 +265,7 @@ sap.ui.define(
             console.error("Error updating trip details:", oError);
           },
         });
-        this.getOwnerComponent().getRouter().navTo("RouteManager");
+        this.getOwnerComponent().getRouter().navTo("RouteUser");
       },
       handleModifyCancel: function(){
         var oSessionModel = this.getOwnerComponent().getModel("session");
