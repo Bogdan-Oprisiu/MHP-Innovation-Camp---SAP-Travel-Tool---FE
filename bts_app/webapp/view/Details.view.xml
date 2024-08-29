@@ -18,10 +18,10 @@
         <Toolbar>
             <Title text="Business Trip Details" level="H2"></Title>
             <ToolbarSpacer />
-            <Button id="approve" text="Approve" type="Accept" visible="{= !${detail>/showUserControls}}" press="handleApprovePress" />
+            <Button id="approve" text="Approve" type="Accept" visible="{= !${detail>/showUserControls}}" press="handleApprovePress"  />
             <Button id="decline" text="Decline" type="Reject" visible="{= !${detail>/showUserControls}}" press="handleDeclinePress" />
 
-            <Button id="modifyBT" text="Modify Business Trip" type="Emphasized" visible="{detail>/showUserControls}" press="handleModifyPress" />
+            <Button id="modifyBT" text="Modify Business Trip" type="Emphasized" visible="{detail>/showUserControls}" press="handleModifyPress" enabled="{= ${detail>/ACCEPTED} !== 'approved'}"/>
             <Button id="cancelModify" text="Back" type="Transparent" visible="{detail>/showUserControls}" press="handleModifyCancel" />
         </Toolbar>
 
@@ -109,7 +109,7 @@
                         <f:FormElement label="Total Cost">
                             <f:fields>
                                 <Input value="{detail>/TOTAL_EXPENSES}" id="totalCost" editable="false"/>
-                                <Button id="editExpenses" text="Edit Expenses" type="Emphasized" press="handleEditExpenses"/>
+                                <Button id="editExpenses" text="Edit Expenses" type="Emphasized" press="handleEditExpenses" enabled="{= ${detail>/ACCEPTED} !== 'approved'}"/>
                             </f:fields>
                         </f:FormElement>
                         <f:FormElement label="Start Business Trip">
@@ -132,7 +132,7 @@
                                <Input value="{path: 'detail>/ADVANCED_PAYMENT', formatter: '.formatAdvancedPayment'}" id="advancePaymentNeeded" editable="false"/>
                             </f:fields>
                         </f:FormElement>
-                        <f:FormElement label="Accepted">
+                        <f:FormElement label="Status">
                             <f:fields>
                                 <Input value="{detail>/ACCEPTED} " id="accepted" editable="false"/>
                             </f:fields>

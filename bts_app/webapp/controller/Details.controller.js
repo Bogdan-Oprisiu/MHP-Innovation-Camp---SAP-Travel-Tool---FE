@@ -99,6 +99,7 @@ sap.ui.define(
       handleApprovePress: function () {
         this._updateTripStatus("approved");
         this.getOwnerComponent().getRouter().navTo("RouteManager");
+       
       },
 
       handleDeclinePress: function () {
@@ -108,6 +109,7 @@ sap.ui.define(
         if (!oDialog) {
           // Create the dialog if it doesn't exist
           oDialog = sap.ui.xmlfragment("bts.btsapp.view.DeclineDialog", this);
+          
           oView.addDependent(oDialog);
         }
 
