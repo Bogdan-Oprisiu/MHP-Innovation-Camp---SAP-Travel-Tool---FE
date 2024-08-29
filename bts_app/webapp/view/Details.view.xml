@@ -127,16 +127,24 @@
                             <Input value="{detail>/EXPENSESID}" id="expensesID"/>
                         </f:fields>
                     </f:FormElement>
-                        <f:FormElement label="Advance Payment Needed">
-                            <f:fields>
-                               <Input value="{path: 'detail>/ADVANCED_PAYMENT', formatter: '.formatAdvancedPayment'}" id="advancePaymentNeeded" editable="false"/>
-                            </f:fields>
-                        </f:FormElement>
+                    
                         <f:FormElement label="Status">
                             <f:fields>
                                 <Input value="{detail>/ACCEPTED} " id="accepted" editable="false"/>
                             </f:fields>
                         </f:FormElement>
+                      <f:FormElement label="Advance Payment Needed">
+                        <f:fields>
+                            <CheckBox 
+                                selected="{path: 'detail>/ADVANCED_PAYMENT', formatter: '.formatToBoolean', 
+                                type: 'boolean'}" 
+                                id="advancePaymentNeededCheckbox" 
+                                editable="false" 
+                                
+                            />
+                        </f:fields>
+                    </f:FormElement>
+
                     </f:formElements>
                 </f:FormContainer>
 

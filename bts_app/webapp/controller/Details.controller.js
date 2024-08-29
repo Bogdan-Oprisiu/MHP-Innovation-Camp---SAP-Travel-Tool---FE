@@ -19,9 +19,18 @@ sap.ui.define(
           );
       },
 
-      formatAdvancedPayment: function (sValue) {
-        return sValue === "X";
-      },
+     
+        formatToBoolean: function(value) {
+            if (value === "X") {
+                return true; 
+            } else if (value === "-") {
+                return false; 
+            } else {
+                return false; 
+            }
+        },
+       
+    
 
       _onObjectMatched: function (oEvent) {
         var sEmpId = oEvent.getParameter("arguments").empId.trim();
@@ -98,8 +107,9 @@ sap.ui.define(
 
       handleApprovePress: function () {
         this._updateTripStatus("approved");
+        
         this.getOwnerComponent().getRouter().navTo("RouteManager");
-       
+        window.location.reload(true);
       },
 
       handleDeclinePress: function () {
@@ -129,7 +139,9 @@ sap.ui.define(
 
         // Close the dialog and navigate back after processing
         oView.byId("declineDialog").close();
+        
         this.getOwnerComponent().getRouter().navTo("RouteManager");
+        window.location.reload(true);
       },
 
       handleDeclineDialogCancel: function () {
@@ -268,7 +280,7 @@ sap.ui.define(
         var sExpId = oDetailData.EXPENSESID.trim();
         var sEmpId = oDetailData.PERSONAL_NUMBER.trim();
         var sBtId = oDetailData.TRIPID.trim();
-        // console.log(oDetailData);
+       
 
         console.log("Navigating to expenses with:", {
           expId: sExpId,

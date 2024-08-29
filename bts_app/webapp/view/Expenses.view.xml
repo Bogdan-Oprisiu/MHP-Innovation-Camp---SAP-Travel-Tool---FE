@@ -52,11 +52,16 @@
                                     <Input value="{expInfo>/CURRENCY}" id="currency" editable="true"/>
                                 </f:fields>
                             </f:FormElement>
-                            <f:FormElement label="Advanced Payment" visible="true">
-                                <f:fields>
-                                    <Input value="{expInfo>/ADVANCED_PAYMENT}" id="advancedPayment" editable="true"/>
-                                </f:fields>
-                            </f:FormElement>
+                             <f:FormElement label="Advance Payment Needed">
+                        <f:fields>
+                            <CheckBox 
+                                selected="{path: 'expInfo>/ADVANCED_PAYMENT'}" 
+                                id="advancePayment" 
+                                editable="true" 
+                               
+                            />
+                        </f:fields>
+                    </f:FormElement>
                             <f:FormElement label="Diem Rate" visible="true">
                                 <f:fields>
                                     <Input value="{expInfo>/DIEM_RATE}" id="diemRate" editable="true" type="Number"/>
