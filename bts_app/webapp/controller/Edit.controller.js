@@ -1,7 +1,8 @@
 sap.ui.define([
   "sap/ui/core/mvc/Controller",
-  "sap/ui/model/json/JSONModel"
-], function (BaseController, JSONModel) {
+  "sap/m/MessageToast",
+  "sap/ui/model/json/JSONModel",
+], function (BaseController,MessageToast, JSONModel) {
   "use strict";
 
   return BaseController.extend("bts.btsapp.controller.Edit", {
